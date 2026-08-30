@@ -1,0 +1,213 @@
+{
+  "fixture_id": "rebal-governance-0080",
+  "content_type": "governance",
+  "risk_tier": "high",
+  "content": "Control ID: NIST-AC-2 | Owner: bob@example.com | Status: Overdue | Finding: Access reviews were not completed by the deadline. Remediation owner: bob@example.com | Due date: 2026-10-25",
+  "route_labels": [
+    "governance_safe_compression",
+    "prose_token_compressor"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 12,
+      "end": 21,
+      "text": "NIST-AC-2",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 31,
+      "end": 46,
+      "text": "bob@example.com",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 174,
+      "end": 184,
+      "text": "2026-10-25",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "governance_safe_compression",
+    "expected_risk": "high",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "control_id",
+        "start": 12,
+        "end": 21,
+        "text": "NIST-AC-2",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "email",
+        "start": 31,
+        "end": 46,
+        "text": "bob@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "date",
+        "start": 174,
+        "end": 184,
+        "text": "2026-10-25",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 12,
+        "end": 21,
+        "text": "NIST-AC-2",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 31,
+        "end": 46,
+        "text": "bob@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 174,
+        "end": 184,
+        "text": "2026-10-25",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 12,
+        "end": 21,
+        "text": "NIST-AC-2",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 31,
+        "end": 46,
+        "text": "bob@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 174,
+        "end": 184,
+        "text": "2026-10-25",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 12,
+        "end": 21,
+        "text": "NIST-AC-2",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 31,
+        "end": 46,
+        "text": "bob@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 174,
+        "end": 184,
+        "text": "2026-10-25",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "governance_safe_compression",
+    "allowed_outcomes": [
+      "governance_safe_compression",
+      "pii_redaction_before_compression",
+      "reject_or_human_review"
+    ],
+    "compressible": false,
+    "redaction_only": true
+  },
+  "provenance": {
+    "source": "enterprise_mock",
+    "license": "proprietary_laconiq_mock",
+    "generated_by": "benchmarks/fixtures/generate_rebalance_fixtures.py",
+    "generated_at": "2026-07-18T01:23:06.809463Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "rebalance",
+    "governance_safe_compression"
+  ],
+  "blocks": [
+    {
+      "type": "prose",
+      "content": "Control ID: NIST-AC-2 | Owner: bob@example.com | Status: Overdue | Finding: Access reviews were not completed by the deadline. Remediation owner: bob@example.com | Due date: 2026-10-25",
+      "start": 0,
+      "end": 184,
+      "route_label": "prose_token_compressor",
+      "risk_tier": "low",
+      "protected_spans": [
+        {
+          "start": 31,
+          "end": 46,
+          "label": "email",
+          "span_type": "locked",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 146,
+          "end": 161,
+          "label": "email",
+          "span_type": "locked",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 174,
+          "end": 184,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:23:06.819608+00:00",
+  "schema_version": "2.0.0"
+}

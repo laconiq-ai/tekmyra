@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "code-httpx-c73be11b",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "code",
+  "risk_tier": "low",
+  "content": "from __future__ import annotations\n\nimport os\nimport typing\n\nfrom ._models import Headers\nfrom ._types import CertTypes, HeaderTypes, TimeoutTypes\nfrom ._urls import URL\n\nif typing.TYPE_CHECKING:\n    import ssl  # pragma: no cover\n\n__all__ = [\"Limits\", \"Proxy\", \"Timeout\", \"create_ssl_context\"]\n\n\nclass UnsetType:\n    pass  # pragma: no cover\n\n\nUNSET = UnsetType()\n\n\ndef create_ssl_context(\n    verify: ssl.SSLContext | str | bool = True,\n    cert: CertTypes | None = None,\n    trust_env: bool = True,\n) -> ssl.SSLContext:\n    import ssl\n    import warnings\n\n    import certifi\n\n    if verify is True:\n        if trust_env and os.environ.get(\"SSL_CERT_FILE\"):  # pragma: nocover\n            ctx = ssl.create_default_context(cafile=os.environ[\"SSL_CERT_FILE\"])\n        elif trust_env and os.environ.get(\"SSL_CERT_DIR\"):  # pragma: nocover\n            ctx = ssl.create_default_context(capath=os.environ[\"SSL_CERT_DIR\"])\n        else:\n            # Default case...\n            ctx = ssl.create_default_context(cafile=certifi.where())\n    elif verify is False:\n        ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)\n        ctx.check_hostname = False\n        ctx.verify_mode = ssl.CERT_NONE\n    elif isinstance(verify, str):  # pragma: nocover\n        message = (\n            \"`verify=<str>` is deprecated. \"\n            \"Use `verify=ssl.create_default_context(cafile=...)` \"\n            \"or `verify=ssl.create_default_context(capath=...)` instead.\"\n        )\n        warnings.warn(message, DeprecationWarning)\n        if os.path.isdir(verify):\n            return ssl.create_default_context(capath=verify)\n        return ssl.create_default_context(cafile=verify)\n    else:\n        ctx = verify\n\n    if cert:  # pragma: nocover\n        message = (\n            \"`cert=...` is deprecated. Use `verify=<ssl_context>` instead,\"\n            \"with `.load_cert_chain()` to configure the certificate chain.\"\n        )\n        warnings.warn(message, DeprecationWarning)\n        if isinstance(cert, str):\n            ctx.load_cert_chain(cert)\n        else:\n            ctx.load_cert_chain(*cert)\n\n    return ctx\n\n\nclass Timeout:\n    \"\"\"\n    Timeout configuration.\n\n    **Usage**:\n\n    Timeout(None)               # No timeouts.\n    Timeout(5.0)                # 5s timeout on all operations.\n    Timeout(None, connect=5.0)  # 5s timeout on connect, no other timeouts.\n    Timeout(5.0, connect=10.0)  # 10s timeout on connect. 5s timeout elsewhere.\n    Timeout(5.0, pool=None)     # No timeout on acquiring connection from pool.\n                                # 5s timeout elsewhere.\n    \"\"\"\n\n    def __init__(\n        self,\n        timeout: TimeoutTypes | UnsetType = UNSET,\n        *,\n        connect: None | float | UnsetType = UNSET,\n        read: None | float | UnsetType = UNSET,\n        write: None | float | UnsetType = UNSET,\n        pool: None | float | UnsetType = UNSET,\n    ) -> None:\n        if isinstance(timeout, Timeout):\n            # Passed as a single explicit Timeout.\n            assert connect is UNSET\n            assert read is UNSET\n            assert write is UNSET\n            assert pool is UNSET\n            self.connect = timeout.connect  # type: typing.Optional[float]\n            self.read = timeout.read  # type: typing.Optional[float]\n            self.write = timeout.write  # type: typing.Optional[float]\n            self.pool = timeout.pool  # type: typing.Optional[float]\n        elif isinstance(timeout, tuple):\n            # Passed as a tuple.\n            self.connect = timeout[0]\n            self.read = timeout[1]\n            self.write = None if len(timeout) < 3 else timeout[2]\n            self.pool = None if len(timeout) < 4 else timeout[3]\n        elif not (\n            isinstance(connect, UnsetType)\n            or isinstance(read, UnsetType)\n            or isinstance(write, UnsetType)\n            or isinstance(pool, UnsetType)\n        ):\n            self.connect = connect\n            self.read = read\n            self.write = write\n            self.pool = pool\n        else:\n            if isinstance(timeout, UnsetType):\n                raise ValueError(\n                    \"httpx.Timeout must either include a default, or set all \"\n                    \"four parameters explicitly.\"\n                )\n            self.connect = timeout if isinstance(connect, UnsetType) else connect\n            self.read = timeout if isinstance(read, UnsetType) else read\n            self.write = timeout if isinstance(write, UnsetType) else write\n            self.pool = timeout if isinstance(pool, UnsetType) else pool\n\n    def as_dict(self) -> dict[str, float | None]:\n        return {\n            \"connect\": self.connect,\n            \"read\": self.read,\n            \"write\": self.write,\n            \"pool\": self.pool,\n        }\n\n    def __eq__(self, other: typing.Any) -> bool:\n        return (\n            isinstance(other, self.__class__)\n            and self.connect == other.connect\n            and self.read == other.read\n            and self.write == other.write\n            and self.pool == other.pool\n        )\n\n    def __repr__(self) -> str:\n        class_name = self.__class__.__name__\n        if len({self.connect, self.read, self.write, self.pool}) == 1:\n            return f\"{class_name}(timeout={self.connect})\"\n        return (\n            f\"{class_name}(connect={self.connect}, \"\n            f\"read={self.read}, write={self.write}, pool={self.pool})\"\n        )\n\n\nclass Limits:\n    \"\"\"\n    Configuration for limits to various client behaviors.\n\n    **Parameters:**\n\n    * **max_connections** - The maximum number of concurrent connections that may be\n            established.\n    * **max_keepalive_connections** - Allow the connection pool to maintain\n            keep-alive connections below this point. Should be less than or equal\n            to `max_connections`.\n    * **keepalive_expiry** - Time limit on idle keep-alive connections in seconds.\n    \"\"\"\n\n    def __init__(\n        self,\n        *,\n        max_connections: int | None = None,\n        max_keepalive_connections: int | None = None,\n        keepalive_expiry: float | None = 5.0,\n    ) -> None:\n        self.max_connections = max_connections\n        self.max_keepalive_connections = max_keepalive_connections\n        self.keepalive_expiry = keepalive_expiry\n\n    def __eq__(self, other: typing.Any) -> bool:\n        return (\n            isinstance(other, self.__class__)\n            and self.max_connections == other.max_connections\n            and self.max_keepalive_connections == other.max_keepalive_connections\n            and self.keepalive_expiry == other.keepalive_expiry\n        )\n\n    def __repr__(self) -> str:\n        class_name = self.__class__.__name__\n        return (\n            f\"{class_name}(max_connections={self.max_connections}, \"\n            f\"max_keepalive_connections={self.max_keepalive_connections}, \"\n            f\"keepalive_expiry={self.keepalive_expiry})\"\n        )\n\n\nclass Proxy:\n    def __init__(\n        self,\n        url: URL | str,\n        *,\n        ssl_context: ssl.SSLContext | None = None,\n        auth: tuple[str, str] | None = None,\n        headers: HeaderTypes | None = None,\n    ) -> None:\n        url = URL(url)\n        headers = Headers(headers)\n\n        if url.scheme not in (\"http\", \"https\", \"socks5\", \"socks5h\"):\n            raise ValueError(f\"Unknown scheme for proxy URL {url!r}\")\n\n        if url.username or url.password:\n            # Remove any auth credentials from the URL.\n            auth = (url.username, url.password)\n            url = url.copy_with(username=None, password=None)\n\n        self.url = url\n        self.auth = auth\n        self.headers = headers\n        self.ssl_context = ssl_context\n\n    @property\n    def raw_auth(self) -> tuple[bytes, bytes] | None:\n        # The proxy authentication as raw bytes.\n        return (\n            None\n            if self.auth is None\n            else (self.auth[0].encode(\"utf-8\"), self.auth[1].encode(\"utf-8\"))\n        )\n\n    def __repr__(self) -> str:\n        # The authentication is represented with the password component masked.\n        auth = (self.auth[0], \"********\") if self.auth else None\n\n        # Build a nice concise representation.\n        url_str = f\"{str(self.url)!r}\"\n        auth_str = f\", auth={auth!r}\" if auth else \"\"\n        headers_str = f\", headers={dict(self.headers)!r}\" if self.headers else \"\"\n        return f\"Proxy({url_str}{auth_str}{headers_str})\"\n\n\nDEFAULT_TIMEOUT_CONFIG = Timeout(timeout=5.0)\nDEFAULT_LIMITS = Limits(max_connections=100, max_keepalive_connections=20)\nDEFAULT_MAX_REDIRECTS = 20\n",
+  "route_labels": [
+    "code_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "code_compressor",
+    "allowed_outcomes": [
+      "code_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "code_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:encode/httpx",
+    "license": "BSD-3-Clause",
+    "generated_by": null,
+    "external": {
+      "publisher": "encode/httpx",
+      "source_url": "https://github.com/encode/httpx/blob/b5addb64f0161ff6bfe94c124ef76f6a1fba5254/httpx/_config.py",
+      "retrieved_at": "2026-08-09T10:50:35.933109Z",
+      "licence_basis": "SPDX BSD-3-Clause, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/encode/httpx",
+      "licence_evidence_sha256": "5ed6d55a881846e6924c391624875889bae6782ad1a93227bb4c846b2d527d0b",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": null
+    },
+    "generated_at": "2026-08-09T10:50:36.004733Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "code",
+    "python"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

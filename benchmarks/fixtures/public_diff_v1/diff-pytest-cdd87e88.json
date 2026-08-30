@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "diff-pytest-cdd87e88",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "diff",
+  "risk_tier": "low",
+  "content": "[match case] Use match case in ``Source.__init__``\n\n\ndiff --git a/src/_pytest/_code/source.py b/src/_pytest/_code/source.py\nindex 9f0f6db..b7cae26 100644\n--- a/src/_pytest/_code/source.py\n+++ b/src/_pytest/_code/source.py\n@@ -24,23 +24,25 @@ class Source:\n         if not obj:\n             self.lines: list[str] = []\n             self.raw_lines: list[str] = []\n-        elif isinstance(obj, Source):\n-            self.lines = obj.lines\n-            self.raw_lines = obj.raw_lines\n-        elif isinstance(obj, tuple | list):\n-            self.lines = deindent(x.rstrip(\"\\n\") for x in obj)\n-            self.raw_lines = list(x.rstrip(\"\\n\") for x in obj)\n-        elif isinstance(obj, str):\n-            self.lines = deindent(obj.split(\"\\n\"))\n-            self.raw_lines = obj.split(\"\\n\")\n-        else:\n-            try:\n-                rawcode = getrawcode(obj)\n-                src = inspect.getsource(rawcode)\n-            except TypeError:\n-                src = inspect.getsource(obj)  # type: ignore[arg-type]\n-            self.lines = deindent(src.split(\"\\n\"))\n-            self.raw_lines = src.split(\"\\n\")\n+            return\n+        match obj:\n+            case Source():\n+                self.lines = obj.lines\n+                self.raw_lines = obj.raw_lines\n+            case tuple() | list():\n+                self.lines = deindent(x.rstrip(\"\\n\") for x in obj)\n+                self.raw_lines = list(x.rstrip(\"\\n\") for x in obj)\n+            case str():\n+                self.lines = deindent(obj.split(\"\\n\"))\n+                self.raw_lines = obj.split(\"\\n\")\n+            case _:\n+                try:\n+                    rawcode = getrawcode(obj)\n+                    src = inspect.getsource(rawcode)\n+                except TypeError:\n+                    src = inspect.getsource(obj)  # type: ignore[arg-type]\n+                self.lines = deindent(src.split(\"\\n\"))\n+                self.raw_lines = src.split(\"\\n\")\n \n     def __eq__(self, other: object) -> bool:\n         if not isinstance(other, Source):\n",
+  "route_labels": [
+    "diff_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "diff_compressor",
+    "allowed_outcomes": [
+      "diff_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "diff_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:pytest-dev/pytest",
+    "license": "MIT",
+    "generated_by": null,
+    "external": {
+      "publisher": "pytest-dev/pytest",
+      "source_url": "https://github.com/pytest-dev/pytest/commit/cdd87e88ef6325d58b7aa755ae6074b0ac8237b5",
+      "retrieved_at": "2026-08-09T12:18:29.629243Z",
+      "licence_basis": "SPDX MIT, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/pytest-dev/pytest",
+      "licence_evidence_sha256": "f96abb52f9d19c22cc1373dcbee9dfd6246c5d8735de5157734451c579e9dc25",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": "git show, against a local clone \u2014 no foreign code executed"
+    },
+    "generated_at": "2026-08-09T12:18:29.785830Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "diff",
+    "pytest"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

@@ -1,0 +1,429 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://laconiq.com/contracts/tekmyra/fixture-rights-evidence-v1.json",
+  "title": "LaconIQ fixture and training-corpus rights evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "verification_status",
+    "evidence_id",
+    "subject",
+    "generator_provenance",
+    "rights_basis",
+    "history",
+    "permitted_scopes",
+    "independent_review",
+    "signature"
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "safe_path": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)(?!.*//)[A-Za-z0-9_.@+/-]+$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "immutable_locator"],
+      "properties": {
+        "path": {"$ref": "#/$defs/safe_path"},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "immutable_locator": {
+          "type": "string",
+          "pattern": "^urn:sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "fixture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fixture_id", "path", "sha256"],
+      "properties": {
+        "fixture_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "path": {"$ref": "#/$defs/safe_path"},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "generator_file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "role", "depends_on"],
+      "properties": {
+        "path": {"$ref": "#/$defs/safe_path"},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "role": {
+          "enum": ["entrypoint", "template", "generator_dependency"]
+        },
+        "depends_on": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/safe_path"}
+        }
+      }
+    },
+    "reviewer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["identity", "name", "organization", "authority"],
+      "properties": {
+        "identity": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 200
+        },
+        "name": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 200
+        },
+        "organization": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 200
+        },
+        "authority": {
+          "enum": [
+            "external_legal_counsel",
+            "authorized_rights_reviewer",
+            "independent_compliance_reviewer"
+          ]
+        }
+      }
+    }
+  },
+  "properties": {
+    "schema_version": {
+      "const": "tekmyra-fixture-rights-evidence/v1"
+    },
+    "verification_status": {
+      "const": "verified"
+    },
+    "evidence_id": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 160,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "fixtures",
+        "fixture_count",
+        "corpus_id",
+        "corpus_hash_algorithm",
+        "corpus_sha256",
+        "split_path",
+        "split_hash_algorithm",
+        "split_sha256"
+      ],
+      "properties": {
+        "kind": {
+          "enum": ["fixture_set", "training_corpus"]
+        },
+        "fixtures": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/fixture"}
+        },
+        "fixture_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "corpus_id": {
+          "type": ["string", "null"],
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "corpus_hash_algorithm": {
+          "enum": ["ordered-fixture-content-sha256-v1", null]
+        },
+        "corpus_sha256": {
+          "anyOf": [
+            {"$ref": "#/$defs/sha256"},
+            {"type": "null"}
+          ]
+        },
+        "split_path": {
+          "anyOf": [
+            {"$ref": "#/$defs/safe_path"},
+            {"type": "null"}
+          ]
+        },
+        "split_hash_algorithm": {
+          "enum": ["canonical-json-sha256-v1", null]
+        },
+        "split_sha256": {
+          "anyOf": [
+            {"$ref": "#/$defs/sha256"},
+            {"type": "null"}
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {"kind": {"const": "training_corpus"}},
+            "required": ["kind"]
+          },
+          "then": {
+            "properties": {
+              "corpus_id": {"type": "string", "minLength": 1},
+              "corpus_hash_algorithm": {
+                "const": "ordered-fixture-content-sha256-v1"
+              },
+              "corpus_sha256": {"$ref": "#/$defs/sha256"},
+              "split_path": {"$ref": "#/$defs/safe_path"},
+              "split_hash_algorithm": {
+                "const": "canonical-json-sha256-v1"
+              },
+              "split_sha256": {"$ref": "#/$defs/sha256"}
+            }
+          },
+          "else": {
+            "properties": {
+              "corpus_id": {"type": "null"},
+              "corpus_hash_algorithm": {"type": "null"},
+              "corpus_sha256": {"type": "null"},
+              "split_path": {"type": "null"},
+              "split_hash_algorithm": {"type": "null"},
+              "split_sha256": {"type": "null"}
+            }
+          }
+        }
+      ]
+    },
+    "generator_provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "root_generators",
+        "files",
+        "closure_hash_algorithm",
+        "closure_sha256"
+      ],
+      "properties": {
+        "root_generators": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/safe_path"}
+        },
+        "files": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/generator_file"}
+        },
+        "closure_hash_algorithm": {
+          "const": "canonical-generator-closure-sha256-v1"
+        },
+        "closure_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "rights_basis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_declaration",
+        "claimant_identity",
+        "origin_basis",
+        "source_evidence",
+        "ownership_or_license_basis",
+        "license"
+      ],
+      "properties": {
+        "source_declaration": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "claimant_identity": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 200
+        },
+        "origin_basis": {
+          "enum": [
+            "laconiq_original_work",
+            "third_party_license",
+            "written_permission",
+            "public_domain_dedication"
+          ]
+        },
+        "source_evidence": {"$ref": "#/$defs/artifact"},
+        "ownership_or_license_basis": {"$ref": "#/$defs/artifact"},
+        "license": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "expression",
+            "text",
+            "notice_required",
+            "notice"
+          ],
+          "properties": {
+            "expression": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9.+(): /-]*$"
+            },
+            "text": {"$ref": "#/$defs/artifact"},
+            "notice_required": {"type": "boolean"},
+            "notice": {
+              "anyOf": [
+                {"$ref": "#/$defs/artifact"},
+                {"type": "null"}
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {"notice_required": {"const": true}},
+                "required": ["notice_required"]
+              },
+              "then": {
+                "properties": {
+                  "notice": {"$ref": "#/$defs/artifact"}
+                }
+              },
+              "else": {
+                "properties": {
+                  "notice": {"type": "null"}
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "history": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["event", "at", "actor_identity", "evidence"],
+        "properties": {
+          "event": {
+            "enum": [
+              "created",
+              "source_acquired",
+              "license_verified",
+              "ownership_confirmed",
+              "permission_granted"
+            ]
+          },
+          "at": {"$ref": "#/$defs/timestamp"},
+          "actor_identity": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 200
+          },
+          "evidence": {"$ref": "#/$defs/artifact"}
+        }
+      }
+    },
+    "permitted_scopes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "use_in_laconiq_product",
+          "modify_fixture_content",
+          "distribute_fixture_content",
+          "train_models",
+          "commercial_product_use",
+          "redistribute_trained_models_and_derived_artifacts",
+          "open_source_product_distribution"
+        ]
+      }
+    },
+    "independent_review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reviewer",
+        "reviewed_at",
+        "review_evidence",
+        "evidence_bundle_hash_algorithm",
+        "evidence_bundle_sha256",
+        "assertions"
+      ],
+      "properties": {
+        "reviewer": {"$ref": "#/$defs/reviewer"},
+        "reviewed_at": {"$ref": "#/$defs/timestamp"},
+        "review_evidence": {"$ref": "#/$defs/artifact"},
+        "evidence_bundle_hash_algorithm": {
+          "const": "canonical-rights-materials-sha256-v1"
+        },
+        "evidence_bundle_sha256": {"$ref": "#/$defs/sha256"},
+        "assertions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "fixture_identity_validated",
+            "generator_closure_validated",
+            "source_and_ownership_validated",
+            "license_and_notice_validated",
+            "history_validated",
+            "scopes_validated",
+            "independent_of_claimant"
+          ],
+          "properties": {
+            "fixture_identity_validated": {"const": true},
+            "generator_closure_validated": {"const": true},
+            "source_and_ownership_validated": {"const": true},
+            "license_and_notice_validated": {"const": true},
+            "history_validated": {"const": true},
+            "scopes_validated": {"const": true},
+            "independent_of_claimant": {"const": true}
+          }
+        }
+      }
+    },
+    "signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "algorithm",
+        "key_id",
+        "trusted_key_sha256",
+        "value_base64"
+      ],
+      "properties": {
+        "algorithm": {"const": "Ed25519"},
+        "key_id": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 200
+        },
+        "trusted_key_sha256": {"$ref": "#/$defs/sha256"},
+        "value_base64": {
+          "type": "string",
+          "minLength": 88,
+          "maxLength": 88
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "fixture_id": "rebal-reversible-0203",
+  "content_type": "retrieval_context",
+  "risk_tier": "medium",
+  "content": "Retrieval context [CTX_REF:doc-4403] \u2014 source document SRC-2026-8803.\nTopic: API rate limiting design. The analysis examined API rate limiting design.\nKey figure: deployment frequency.",
+  "route_labels": [
+    "reversible_retrieval_mode"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "anchor",
+      "start": 19,
+      "end": 35,
+      "text": "CTX_REF:doc-4403",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "anchor",
+      "start": 55,
+      "end": 68,
+      "text": "SRC-2026-8803",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "reversible_retrieval_mode",
+    "expected_risk": "medium",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "citation",
+        "start": 19,
+        "end": 35,
+        "text": "CTX_REF:doc-4403",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "citation",
+        "start": 55,
+        "end": 68,
+        "text": "SRC-2026-8803",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "anchor",
+        "start": 19,
+        "end": 35,
+        "text": "CTX_REF:doc-4403",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "anchor",
+        "start": 55,
+        "end": 68,
+        "text": "SRC-2026-8803",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "reversible_retrieval_mode",
+    "allowed_outcomes": [
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true
+  },
+  "provenance": {
+    "source": "synthetic",
+    "license": "CC0-1.0",
+    "generated_by": "benchmarks/fixtures/generate_rebalance_fixtures.py",
+    "generated_at": "2026-07-18T01:43:36.498008Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "rebalance",
+    "reversible_retrieval_mode"
+  ],
+  "blocks": [
+    {
+      "type": "retrieval_context",
+      "content": "Retrieval context [CTX_REF:doc-4403] \u2014 source document SRC-2026-8803.\nTopic: API rate limiting design. The analysis examined API rate limiting design.\nKey figure: deployment frequency.",
+      "start": 0,
+      "end": 184,
+      "route_label": "reversible_retrieval_mode",
+      "risk_tier": "low",
+      "protected_spans": [
+        {
+          "start": 18,
+          "end": 36,
+          "label": "retrieval_key",
+          "span_type": "anchor",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 55,
+          "end": 69,
+          "label": "retrieval_key",
+          "span_type": "anchor",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:43:36.500570+00:00",
+  "schema_version": "2.0.0"
+}

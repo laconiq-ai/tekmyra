@@ -1,0 +1,148 @@
+{
+  "fixture_id": "rebal-summarizer-0188",
+  "content_type": "prose",
+  "risk_tier": "low",
+  "content": "Quarterly planning memo \u2014 The operations team reviewed the delivery plan for the Horizon initiative during the week of 2026-08-09. Engineering identified three blockers: third-party API rate limits, memory pressure in staging, and CI pipeline latency. The leadership team requested a revised spending proposal by 2026-05-20 and asked the program manager to communicate priorities to all regional leads. No final decisions were recorded.",
+  "route_labels": [
+    "prose_token_compressor",
+    "summarizer"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 119,
+      "end": 129,
+      "text": "2026-08-09",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 313,
+      "end": 323,
+      "text": "2026-05-20",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 81,
+      "end": 88,
+      "text": "Horizon",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "summarizer",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "date",
+        "start": 119,
+        "end": 129,
+        "text": "2026-08-09",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "date",
+        "start": 313,
+        "end": 323,
+        "text": "2026-05-20",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "project_name",
+        "start": 81,
+        "end": 88,
+        "text": "Horizon",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 119,
+        "end": 129,
+        "text": "2026-08-09",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 313,
+        "end": 323,
+        "text": "2026-05-20",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 81,
+        "end": 88,
+        "text": "Horizon",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "summarizer",
+    "allowed_outcomes": [
+      "summarizer"
+    ],
+    "compressible": true
+  },
+  "provenance": {
+    "source": "public_sample",
+    "license": "MIT",
+    "generated_by": "benchmarks/fixtures/generate_rebalance_fixtures.py",
+    "generated_at": "2026-07-18T01:23:06.876171Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "rebalance",
+    "summarizer"
+  ],
+  "blocks": [
+    {
+      "type": "prose",
+      "content": "Quarterly planning memo \u2014 The operations team reviewed the delivery plan for the Horizon initiative during the week of 2026-08-09. Engineering identified three blockers: third-party API rate limits, memory pressure in staging, and CI pipeline latency. The leadership team requested a revised spending proposal by 2026-05-20 and asked the program manager to communicate priorities to all regional leads. No final decisions were recorded.",
+      "start": 0,
+      "end": 436,
+      "route_label": "prose_token_compressor",
+      "risk_tier": "low",
+      "protected_spans": [
+        {
+          "start": 119,
+          "end": 129,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 313,
+          "end": 323,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:23:06.885095+00:00",
+  "schema_version": "2.0.0"
+}

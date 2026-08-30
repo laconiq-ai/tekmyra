@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "diff-express-5175d2f3",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "diff",
+  "risk_tier": "low",
+  "content": "build(deps): bump actions/checkout from 6.0.2 to 7.0.0 (#7345)\n\n\ndiff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml\nindex 0695bd8..cc2ea3d 100644\n--- a/.github/workflows/ci.yml\n+++ b/.github/workflows/ci.yml\n@@ -27,7 +27,7 @@ jobs:\n     name: Lint\n     runs-on: ubuntu-latest\n     steps:\n-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2\n+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0\n         with:\n           persist-credentials: false\n       - name: Setup Node.js\n@@ -53,7 +53,7 @@ jobs:\n \n     runs-on: ${{ matrix.os }}\n     steps:\n-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2\n+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0\n         with:\n           persist-credentials: false\n \n@@ -93,7 +93,7 @@ jobs:\n       contents: read\n       checks: write\n     steps:\n-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2\n+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0\n         with:\n           persist-credentials: false\n \ndiff --git a/.github/workflows/codeql.yml b/.github/workflows/codeql.yml\nindex c53c01c..fdd7e34 100644\n--- a/.github/workflows/codeql.yml\n+++ b/.github/workflows/codeql.yml\n@@ -39,7 +39,7 @@ jobs:\n \n     steps:\n       - name: Checkout repository\n-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2\n+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0\n         with:\n           persist-credentials: false\n \ndiff --git a/.github/workflows/legacy.yml b/.github/workflows/legacy.yml\nindex 408227c..47c6007 100644\n--- a/.github/workflows/legacy.yml\n+++ b/.github/workflows/legacy.yml\n@@ -37,7 +37,7 @@ jobs:\n \n     runs-on: ${{ matrix.os }}\n     steps:\n-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2\n+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0\n         with:\n           persist-credentials: false\n \n@@ -77,7 +77,7 @@ jobs:\n       contents: read\n       checks: write\n     steps:\n-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2\n+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0\n         with:\n           persist-credentials: false\n \ndiff --git a/.github/workflows/scorecard.yml b/.github/workflows/scorecard.yml\nindex 876cda5..66dd2f1 100644\n--- a/.github/workflows/scorecard.yml\n+++ b/.github/workflows/scorecard.yml\n@@ -32,7 +32,7 @@ jobs:\n \n     steps:\n       - name: \"Checkout code\"\n-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2\n+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0\n         with:\n           persist-credentials: false\n \n",
+  "route_labels": [
+    "diff_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "diff_compressor",
+    "allowed_outcomes": [
+      "diff_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "diff_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:expressjs/express",
+    "license": "MIT",
+    "generated_by": null,
+    "external": {
+      "publisher": "expressjs/express",
+      "source_url": "https://github.com/expressjs/express/commit/5175d2f357e9c6fac998812b3fc22a1a90ead988",
+      "retrieved_at": "2026-08-09T12:18:29.629243Z",
+      "licence_basis": "SPDX MIT, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/expressjs/express",
+      "licence_evidence_sha256": "b43a1f8265068984bedfb796d8101f0f7769292cafb95f49d64c11bce5cd2769",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": "git show, against a local clone \u2014 no foreign code executed"
+    },
+    "generated_at": "2026-08-09T12:18:30.453823Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "diff",
+    "express"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

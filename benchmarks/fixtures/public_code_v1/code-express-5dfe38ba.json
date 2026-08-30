@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "code-express-5dfe38ba",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "code",
+  "risk_tier": "low",
+  "content": "/*!\n * express\n * Copyright(c) 2009-2013 TJ Holowaychuk\n * Copyright(c) 2014-2015 Douglas Christopher Wilson\n * MIT Licensed\n */\n\n'use strict';\n\n/**\n * Module dependencies.\n * @api private\n */\n\nvar { METHODS } = require('node:http');\nvar contentType = require('content-type');\nvar etag = require('etag');\nvar mime = require('mime-types')\nvar proxyaddr = require('proxy-addr');\nvar qs = require('qs');\nvar querystring = require('node:querystring');\nconst { Buffer } = require('node:buffer');\n\n\n/**\n * A list of lowercased HTTP methods that are supported by Node.js.\n * @api private\n */\nexports.methods = METHODS.map((method) => method.toLowerCase());\n\n/**\n * Return strong ETag for `body`.\n *\n * @param {String|Buffer} body\n * @param {String} [encoding]\n * @return {String}\n * @api private\n */\n\nexports.etag = createETagGenerator({ weak: false })\n\n/**\n * Return weak ETag for `body`.\n *\n * @param {String|Buffer} body\n * @param {String} [encoding]\n * @return {String}\n * @api private\n */\n\nexports.wetag = createETagGenerator({ weak: true })\n\n/**\n * Normalize the given `type`, for example \"html\" becomes \"text/html\".\n *\n * @param {String} type\n * @return {Object}\n * @api private\n */\n\nexports.normalizeType = function(type){\n  return ~type.indexOf('/')\n    ? acceptParams(type)\n    : { value: (mime.lookup(type) || 'application/octet-stream'), params: {} }\n};\n\n/**\n * Normalize `types`, for example \"html\" becomes \"text/html\".\n *\n * @param {Array} types\n * @return {Array}\n * @api private\n */\n\nexports.normalizeTypes = function(types) {\n  return types.map(exports.normalizeType);\n};\n\n\n/**\n * Parse accept params `str` returning an\n * object with `.value`, `.quality` and `.params`.\n *\n * @param {String} str\n * @return {Object}\n * @api private\n */\n\nfunction acceptParams (str) {\n  var length = str.length;\n  var colonIndex = str.indexOf(';');\n  var index = colonIndex === -1 ? length : colonIndex;\n  var ret = { value: str.slice(0, index).trim(), quality: 1, params: {} };\n\n  while (index < length) {\n    var splitIndex = str.indexOf('=', index);\n    if (splitIndex === -1) break;\n\n    var colonIndex = str.indexOf(';', index);\n    var endIndex = colonIndex === -1 ? length : colonIndex;\n\n    if (splitIndex > endIndex) {\n      index = str.lastIndexOf(';', splitIndex - 1) + 1;\n      continue;\n    }\n\n    var key = str.slice(index, splitIndex).trim();\n    var value = str.slice(splitIndex + 1, endIndex).trim();\n\n    if (key === 'q') {\n      ret.quality = parseFloat(value);\n    } else {\n      ret.params[key] = value;\n    }\n\n    index = endIndex + 1;\n  }\n\n  return ret;\n}\n\n/**\n * Compile \"etag\" value to function.\n *\n * @param  {Boolean|String|Function} val\n * @return {Function}\n * @api private\n */\n\nexports.compileETag = function(val) {\n  var fn;\n\n  if (typeof val === 'function') {\n    return val;\n  }\n\n  switch (val) {\n    case true:\n    case 'weak':\n      fn = exports.wetag;\n      break;\n    case false:\n      break;\n    case 'strong':\n      fn = exports.etag;\n      break;\n    default:\n      throw new TypeError('unknown value for etag function: ' + val);\n  }\n\n  return fn;\n}\n\n/**\n * Compile \"query parser\" value to function.\n *\n * @param  {String|Function} val\n * @return {Function}\n * @api private\n */\n\nexports.compileQueryParser = function compileQueryParser(val) {\n  var fn;\n\n  if (typeof val === 'function') {\n    return val;\n  }\n\n  switch (val) {\n    case true:\n    case 'simple':\n      fn = querystring.parse;\n      break;\n    case false:\n      break;\n    case 'extended':\n      fn = parseExtendedQueryString;\n      break;\n    default:\n      throw new TypeError('unknown value for query parser function: ' + val);\n  }\n\n  return fn;\n}\n\n/**\n * Compile \"proxy trust\" value to function.\n *\n * @param  {Boolean|String|Number|Array|Function} val\n * @return {Function}\n * @api private\n */\n\nexports.compileTrust = function(val) {\n  if (typeof val === 'function') return val;\n\n  if (val === true) {\n    // Support plain true/false\n    return function(){ return true };\n  }\n\n  if (typeof val === 'number') {\n    // Support trusting hop count\n    return function(a, i){ return i < val };\n  }\n\n  if (typeof val === 'string') {\n    // Support comma-separated values\n    val = val.split(',')\n      .map(function (v) { return v.trim() })\n  }\n\n  return proxyaddr.compile(val || []);\n}\n\n/**\n * Set the charset in a given Content-Type string.\n *\n * @param {String} type\n * @param {String} charset\n * @return {String}\n * @api private\n */\n\nexports.setCharset = function setCharset(type, charset) {\n  if (!type || !charset) {\n    return type;\n  }\n\n  // parse type\n  var parsed = contentType.parse(type);\n\n  // set charset\n  parsed.parameters.charset = charset;\n\n  // format type\n  return contentType.format(parsed);\n};\n\n/**\n * Create an ETag generator function, generating ETags with\n * the given options.\n *\n * @param {object} options\n * @return {function}\n * @private\n */\n\nfunction createETagGenerator (options) {\n  return function generateETag (body, encoding) {\n    var buf = !Buffer.isBuffer(body)\n      ? Buffer.from(body, encoding)\n      : body\n\n    return etag(buf, options)\n  }\n}\n\n/**\n * Parse an extended query string with qs.\n *\n * @param {String} str\n * @return {Object}\n * @private\n */\n\nfunction parseExtendedQueryString(str) {\n  return qs.parse(str, {\n    allowPrototypes: true\n  });\n}\n",
+  "route_labels": [
+    "code_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "code_compressor",
+    "allowed_outcomes": [
+      "code_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "code_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:expressjs/express",
+    "license": "MIT",
+    "generated_by": null,
+    "external": {
+      "publisher": "expressjs/express",
+      "source_url": "https://github.com/expressjs/express/blob/a3714473feb3d2908add734d340e7755fd85e0a3/lib/utils.js",
+      "retrieved_at": "2026-08-09T10:50:35.933109Z",
+      "licence_basis": "SPDX MIT, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/expressjs/express",
+      "licence_evidence_sha256": "eddc1bfa7ea454ae4c57781822dcdcf791b089429c9c4618198f2122017515d2",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": null
+    },
+    "generated_at": "2026-08-09T10:50:36.112438Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "code",
+    "javascript"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

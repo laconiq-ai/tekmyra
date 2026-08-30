@@ -1,0 +1,148 @@
+{
+  "fixture_id": "rebal-extractive-0068",
+  "content_type": "bullet_notes",
+  "risk_tier": "medium",
+  "content": "Project Identity \u2014 extractive keypoint draft\n- Decision: replace the batch processor with a streaming pipeline.\n- Action item: schedule a follow-up architecture review (owner: Sam Patel).\n- Blocker: missing production credentials.\n- Due date: 2026-09-04.\n- Ticket reference: TICKET-4814.",
+  "route_labels": [
+    "extractive_keypoint_compressor",
+    "prose_token_compressor"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 243,
+      "end": 253,
+      "text": "2026-09-04",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 275,
+      "end": 286,
+      "text": "TICKET-4814",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 176,
+      "end": 185,
+      "text": "Sam Patel",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "extractive_keypoint_compressor",
+    "expected_risk": "medium",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "date",
+        "start": 243,
+        "end": 253,
+        "text": "2026-09-04",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "ticket_id",
+        "start": 275,
+        "end": 286,
+        "text": "TICKET-4814",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "owner",
+        "start": 176,
+        "end": 185,
+        "text": "Sam Patel",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 243,
+        "end": 253,
+        "text": "2026-09-04",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 275,
+        "end": 286,
+        "text": "TICKET-4814",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 176,
+        "end": 185,
+        "text": "Sam Patel",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "extractive_keypoint_compressor",
+    "allowed_outcomes": [
+      "extractive_keypoint_compressor"
+    ],
+    "compressible": true
+  },
+  "provenance": {
+    "source": "public_sample",
+    "license": "MIT",
+    "generated_by": "benchmarks/fixtures/generate_rebalance_fixtures.py",
+    "generated_at": "2026-07-18T01:23:06.797952Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "rebalance",
+    "extractive_keypoint_compressor"
+  ],
+  "blocks": [
+    {
+      "type": "prose",
+      "content": "Project Identity \u2014 extractive keypoint draft\n- Decision: replace the batch processor with a streaming pipeline.\n- Action item: schedule a follow-up architecture review (owner: Sam Patel).\n- Blocker: missing production credentials.\n- Due date: 2026-09-04.\n- Ticket reference: TICKET-4814.",
+      "start": 0,
+      "end": 287,
+      "route_label": "prose_token_compressor",
+      "risk_tier": "low",
+      "protected_spans": [
+        {
+          "start": 243,
+          "end": 253,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 275,
+          "end": 287,
+          "label": "retrieval_key",
+          "span_type": "anchor",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:23:06.808588+00:00",
+  "schema_version": "2.0.0"
+}

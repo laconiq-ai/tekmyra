@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "diff-example-e8420e48",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "diff",
+  "risk_tier": "low",
+  "content": "weave: fix %include parsing, add highlighting\n\n\ndiff --git a/gotypes/README.md b/gotypes/README.md\nindex 350fbc6..9886a11 100644\n--- a/gotypes/README.md\n+++ b/gotypes/README.md\n@@ -143,7 +143,7 @@ run `go get golang.org/x/example/gotypes/...`.\n \n \t// go get golang.org/x/example/gotypes/pkginfo\n \n-```\n+```go\n package main\n \n import (\n@@ -247,7 +247,7 @@ Finally, the program prints the attributes of the package, shown below.\n (The hexadecimal number may vary from one run to the next.)\n \n \n-```\n+```go\n $ go build golang.org/x/example/gotypes/pkginfo\n $ ./pkginfo\n Package  \"cmd/hello\"\n@@ -505,7 +505,7 @@ identifier in the input program, and the object it refers to.\n \n \t// go get golang.org/x/example/gotypes/defsuses\n \n-```\n+```go\n func PrintDefsUses(fset *token.FileSet, files ...*ast.File) error {\n \tconf := types.Config{Importer: importer.Default()}\n \tinfo := &types.Info{\n@@ -535,7 +535,7 @@ Let's use the _hello, world_ program again as the input:\n \n \t// go get golang.org/x/example/gotypes/hello\n \n-```\n+```go\n package main\n \n import \"fmt\"\n@@ -549,7 +549,7 @@ func main() {\n This is what it prints:\n \n \n-```\n+```go\n $ go build golang.org/x/example/gotypes/defsuses\n $ ./defsuses\n hello.go:1:9: \"main\" defines <nil>\n@@ -796,7 +796,7 @@ preserve comments in the input.\n \n \t// go get golang.org/x/example/gotypes/lookup\n \n-```\n+```go\n func main() {\n \tfset := token.NewFileSet()\n \tf, err := parser.ParseFile(fset, \"hello.go\", hello, parser.ParseComments)\n@@ -839,7 +839,7 @@ The second comment looks up `\"fmt\"` in the `main` function's block,\n and so on.\n \n \n-```\n+```go\n const hello = `\n package main\n \n@@ -863,7 +863,7 @@ func main() {\n Here's the output:\n \n \n-```\n+```go\n $ go build golang.org/x/example/gotypes/lookup\n $ ./lookup\n At hello.go:6:1,        \"append\" = builtin append\n@@ -1566,7 +1566,7 @@ type-checked file and prints its type, value, and mode:\n \n \t// go get golang.org/x/example/gotypes/typeandvalue\n \n-```\n+```go\n // f is a parsed, type-checked *ast.File.\n ast.Inspect(f, func(n ast.Node) bool {\n \tif expr, ok := n.(ast.Expr); ok {\n@@ -1596,7 +1596,7 @@ It makes use of these two helper functions, which are not shown:\n Given this input:\n \n \n-```\n+```go\n const input = `\n package main\n \n@@ -1613,7 +1613,7 @@ func main() {\n the program prints:\n \n \n-```\n+```go\n $ go build golang.org/x/example/gotypes/typeandvalue\n $ ./typeandvalue\n make(map[string]int)            mode:  value\n@@ -1672,7 +1672,7 @@ comparing a method `x.f` against nil is a common mistake.\n \n \t// go get golang.org/x/example/gotypes/nilfunc\n \n-```\n+```go\n // CheckNilFuncComparison reports unintended comparisons\n // of functions against nil, e.g., \"if x.Method == nil {\".\n func CheckNilFuncComparison(info *types.Info, n ast.Node) {\n@@ -1718,7 +1718,7 @@ func CheckNilFuncComparison(info *types.Info, n ast.Node) {\n Given this input,\n \n \n-```\n+```go\n const input = `package main\n \n import \"bytes\"\n@@ -1736,7 +1736,7 @@ func main() {\n the program reports these errors:\n \n \n-```\n+```go\n $ go build golang.org/x/example/gotypes/nilfunc\n $ ./nilfunc\n input.go:7:5: comparison of function Bytes == nil is always false\n@@ -1969,7 +1969,7 @@ interface.\n Here's an example:\n \n \n-```\n+```go\n $ ./skeleton io ReadWriteCloser buffer\n // *buffer implements io.ReadWriteCloser.\n type buffer struct{}\n@@ -1993,7 +1993,7 @@ calls `PrintSkeleton` with the remaining two arguments:\n \n \t// go get golang.org/x/example/gotypes/skeleton\n \n-```\n+```go\n func PrintSkeleton(pkg *types.Package, ifacename, concname string) error {\n \tobj := pkg.Scope().Lookup(ifacename)\n \tif obj == nil {\n@@ -2051,7 +2051,7 @@ Passing `(*types.Package).Name` causes only the package name\n Here's another example that illustrates it:\n \n \n-```\n+```go\n $ ./skeleton net/http Handler myHandler\n // *myHandler implements net/http.Handler.\n type myHandler struct{}\n@@ -2067,7 +2067,7 @@ in `pkg`, and reports the types that satisfy each interface type.\n \n \t// go get golang.org/x/example/gotypes/implements\n \n-```\n+```go\n // Find all named types at package level.\n var allNamed []*types.Named\n for _, name := range pkg.Scope().Names() {\n@@ -2099,7 +2099,7 @@ Given this input,\n \n \t// go get golang.org/x/example/gotypes/implements\n \n-```\n+```go\n const input = `package main\n \n type A struct{}\n@@ -2118,7 +2118,7 @@ type J interface { g() }\n the program prints:\n \n \n-```\n+```go\n $ go build golang.org/x/example/gotypes/implements\n $ ./implements\n *hello.A satisfies hello.I\n@@ -2276,7 +2276,7 @@ programs.\n \n \t// go get golang.org/x/example/gotypes/hugeparam\n \n-```\n+```go\n var bytesFlag = flag.Int(\"bytes\", 48, \"maximum parameter size in bytes\")\n \n func PrintHugeParams(fset *token.FileSet, info *types.Info, sizes types.Sizes, files []*ast.File) {\n@@ -2324,7 +2324,7 @@ It reports a number of places where the 7-word\n is copied.\n \n \n-```\n+```go\n % ./hugeparam encoding/xml\n /go/src/encoding/xml/marshal.go:167:50: \"start\" parameter: encoding/xml.StartElement = 56 bytes\n /go/src/encoding/xml/marshal.go:734:97: \"\" result: encoding/xml.StartElement = 56 bytes\n@@ -2408,7 +2408,7 @@ the command line.\n Here's an example:\n \n \n-```\n+```go\n $ ./doc net/http File\n type net/http.File interface{Readdir(count int) ([]os.FileInfo, error); Seek(offset int64, whence int) (int64, error); Stat() (os.FileInfo, error); io.Closer; io.Reader}\n $GOROOT/src/io/io.go:92:2: method (net/http.File) Close() error\n@@ -2435,7 +2435,7 @@ plus exported type information for its dependencies.\n \n \t// go get golang.org/x/example/gotypes/doc\n \n-```\n+```go\n pkgpath, name := os.Args[1], os.Args[2]\n \n // Load complete type information for the specified packages,\n@@ -2465,7 +2465,7 @@ The rest of the program prints the output:\n \n \t// go get golang.org/x/example/gotypes/doc\n \n-```\n+```go\n // Print the object and its methods (incl. location of definition).\n fmt.Println(obj)\n for _, sel := range typeutil.IntuitiveMethodSet(obj.Type(), nil) {\ndiff --git a/internal/cmd/weave/weave.go b/internal/cmd/weave/weave.go\nindex d833653..880b415 100644\n--- a/internal/cmd/weave/weave.go\n+++ b/internal/cmd/weave/weave.go\n@@ -27,6 +27,7 @@ package main\n import (\n \t\"bufio\"\n \t\"bytes\"\n+\t\"flag\"\n \t\"fmt\"\n \t\"io\"\n \t\"log\"\n@@ -37,13 +38,14 @@ import (\n )\n \n func main() {\n+\tflag.Parse()\n \tlog.SetFlags(0)\n \tlog.SetPrefix(\"weave: \")\n-\tif len(os.Args) != 2 {\n+\tif flag.NArg() != 1 {\n \t\tlog.Fatal(\"usage: weave input.md\\n\")\n \t}\n \n-\tf, err := os.Open(os.Args[1])\n+\tf, err := os.Open(flag.Arg(0))\n \tif err != nil {\n \t\tlog.Fatal(err)\n \t}\n@@ -100,26 +102,38 @@ func main() {\n \t\t\t}\n \t\tcase strings.HasPrefix(line, \"%include\"):\n \t\t\twords := strings.Fields(line)\n-\t\t\tif len(words) < 2 {\n-\t\t\t\tlog.Fatal(line)\n+\t\t\tvar section string\n+\t\t\tcaption := true\n+\t\t\tswitch len(words) {\n+\t\t\tcase 2: // %include filename\n+\t\t\t// Nothing to do.\n+\t\t\tcase 3: // %include filename section OR %include filename -\n+\t\t\t\tif words[2] == \"-\" {\n+\t\t\t\t\tcaption = false\n+\t\t\t\t} else {\n+\t\t\t\t\tsection = words[2]\n+\t\t\t\t}\n+\t\t\tcase 4: // %include filename section -\n+\t\t\t\tsection = words[2]\n+\t\t\t\tif words[3] != \"-\" {\n+\t\t\t\t\tlog.Fatalf(\"last word is not '-': %s\", line)\n+\t\t\t\t}\n+\t\t\t\tcaption = false\n+\t\t\tdefault:\n+\t\t\t\tlog.Fatalf(\"wrong # words (want 2-4): %s\", line)\n \t\t\t}\n \t\t\tfilename := words[1]\n \n-\t\t\t// Show caption unless '-' follows.\n-\t\t\tif len(words) < 4 || words[3] != \"-\" {\n+\t\t\tif caption {\n \t\t\t\tfmt.Printf(\"\t// go get golang.org/x/example/%s/%s\\n\\n\",\n \t\t\t\t\tcurDir, filepath.Dir(filename))\n \t\t\t}\n \n-\t\t\tsection := \"\"\n-\t\t\tif len(words) > 2 {\n-\t\t\t\tsection = words[2]\n-\t\t\t}\n \t\t\ts, err := include(filename, section)\n \t\t\tif err != nil {\n \t\t\t\tlog.Fatal(err)\n \t\t\t}\n-\t\t\tfmt.Println(\"```\")\n+\t\t\tfmt.Println(\"```go\")\n \t\t\tfmt.Println(cleanListing(s)) // TODO(adonovan): escape /^```/ in s\n \t\t\tfmt.Println(\"```\")\n \t\tdefault:\ndiff --git a/slog-handler-guide/README.md b/slog-handler-guide/README.md\nindex 01027cc..5342c06 100644\n--- a/slog-handler-guide/README.md\n+++ b/slog-handler-guide/README.md\n@@ -115,7 +115,7 @@ implement all four handler methods.\n We begin with the `IndentHandler` type\n and the `New` function that constructs it from an `io.Writer` and options:\n \n-```\n+```go\n type IndentHandler struct {\n \topts Options\n \t// TODO: state for WithGroup and WithAttrs\n@@ -186,7 +186,7 @@ of the work done by each request to be controlled independently.\n Our `IndentHandler` doesn't use the context. It just compares the argument level\n with its configured minimum level:\n \n-```\n+```go\n func (h *IndentHandler) Enabled(ctx context.Context, level slog.Level) bool {\n \treturn level >= h.opts.Level.Level()\n }\n@@ -232,7 +232,7 @@ groups established by `WithGroup`.\n \n That is how `IndentHandler.Handle` is structured:\n \n-```\n+```go\n func (h *IndentHandler) Handle(ctx context.Context, r slog.Record) error {\n \tbuf := make([]byte, 0, 1024)\n \tif !r.Time.IsZero() {\n@@ -287,7 +287,7 @@ goroutines that may be calling `Handle` at the same time.\n At the heart of the handler is the `appendAttr` method, responsible for\n formatting a single attribute:\n \n-```\n+```go\n func (h *IndentHandler) appendAttr(buf []byte, a slog.Attr, indentLevel int) []byte {\n \t// Resolve the Attr's value before doing anything else.\n \ta.Value = a.Value.Resolve()\n@@ -405,7 +405,7 @@ Our first implementation will collect the information from `WithGroup` and\n and loop over that slice in `Handle`. We start with a struct that can hold\n either a group name or some attributes:\n \n-```\n+```go\n // groupOrAttrs holds either a group name or a list of slog.Attrs.\n type groupOrAttrs struct {\n \tgroup string      // group name if non-empty\n@@ -415,7 +415,7 @@ type groupOrAttrs struct {\n \n Then we add a slice of `groupOrAttrs` to our handler:\n \n-```\n+```go\n type IndentHandler struct {\n \topts Options\n \tgoas []groupOrAttrs\n@@ -429,7 +429,7 @@ receiver.\n To that end, we define a method that will copy our handler struct\n and append one `groupOrAttrs` to the copy:\n \n-```\n+```go\n func (h *IndentHandler) withGroupOrAttrs(goa groupOrAttrs) *IndentHandler {\n \th2 := *h\n \th2.goas = make([]groupOrAttrs, len(h.goas)+1)\n@@ -446,7 +446,7 @@ copy, we would introduce that subtle aliasing bug.\n \n The `With` methods are easy to write using `withGroupOrAttrs`:\n \n-```\n+```go\n func (h *IndentHandler) WithGroup(name string) slog.Handler {\n \tif name == \"\" {\n \t\treturn h\n@@ -465,7 +465,7 @@ func (h *IndentHandler) WithAttrs(attrs []slog.Attr) slog.Handler {\n The `Handle` method can now process the groupOrAttrs slice after\n the built-in attributes and before the ones in the record:\n \n-```\n+```go\n func (h *IndentHandler) Handle(ctx context.Context, r slog.Record) error {\n \tbuf := make([]byte, 0, 1024)\n \tif !r.Time.IsZero() {\n@@ -587,7 +587,7 @@ by formatting the attributes in a call to `With` just once.\n To pre-format the arguments to `WithAttrs`, we need to keep track of some\n additional state in the `IndentHandler` struct.\n \n-```\n+```go\n type IndentHandler struct {\n \topts           Options\n \tpreformatted   []byte   // data from WithGroup and WithAttrs\n@@ -608,7 +608,7 @@ indentation level.\n This `WithGroup` is a lot like the previous one: it just remembers the\n new group, which is unopened initially.\n \n-```\n+```go\n func (h *IndentHandler) WithGroup(name string) slog.Handler {\n \tif name == \"\" {\n \t\treturn h\n@@ -624,7 +624,7 @@ func (h *IndentHandler) WithGroup(name string) slog.Handler {\n \n `WithAttrs` does all the pre-formatting:\n \n-```\n+```go\n func (h *IndentHandler) WithAttrs(attrs []slog.Attr) slog.Handler {\n \tif len(attrs) == 0 {\n \t\treturn h\n@@ -668,7 +668,7 @@ method we saw above.\n It's the `Handle` method's job to insert the pre-formatted material in the right\n place, which is after the built-in attributes and before the ones in the record:\n \n-```\n+```go\n func (h *IndentHandler) Handle(ctx context.Context, r slog.Record) error {\n \tbuf := make([]byte, 0, 1024)\n \tif !r.Time.IsZero() {\n@@ -728,7 +728,7 @@ That package's `TestHandler` function takes an instance of your handler and\n a function that returns its output formatted as a slice of maps. Here is the test function\n for our example handler:\n \n-```\n+```go\n func TestSlogtest(t *testing.T) {\n \tvar buf bytes.Buffer\n \terr := slogtest.TestHandler(New(&buf, nil), func() []map[string]any {\n@@ -754,7 +754,7 @@ of the box.\n Our example output is enough like YAML so that we can use the `gopkg.in/yaml.v3`\n package to parse it:\n \n-```\n+```go\n func parseLogEntries(t *testing.T, data []byte) []map[string]any {\n \tentries := bytes.Split(data, []byte(\"---\\n\"))\n \tentries = entries[:len(entries)-1] // last one is empty\n@@ -985,7 +985,7 @@ re-assign it before freeing:\n \n Here is our pool and its associated functions:\n \n-```\n+```go\n var bufPool = sync.Pool{\n \tNew: func() any {\n \t\tb := make([]byte, 0, 1024)\n",
+  "route_labels": [
+    "diff_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "diff_compressor",
+    "allowed_outcomes": [
+      "diff_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "diff_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:golang/example",
+    "license": "BSD-3-Clause",
+    "generated_by": null,
+    "external": {
+      "publisher": "golang/example",
+      "source_url": "https://github.com/golang/example/commit/e8420e48cb0ab72c0dc1ac230329e313ed218851",
+      "retrieved_at": "2026-08-09T12:18:29.629243Z",
+      "licence_basis": "SPDX BSD-3-Clause, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/golang/example",
+      "licence_evidence_sha256": "c09050928e67da3127cc54f9ee790505526251411bfe7e52fd31647faa84d21b",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": "git show, against a local clone \u2014 no foreign code executed"
+    },
+    "generated_at": "2026-08-09T12:18:30.582931Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "diff",
+    "example"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

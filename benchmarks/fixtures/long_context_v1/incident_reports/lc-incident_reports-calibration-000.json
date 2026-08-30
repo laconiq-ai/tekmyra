@@ -1,0 +1,153 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "lc-incident_reports-calibration-000",
+  "content_type": "incident_reports",
+  "risk_tier": "low",
+  "content": "Owner Platform Reliability Team acknowledged at 14:35Z. Rollback approved to commit a1b2c3d4. Owner Platform Reliability Team acknowledged at 14:35Z.\n\nControl ID CTRL-9147-AX triggered the automatic alert. Initial impact: p99 latency 340 ms in us-east-1. Incident INC-2026-07-23-001 declared at 2026-07-23T14:32:11Z; this detail must remain available.\n\nSeverity SEV-2 assigned by agent-lc-7. Mitigation: throttled ingress by 12 percent. Mitigation: throttled ingress by 12 percent.\n\nPost-incident review scheduled for next business day; this detail must remain available. Control ID CTRL-9147-AX triggered the automatic alert; this detail must remain available. Status updated to mitigated at 15:10Z.\n\nIncident INC-2026-07-23-001 declared at 2026-07-23T14:32:11Z. Incident INC-2026-07-23-001 declared at 2026-07-23T14:32:11Z. Severity SEV-2 assigned by agent-lc-7.\n\nInitial impact: p99 latency 340 ms in us-east-1. Mitigation: throttled ingress by 12 percent. Severity SEV-2 assigned by agent-lc-7.\n\nSeverity SEV-2 assigned by agent-lc-7; this detail must remain available. Mitigation: throttled ingress by 12 percent. Control ID CTRL-9147-AX triggered the automatic alert.\n\nPost-incident review scheduled for next business day. Rollback approved to commit a1b2c3d4. Incident INC-2026-07-23-001 declared at 2026-07-23T14:32:11Z.\n\nIncident INC-2026-07-23-001 declared at 2026-07-23T14:32:11Z. Owner Platform Reliability Team acknowledged at 14:35Z. Status updated to mitigated at 15:10Z.\n\nStatus updated to mitigated at 15:10Z. Incident INC-2026-07-23-001 declared at 2026-07-23T14:32:11Z. Customer Seven reported partial checkout failures.\n\nIncident INC-2026-07-23-001 declared at 2026-07-23T14:32:11Z; this detail must remain available. Severity SEV-2 assigned by agent-lc-7. Severity SEV-2 assigned by agent-lc-7; this detail must remain available.\n\nCustomer Seven reported partial checkout failures. Control ID CTRL-9147-AX triggered the automatic alert. Customer Seven reported partial checkout failures.\n\nRollback approved to commit a1b2c3d4. Post-incident review scheduled for next business day. Incident INC-2026-07-23-001 declared at 2026-07-23T14:32:11Z.\n\nInitial impact: p99 latency 340 ms in us-east-1. Severity SEV-2 assigned by agent-lc-7; this detail must remain available. Control ID CTRL-9147-AX triggered the automatic alert.\n\nIncident INC-2026-07-23-001 declared at 2026-07-23T14:32:11Z; this detail must remain available. Control ID CTRL-9147-AX triggered the automatic alert. Incident INC-2026-07-23-001 declared at 2026-07-23T14:32:11Z.\n\nIncident INC-2026-07-23-001 declared at 2026-07-23T14:32:11Z. Post-incident review scheduled for next business day. Severity SEV-2 assigned by agent-lc-7; this detail must remain available.\n\nCustomer Seven reported partial checkout failures. Severity SEV-2 assigned by agent-lc-7. Post-incident review scheduled for next business day.\n\nOwner Platform Reliability Team acknowledged at 14:35Z. Control ID CTRL-9147-AX triggered the automatic alert. Rollback approved to commit a1b2c3d4; this detail must remain available.\n\nMitigation: throttled ingress by 12 percent. Control ID CTRL-9147-AX triggered the automatic alert; this detail must remain available. Control ID CTRL-9147-AX triggered the automatic alert; this detail must remain available.\n\nSeverity SEV-2 assigned by agent-lc-7. Severity SEV-2 assigned by agent-lc-7. Rollback approved to commit a1b2c3d4; this detail must remain available.\n\nPost-incident review scheduled for next business day. Status updated to mitigated at 15:10Z. Rollback approved to commit a1b2c3d4.\n\nControl ID CTRL-9147-AX triggered the automatic alert; this detail must remain available. Mitigation: throttled ingress by 12 percent; this detail must remain available. Severity SEV-2 assigned by agent-lc-7.\n\nPost-incident review scheduled for next business day. Customer Seven reported partial checkout failures. Incident INC-2026-07-23-001 declared at 2026-07-23T14:32:11Z.\n\nInitial impact: p99 latency 340 ms in us-east-1. Post-incident review scheduled for next business day; this detail must remain available. Customer Seven reported partial checkout failures.\n\nControl ID CTRL-9147-AX triggered the automatic alert. Incident INC-2026-07-23-001 declared at 2026-07-23T14:32:11Z. Control ID CTRL-9147-AX triggered the automatic alert.\n\nSeverity SEV-2 assigned by agent-lc-7. Mitigation: throttled ingress by 12 percent. Rollback approved to commit a1b2c3d4.\n\nRollback approved to commit a1b2c3d4. Mitigation: throttled ingress by 12 percent. Severity SEV-2 assigned by agent-lc-7.\n\nRollback approved to commit a1b2c3d4. Control ID CTRL-9147-AX triggered the automatic alert. Rollback approved to commit a1b2c3d4.\n\nSeverity SEV-2 assigned by agent-lc-7. Initial impact: p99 latency 340 ms in us-east-1. Post-incident review scheduled for next business day.\n\nStatus updated to mitigated at 15:10Z. Owner Platform Reliability Team acknowledged at 14:35Z. Rollback approved to commit a1b2c3d4.\n\nInitial impact: p99 latency 340 ms in us-east-1. Severity SEV-2 assigned by agent-lc-7. Rollback approved to commit a1b2c3d4.\n\nMitigation: throttled ingress by 12 percent; this detail must remain available. Owner Platform Reliability Team acknowledged at 14:35Z. Post-incident review scheduled for next business day.\n\nMitigation: throttled ingress by 12 percent. Mitigation: throttled ingress by 12 percent; this detail must remain available. Mitigation: throttled ingress by 12 percent.\n\nOwner Platform Reliability Team acknowledged at 14:35Z. Rollback approved to commit a1b2c3d4. Incident INC-2026-07-23-001 declared at 2026-07-23T14:32:11Z.\n\nMitigation: throttled ingress by 12 percent; this detail must remain available. Customer Seven reported partial checkout failures. Severity SEV-2 assigned by agent-lc-7.\n\nOwner Platform Reliability Team acknowledged at 14:35Z. Rollback approved to commit a1b2c3d4; this detail must remain available. Initial impact: p99 latency 340 ms in us-east-1.\n\nIncident INC-2026-07-23-001 declared at 2026-07-23T14:32:11Z. Control ID CTRL-9147-AX triggered the automatic alert. Initial impact: p99 latency 340 ms in us-east-1.\n\nInitial impact: p99 latency 340 ms in us-east-1. Post-incident review scheduled for next business day. Post-incident review scheduled for next business day.\n\nIncident INC-2026-07-23-001 declared at 2026-07-23T14:32:11Z; this detail must remain available. Rollback approved to commit a1b2c3d4. Severity SEV-2 assigned by agent-lc-7.\n\nMitigation: throttled ingress by 12 percent. Status updated to mitigated at 15:10Z; this detail must remain available. Initial impact: p99 latency 340 ms in us-east-1.\n\nControl ID CTRL-9147-AX triggered the automatic alert. Control ID CTRL-9147-AX triggered the automatic alert. Control ID CTRL-9147-AX triggered the automatic alert.\n\nMitigation: throttled ingress by 12 percent. Mitigation: throttled ingress by 12 percent. Initial impact: p99 latency 340 ms in us-east-1.\n\nControl ID CTRL-9147-AX triggered the automatic alert. Mitigation: throttled ingress by 12 percent. Initial impact: p99 latency 340 ms in us-east-1; this detail must remain available.\n\nOwner Platform Reliability Team acknowledged at 14:35Z. Post-incident review scheduled for next business day. Mitigation: throttled ingress by 12 percent.\n\nCustomer Seven reported partial checkout failures. Customer Seven reported partial checkout failures. Initial impact: p99 latency 340 ms in us-east-1.\n\nPost-incident review scheduled for next business day. Mitigation: throttled ingress by 12 percent. Severity SEV-2 assigned by agent-lc-7.\n\nMitigation: throttled ingress by 12 percent. Status updated to mitigated at 15:10Z. Incident INC-2026-07-23-001 declared at 2026-07-23T14:32:11Z; this detail must remain available.\n\nMitigation: throttled ingress by 12 percent. Post-incident review scheduled for next business day; this detail must remain available. Initial impact: p99 latency 340 ms in us-east-1.\n\nSeverity SEV-2 assigned by agent-lc-7. Rollback approved to commit a1b2c3d4. Post-incident review scheduled for next business day; this detail must remain available.\n\nStatus updated to mitigated at 15:10Z. Customer Seven reported partial checkout failures. Initial impact: p99 latency 340 ms in us-east-1.\n\nSeverity SEV-2 assigned by agent-lc-7. Incident INC-2026-07-23-001 declared at 2026-07-23T14:32:11Z. Customer Seven reported partial checkout failures.\n\nSeverity SEV-2 assigned by agent-lc-7; this detail must remain available. Status updated to mitigated at 15:10Z. Customer Seven reported partial checkout failures.\n\nIncident INC-2026-07-23-001 declared at 2026-07-23T14:32:11Z. Rollback approved to commit a1b2c3d4. Owner Platform Reliability Team acknowledged at 14:35Z.\n\nMitigation: throttled ingress by 12 percent. Owner Platform Reliability Team acknowledged at 14:35Z. Rollback approved to commit a1b2c3d4.\n\nInitial impact: p99 latency 340 ms in us-east-1. Mitigation: throttled ingress by 12 percent. Post-incident review scheduled for next business day; this detail must remain available.\n\nControl ID CTRL-9147-AX triggered the automatic alert.\n\nVerified fact: v2.1.0 [f-version]. Verified fact: the Convergence of 2147 [f-event]. Verified fact: Platform Reliability Team [f-owner]. Verified fact: Obsidian Archives [f-location].",
+  "route_labels": [
+    "extractive_keypoint_compressor",
+    "passthrough"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "fact",
+      "start": 9132,
+      "end": 9138,
+      "text": "v2.1.0",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0,
+      "span_id": "span-inc-000",
+      "fact_id": "f-version"
+    },
+    {
+      "span_type": "fact",
+      "start": 9167,
+      "end": 9190,
+      "text": "the Convergence of 2147",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0,
+      "span_id": "span-inc-001",
+      "fact_id": "f-event"
+    },
+    {
+      "span_type": "fact",
+      "start": 6,
+      "end": 31,
+      "text": "Platform Reliability Team",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0,
+      "span_id": "span-inc-002",
+      "fact_id": "f-owner"
+    },
+    {
+      "span_type": "fact",
+      "start": 9269,
+      "end": 9286,
+      "text": "Obsidian Archives",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0,
+      "span_id": "span-inc-003",
+      "fact_id": "f-location"
+    }
+  ],
+  "gold_output": {
+    "route_intent": "extractive_keypoint_compressor",
+    "allowed_outcomes": [
+      "extractive_keypoint_compressor",
+      "passthrough"
+    ],
+    "compressible": false,
+    "passthrough": true,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "extractive_keypoint_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "fact",
+        "start": 9132,
+        "end": 9138,
+        "text": "v2.1.0",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0,
+        "span_id": "span-inc-000",
+        "fact_id": "f-version"
+      },
+      {
+        "span_type": "fact",
+        "start": 9167,
+        "end": 9190,
+        "text": "the Convergence of 2147",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0,
+        "span_id": "span-inc-001",
+        "fact_id": "f-event"
+      },
+      {
+        "span_type": "fact",
+        "start": 6,
+        "end": 31,
+        "text": "Platform Reliability Team",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0,
+        "span_id": "span-inc-002",
+        "fact_id": "f-owner"
+      },
+      {
+        "span_type": "fact",
+        "start": 9269,
+        "end": 9286,
+        "text": "Obsidian Archives",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0,
+        "span_id": "span-inc-003",
+        "fact_id": "f-location"
+      }
+    ],
+    "expected_compression_eligibility": false,
+    "expected_allowed_bypass_reasons": [
+      "too_short"
+    ],
+    "query_task": "What was the root cause, mitigation, and final status?",
+    "answer_required_fact_ids": [
+      "f-version",
+      "f-event",
+      "f-owner",
+      "f-location"
+    ],
+    "allowed_safety_overrides": [
+      "allow_passthrough_short"
+    ]
+  },
+  "provenance": {
+    "source": "synthetic",
+    "license": "CC0-1.0",
+    "generated_by": "benchmarks/fixtures/long_context_v1/generate_long_context_fixtures.py",
+    "generated_at": "2026-07-23T00:00:00Z",
+    "adjudicated_by": null
+  },
+  "tags": [
+    "long_context",
+    "incident_reports",
+    "calibration"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {
+    "f-version": "v2.1.0",
+    "f-event": "the Convergence of 2147",
+    "f-owner": "Platform Reliability Team",
+    "f-location": "Obsidian Archives"
+  }
+}

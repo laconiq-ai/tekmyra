@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "diff-example-8b405629",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "diff",
+  "risk_tier": "low",
+  "content": "go.mod: update golang.org/x dependencies\n\n\ndiff --git a/go.mod b/go.mod\nindex e876fb9..51af5e4 100644\n--- a/go.mod\n+++ b/go.mod\n@@ -1,11 +1,13 @@\n module golang.org/x/example\n \n-go 1.18\n-\n-require golang.org/x/tools v0.14.0\n+go 1.23.0\n \n require (\n-\tgolang.org/x/mod v0.13.0 // indirect\n-\tgolang.org/x/sys v0.13.0 // indirect\n+\tgolang.org/x/tools v0.33.0\n \tgopkg.in/yaml.v3 v3.0.1\n )\n+\n+require (\n+\tgolang.org/x/mod v0.25.0 // indirect\n+\tgolang.org/x/sync v0.15.0 // indirect\n+)\ndiff --git a/go.sum b/go.sum\nindex 25e95bd..8b33454 100644\n--- a/go.sum\n+++ b/go.sum\n@@ -1,10 +1,11 @@\n-golang.org/x/mod v0.13.0 h1:I/DsJXRlw/8l/0c24sM9yb0T4z9liZTduXvdAWYiysY=\n-golang.org/x/mod v0.13.0/go.mod h1:hTbmBsO62+eylJbnUtE2MGJUyE7QWk4xUqPFrRgJ+7c=\n-golang.org/x/sync v0.4.0 h1:zxkM55ReGkDlKSM+Fu41A+zmbZuaPVbGMzvvdUPznYQ=\n-golang.org/x/sys v0.13.0 h1:Af8nKPmuFypiUBjVoU9V20FiaFXOcuZI21p0ycVYYGE=\n-golang.org/x/sys v0.13.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=\n-golang.org/x/tools v0.14.0 h1:jvNa2pY0M4r62jkRQ6RwEZZyPcymeL9XZMLBbV7U2nc=\n-golang.org/x/tools v0.14.0/go.mod h1:uYBEerGOWcJyEORxN+Ek8+TT266gXkNlHdJBwexUsBg=\n+github.com/google/go-cmp v0.6.0 h1:ofyhxvXcZhMsU5ulbFiLKl/XBFqE1GSq7atu8tAmTRI=\n+github.com/google/go-cmp v0.6.0/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=\n+golang.org/x/mod v0.25.0 h1:n7a+ZbQKQA/Ysbyb0/6IbB1H/X41mKgbhfv7AfG/44w=\n+golang.org/x/mod v0.25.0/go.mod h1:IXM97Txy2VM4PJ3gI61r1YEk/gAj6zAHN3AdZt6S9Ww=\n+golang.org/x/sync v0.15.0 h1:KWH3jNZsfyT6xfAfKiz6MRNmd46ByHDYaZ7KSkCtdW8=\n+golang.org/x/sync v0.15.0/go.mod h1:1dzgHSNfp02xaA81J2MS99Qcpr2w7fw1gpm99rleRqA=\n+golang.org/x/tools v0.33.0 h1:4qz2S3zmRxbGIhDIAgjxvFutSvH5EfnsYrRBj0UI0bc=\n+golang.org/x/tools v0.33.0/go.mod h1:CIJMaWEY88juyUfo7UbgPqbC8rU2OqfAV1h2Qp0oMYI=\n gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=\n gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=\n gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=\n",
+  "route_labels": [
+    "diff_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "diff_compressor",
+    "allowed_outcomes": [
+      "diff_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "diff_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:golang/example",
+    "license": "BSD-3-Clause",
+    "generated_by": null,
+    "external": {
+      "publisher": "golang/example",
+      "source_url": "https://github.com/golang/example/commit/8b405629c4a5215871be932097e099c05ec5cb2e",
+      "retrieved_at": "2026-08-09T12:18:29.629243Z",
+      "licence_basis": "SPDX BSD-3-Clause, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/golang/example",
+      "licence_evidence_sha256": "c09050928e67da3127cc54f9ee790505526251411bfe7e52fd31647faa84d21b",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": "git show, against a local clone \u2014 no foreign code executed"
+    },
+    "generated_at": "2026-08-09T12:18:30.573191Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "diff",
+    "example"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

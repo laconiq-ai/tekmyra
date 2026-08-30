@@ -1,0 +1,10 @@
+name: compressor_tiny
+version: "1.0.0"
+model_kind: sklearn_tfidf_logreg
+feature_schema_version: "1.0.0"
+max_features: 1000
+ngram_range: [1, 2]
+default_budget_ratio: 0.5
+min_budget_ratio: 0.1
+max_budget_ratio: 1.0
+eligible_content_types: ["prose", "rag", "agent_trace"]

@@ -1,0 +1,153 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "lc-agent_handoffs-eligible-001",
+  "content_type": "agent_handoffs",
+  "risk_tier": "low",
+  "content": "handoff: agent-lc-7 -> agent-lc-8 with context checksum. observation: database connection pool at 94 percent. observation: three replica lag spikes detected.\n\ntool:search_kb(query='rollback procedure', top_k=3) tool:escalate(severity='SEV-2', owner='Platform Reliability Team') action: throttle ingress by 12 percent.\n\nhandoff: agent-lc-7 -> agent-lc-8 with context checksum. action: throttle ingress by 12 percent; this detail must remain available. state: pending approval from on-call engineer.\n\naction: throttle ingress by 12 percent. state: pending approval from on-call engineer; this detail must remain available. handoff: agent-lc-7 -> agent-lc-8 with context checksum.\n\ntool:search_kb(query='rollback procedure', top_k=3); this detail must remain available. tool:search_kb(query='rollback procedure', top_k=3) tool:search_kb(query='rollback procedure', top_k=3)\n\ntool:runbook_lookup(incident_id='INC-2026-07-23-001') action: throttle ingress by 12 percent. state: pending approval from on-call engineer.\n\nstate: pending approval from on-call engineer. tool:search_kb(query='rollback procedure', top_k=3) agent-lc-7 received state marker RUNNING.\n\nobservation: database connection pool at 94 percent. action: notify Platform Reliability Team via pager. observation: database connection pool at 94 percent; this detail must remain available.\n\nstate: pending approval from on-call engineer. action: notify Platform Reliability Team via pager; this detail must remain available. handoff: agent-lc-7 -> agent-lc-8 with context checksum.\n\nstate: pending approval from on-call engineer. action: throttle ingress by 12 percent. tool:search_kb(query='rollback procedure', top_k=3)\n\nhandoff: agent-lc-7 -> agent-lc-8 with context checksum. tool:runbook_lookup(incident_id='INC-2026-07-23-001'); this detail must remain available. tool:runbook_lookup(incident_id='INC-2026-07-23-001')\n\naction: throttle ingress by 12 percent; this detail must remain available. handoff: agent-lc-7 -> agent-lc-8 with context checksum; this detail must remain available. state: pending approval from on-call engineer; this detail must remain available.\n\nagent-lc-7 received state marker RUNNING. agent-lc-7 received state marker RUNNING. tool:search_kb(query='rollback procedure', top_k=3)\n\ntool:search_kb(query='rollback procedure', top_k=3) tool:runbook_lookup(incident_id='INC-2026-07-23-001') agent-lc-7 received state marker RUNNING.\n\nhandoff: agent-lc-7 -> agent-lc-8 with context checksum; this detail must remain available. state: pending approval from on-call engineer. state: pending approval from on-call engineer.\n\nagent-lc-7 received state marker RUNNING. state: pending approval from on-call engineer. observation: database connection pool at 94 percent.\n\nobservation: three replica lag spikes detected. observation: database connection pool at 94 percent. state: pending approval from on-call engineer; this detail must remain available.\n\ntool:escalate(severity='SEV-2', owner='Platform Reliability Team'); this detail must remain available. observation: three replica lag spikes detected. action: notify Platform Reliability Team via pager.\n\nobservation: database connection pool at 94 percent; this detail must remain available. tool:runbook_lookup(incident_id='INC-2026-07-23-001') action: notify Platform Reliability Team via pager.\n\naction: notify Platform Reliability Team via pager. handoff: agent-lc-7 -> agent-lc-8 with context checksum. action: throttle ingress by 12 percent.\n\nobservation: three replica lag spikes detected. observation: database connection pool at 94 percent. state: pending approval from on-call engineer.\n\naction: throttle ingress by 12 percent. observation: three replica lag spikes detected; this detail must remain available. observation: database connection pool at 94 percent; this detail must remain available.\n\nagent-lc-7 received state marker RUNNING; this detail must remain available. observation: database connection pool at 94 percent. action: throttle ingress by 12 percent.\n\nagent-lc-7 received state marker RUNNING. action: notify Platform Reliability Team via pager. observation: database connection pool at 94 percent.\n\naction: throttle ingress by 12 percent. observation: database connection pool at 94 percent; this detail must remain available. action: throttle ingress by 12 percent.\n\nagent-lc-7 received state marker RUNNING. action: throttle ingress by 12 percent. state: pending approval from on-call engineer.\n\nhandoff: agent-lc-7 -> agent-lc-8 with context checksum. handoff: agent-lc-7 -> agent-lc-8 with context checksum. tool:search_kb(query='rollback procedure', top_k=3)\n\nobservation: three replica lag spikes detected; this detail must remain available. observation: database connection pool at 94 percent; this detail must remain available. action: throttle ingress by 12 percent; this detail must remain available.\n\ntool:search_kb(query='rollback procedure', top_k=3) tool:escalate(severity='SEV-2', owner='Platform Reliability Team') tool:runbook_lookup(incident_id='INC-2026-07-23-001')\n\naction: notify Platform Reliability Team via pager. action: notify Platform Reliability Team via pager. action: notify Platform Reliability Team via pager.\n\naction: throttle ingress by 12 percent; this detail must remain available. observation: database connection pool at 94 percent. agent-lc-7 received state marker RUNNING.\n\nobservation: three replica lag spikes detected. tool:search_kb(query='rollback procedure', top_k=3) handoff: agent-lc-7 -> agent-lc-8 with context checksum.\n\nobservation: three replica lag spikes detected. tool:runbook_lookup(incident_id='INC-2026-07-23-001'); this detail must remain available. tool:runbook_lookup(incident_id='INC-2026-07-23-001')\n\nagent-lc-7 received state marker RUNNING. tool:search_kb(query='rollback procedure', top_k=3) state: pending approval from on-call engineer.\n\naction: notify Platform Reliability Team via pager. observation: three replica lag spikes detected; this detail must remain available. state: pending approval from on-call engineer.\n\nobservation: database connection pool at 94 percent. handoff: agent-lc-7 -> agent-lc-8 with context checksum. state: pending approval from on-call engineer.\n\nagent-lc-7 received state marker RUNNING. tool:escalate(severity='SEV-2', owner='Platform Reliability Team'); this detail must remain available. handoff: agent-lc-7 -> agent-lc-8 with context checksum; this detail must remain available.\n\naction: notify Platform Reliability Team via pager. tool:search_kb(query='rollback procedure', top_k=3) observation: three replica lag spikes detected; this detail must remain available.\n\ntool:escalate(severity='SEV-2', owner='Platform Reliability Team') tool:runbook_lookup(incident_id='INC-2026-07-23-001') tool:runbook_lookup(incident_id='INC-2026-07-23-001')\n\ntool:escalate(severity='SEV-2', owner='Platform Reliability Team') handoff: agent-lc-7 -> agent-lc-8 with context checksum; this detail must remain available. tool:runbook_lookup(incident_id='INC-2026-07-23-001')\n\naction: notify Platform Reliability Team via pager. handoff: agent-lc-7 -> agent-lc-8 with context checksum. observation: database connection pool at 94 percent.\n\ntool:search_kb(query='rollback procedure', top_k=3) observation: three replica lag spikes detected. action: throttle ingress by 12 percent; this detail must remain available.\n\ntool:escalate(severity='SEV-2', owner='Platform Reliability Team') observation: three replica lag spikes detected. tool:search_kb(query='rollback procedure', top_k=3)\n\naction: throttle ingress by 12 percent. tool:runbook_lookup(incident_id='INC-2026-07-23-001') state: pending approval from on-call engineer.\n\ntool:search_kb(query='rollback procedure', top_k=3) tool:search_kb(query='rollback procedure', top_k=3) action: throttle ingress by 12 percent.\n\nhandoff: agent-lc-7 -> agent-lc-8 with context checksum. agent-lc-7 received state marker RUNNING; this detail must remain available. action: throttle ingress by 12 percent.\n\ntool:search_kb(query='rollback procedure', top_k=3) observation: three replica lag spikes detected. action: notify Platform Reliability Team via pager; this detail must remain available.\n\nobservation: three replica lag spikes detected; this detail must remain available. handoff: agent-lc-7 -> agent-lc-8 with context checksum. agent-lc-7 received state marker RUNNING.\n\nobservation: database connection pool at 94 percent. agent-lc-7 received state marker RUNNING. handoff: agent-lc-7 -> agent-lc-8 with context checksum.\n\nagent-lc-7 received state marker RUNNING. agent-lc-7 received state marker RUNNING. action: throttle ingress by 12 percent.\n\nagent-lc-7 received state marker RUNNING. observation: database connection pool at 94 percent; this detail must remain available. tool:runbook_lookup(incident_id='INC-2026-07-23-001')\n\nagent-lc-7 received state marker RUNNING. observation: database connection pool at 94 percent. action: notify Platform Reliability Team via pager.\n\nstate: pending approval from on-call engineer. action: notify Platform Reliability Team via pager. action: throttle ingress by 12 percent.\n\nobservation: database connection pool at 94 percent. observation: database connection pool at 94 percent. action: notify Platform Reliability Team via pager; this detail must remain available.\n\ntool:escalate(severity='SEV-2', owner='Platform Reliability Team') observation: database connection pool at 94 percent. observation: three replica lag spikes detected; this detail must remain available.\n\nstate: pending approval from on-call engineer. tool:runbook_lookup(incident_id='INC-2026-07-23-001'); this detail must remain available. handoff: agent-lc-7 -> agent-lc-8 with context checksum.\n\ntool:escalate(severity='SEV-2', owner='Platform Reliability Team') tool:escalate(severity='SEV-2', owner='Platform Reliability Team') action: throttle ingress by 12 percent; this detail must remain available.\n\nstate: pending approval from on-call engineer. action: throttle ingress by 12 percent. tool:escalate(severity='SEV-2', owner='Platform Reliability Team')\n\naction: throttle ingress by 12 percent. tool:runbook_lookup(incident_id='INC-2026-07-23-001'); this detail must remain available. action: notify Platform Reliability Team via pager.\n\ntool:escalate(severity='SEV-2', owner='Platform Reliability Team') handoff: agent-lc-7 -> agent-lc-8 with context checksum. handoff: agent-lc-7 -> agent-lc-8 with context checksum.\n\nhandoff: agent-lc-7 -> agent-lc-8 with context checksum. action: notify Platform Reliability Team via pager.\n\nVerified fact: INC-2026-07-23-001 [f-incident-id]. Verified fact: p99 latency 340 ms [f-metric]. Verified fact: seventeen [f-quantity]. Verified fact: mitigated [f-status].",
+  "route_labels": [
+    "extractive_keypoint_compressor",
+    "passthrough"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "fact",
+      "start": 905,
+      "end": 923,
+      "text": "INC-2026-07-23-001",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0,
+      "span_id": "span-age-000",
+      "fact_id": "f-incident-id"
+    },
+    {
+      "span_type": "fact",
+      "start": 10618,
+      "end": 10636,
+      "text": "p99 latency 340 ms",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0,
+      "span_id": "span-age-001",
+      "fact_id": "f-metric"
+    },
+    {
+      "span_type": "fact",
+      "start": 10664,
+      "end": 10673,
+      "text": "seventeen",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0,
+      "span_id": "span-age-002",
+      "fact_id": "f-quantity"
+    },
+    {
+      "span_type": "fact",
+      "start": 10703,
+      "end": 10712,
+      "text": "mitigated",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0,
+      "span_id": "span-age-003",
+      "fact_id": "f-status"
+    }
+  ],
+  "gold_output": {
+    "route_intent": "extractive_keypoint_compressor",
+    "allowed_outcomes": [
+      "extractive_keypoint_compressor",
+      "passthrough"
+    ],
+    "compressible": false,
+    "passthrough": true,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "extractive_keypoint_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "fact",
+        "start": 905,
+        "end": 923,
+        "text": "INC-2026-07-23-001",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0,
+        "span_id": "span-age-000",
+        "fact_id": "f-incident-id"
+      },
+      {
+        "span_type": "fact",
+        "start": 10618,
+        "end": 10636,
+        "text": "p99 latency 340 ms",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0,
+        "span_id": "span-age-001",
+        "fact_id": "f-metric"
+      },
+      {
+        "span_type": "fact",
+        "start": 10664,
+        "end": 10673,
+        "text": "seventeen",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0,
+        "span_id": "span-age-002",
+        "fact_id": "f-quantity"
+      },
+      {
+        "span_type": "fact",
+        "start": 10703,
+        "end": 10712,
+        "text": "mitigated",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0,
+        "span_id": "span-age-003",
+        "fact_id": "f-status"
+      }
+    ],
+    "expected_compression_eligibility": false,
+    "expected_allowed_bypass_reasons": [
+      "too_short"
+    ],
+    "query_task": "What is the current agent state and next action?",
+    "answer_required_fact_ids": [
+      "f-incident-id",
+      "f-metric",
+      "f-quantity",
+      "f-status"
+    ],
+    "allowed_safety_overrides": [
+      "allow_passthrough_short"
+    ]
+  },
+  "provenance": {
+    "source": "synthetic",
+    "license": "CC0-1.0",
+    "generated_by": "benchmarks/fixtures/long_context_v1/generate_long_context_fixtures.py",
+    "generated_at": "2026-07-23T00:00:00Z",
+    "adjudicated_by": null
+  },
+  "tags": [
+    "long_context",
+    "agent_handoffs",
+    "eligible"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {
+    "f-incident-id": "INC-2026-07-23-001",
+    "f-metric": "p99 latency 340 ms",
+    "f-quantity": "seventeen",
+    "f-status": "mitigated"
+  }
+}

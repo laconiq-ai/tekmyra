@@ -1,0 +1,149 @@
+{
+  "fixture_id": "missing-extractive_keypoint_compressor-000",
+  "content_type": "bullet_notes",
+  "risk_tier": "medium",
+  "content": "Project Checkout \u2014 extractive keypoint draft\n- Decision: adopt the new schema registry for event contracts.\n- Action item: update the runbook and notify on-call engineers (owner: Jordan Lee).\n- Blocker: missing production credentials for the test tenant.\n- Due date: 2026-09-05.\n- Ticket reference: TICKET-4800.",
+  "route_labels": [
+    "extractive_keypoint_compressor",
+    "prose_token_compressor"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 267,
+      "end": 277,
+      "text": "2026-09-05",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 299,
+      "end": 310,
+      "text": "TICKET-4800",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 179,
+      "end": 189,
+      "text": "Jordan Lee",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "extractive_keypoint_compressor",
+    "expected_risk": "medium",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "date",
+        "start": 267,
+        "end": 277,
+        "text": "2026-09-05",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "ticket_id",
+        "start": 299,
+        "end": 310,
+        "text": "TICKET-4800",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "owner",
+        "start": 179,
+        "end": 189,
+        "text": "Jordan Lee",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 267,
+        "end": 277,
+        "text": "2026-09-05",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 299,
+        "end": 310,
+        "text": "TICKET-4800",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 179,
+        "end": 189,
+        "text": "Jordan Lee",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "extractive_keypoint_compressor",
+    "allowed_outcomes": [
+      "extractive_keypoint_compressor"
+    ],
+    "compressible": true
+  },
+  "blocks": [
+    {
+      "type": "prose",
+      "content": "Project Checkout \u2014 extractive keypoint draft\n- Decision: adopt the new schema registry for event contracts.\n- Action item: update the runbook and notify on-call engineers (owner: Jordan Lee).\n- Blocker: missing production credentials for the test tenant.\n- Due date: 2026-09-05.\n- Ticket reference: TICKET-4800.",
+      "start": 0,
+      "end": 311,
+      "route_label": "prose_token_compressor",
+      "risk_tier": "medium",
+      "protected_spans": [
+        {
+          "start": 267,
+          "end": 277,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 299,
+          "end": 311,
+          "label": "retrieval_key",
+          "span_type": "anchor",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "public_sample",
+    "license": "MIT",
+    "generated_by": "benchmarks/fixtures/generate_missing_routes.py",
+    "generated_at": "2026-07-15T06:43:09.102833Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "missing",
+    "extractive_keypoint_compressor",
+    "meeting_notes"
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:10:03.521163+00:00",
+  "schema_version": "2.0.0"
+}

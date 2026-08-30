@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "diff-example-f8bc3a00",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "diff",
+  "risk_tier": "low",
+  "content": "example/slog-handler-guide: run `make`\n\n\ndiff --git a/slog-handler-guide/README.md b/slog-handler-guide/README.md\nindex 8ab958a..01027cc 100644\n--- a/slog-handler-guide/README.md\n+++ b/slog-handler-guide/README.md\n@@ -9,11 +9,11 @@ This document is maintained by Jonathan Amsterdam `jba@google.com`.\n \n 1. [Introduction](#introduction)\n 1. [Loggers and their handlers](#loggers-and-their-handlers)\n-1. [Implementing `Handler` methods](#implementing-`handler`-methods)\n-\t1. [The `Enabled` method](#the-`enabled`-method)\n-\t1. [The `Handle` method](#the-`handle`-method)\n-\t1. [The `WithAttrs` method](#the-`withattrs`-method)\n-\t1. [The `WithGroup` method](#the-`withgroup`-method)\n+1. [Implementing `Handler` methods](#implementing-handler-methods)\n+\t1. [The `Enabled` method](#the-enabled-method)\n+\t1. [The `Handle` method](#the-handle-method)\n+\t1. [The `WithAttrs` method](#the-withattrs-method)\n+\t1. [The `WithGroup` method](#the-withgroup-method)\n \t1. [Testing](#testing)\n 1. [General considerations](#general-considerations)\n \t1. [Copying records](#copying-records)\n@@ -28,7 +28,7 @@ The standard library\u2019s `log/slog` package has a two-part design.\n A \"frontend,\" implemented by the `Logger` type,\n gathers structured log information like a message, level, and attributes,\n and passes them to a \"backend,\" an implementation of the `Handler` interface.\n-The package comes with two built-in handlers that usually should be adequate.\n+The package comes with two built-in handlers that should usually be adequate.\n But you may need to write your own handler, and that is not always straightforward.\n This guide is here to help.\n \n@@ -41,7 +41,7 @@ types work together.\n Each logger contains a handler. Certain `Logger` methods do some preliminary work,\n such as gathering key-value pairs into `Attr`s, and then call one or more\n `Handler` methods. These `Logger` methods are `With`, `WithGroup`,\n-and the output methods.\n+and the output methods like `Info`, `Error` and so on.\n \n An output method fulfills the main role of a logger: producing log output.\n Here is a call to an output method:\n@@ -107,6 +107,11 @@ so it will sometimes produce invalid YAML.\n For example, it doesn't quote keys that have colons in them.\n We'll call it `IndentHandler` to forestall disappointment.\n \n+A brief aside before we start: it is tempting to embed `slog.Handler` in your\n+custom handler and implement only the methods that you need.\n+Loggers and handlers are too tightly coupled for that to work. You should\n+implement all four handler methods.\n+\n We begin with the `IndentHandler` type\n and the `New` function that constructs it from an `io.Writer` and options:\n \n@@ -439,7 +444,7 @@ Most of the fields of `IndentHandler` can be copied shallowly, but the slice of\n the same underlying array. If we used `append` instead of making an explicit\n copy, we would introduce that subtle aliasing bug.\n \n-Using `withGroupOrAttrs`, the `With` methods are easy:\n+The `With` methods are easy to write using `withGroupOrAttrs`:\n \n ```\n func (h *IndentHandler) WithGroup(name string) slog.Handler {\n@@ -543,7 +548,7 @@ See [this bug report](https://go.dev/issue/61321) for more detail.\n \n ### With pre-formatting\n \n-Our second implementation implements pre-formatting.\n+Our second version of the `WithGroup` and `WithAttrs` methods provides pre-formatting.\n This implementation is more complicated than the previous one.\n Is the extra complexity worth it?\n That depends on your circumstances, but here is one circumstance where\n@@ -600,7 +605,7 @@ We also need to track how many groups we've opened, which we can do\n with a simple counter, since an opened group's only effect is to change the\n indentation level.\n \n-The `WithGroup` implementation is a lot like the previous one: just remember the\n+This `WithGroup` is a lot like the previous one: it just remembers the\n new group, which is unopened initially.\n \n ```\ndiff --git a/slog-handler-guide/guide.md b/slog-handler-guide/guide.md\nindex 4207e7a..f79f4e0 100644\n--- a/slog-handler-guide/guide.md\n+++ b/slog-handler-guide/guide.md\n@@ -54,7 +54,7 @@ original remains unchanged.\n All subsequent output from `logger` will include those attributes.\n A logger's `With` method calls its handler's `WithAttrs` method.\n \n-The `WithGroup` method is used to avoid avoid key collisions in large programs\n+The `WithGroup` method is used to avoid key collisions in large programs\n by establishing separate namespaces.\n This call creates a new `Logger` value with a group named \"g\":\n \n",
+  "route_labels": [
+    "diff_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "diff_compressor",
+    "allowed_outcomes": [
+      "diff_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "diff_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:golang/example",
+    "license": "BSD-3-Clause",
+    "generated_by": null,
+    "external": {
+      "publisher": "golang/example",
+      "source_url": "https://github.com/golang/example/commit/f8bc3a00c46867f81091612ae6792ad64e1c7af9",
+      "retrieved_at": "2026-08-09T12:18:29.629243Z",
+      "licence_basis": "SPDX BSD-3-Clause, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/golang/example",
+      "licence_evidence_sha256": "c09050928e67da3127cc54f9ee790505526251411bfe7e52fd31647faa84d21b",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": "git show, against a local clone \u2014 no foreign code executed"
+    },
+    "generated_at": "2026-08-09T12:18:30.592621Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "diff",
+    "example"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

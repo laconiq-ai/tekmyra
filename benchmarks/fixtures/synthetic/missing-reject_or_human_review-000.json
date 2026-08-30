@@ -1,0 +1,480 @@
+{
+  "fixture_id": "missing-reject_or_human_review-000",
+  "content_type": "pii_message",
+  "risk_tier": "critical",
+  "content": "CRITICAL: bulk PII exposure detected in leaked support transcript. SSNs: 123-45-6789, 987-65-4321, 555-12-3456, 111-22-3333, 444-55-6666, 777-88-9999. Emails: alice@example.com, bob@example.com. Route to human review before any compression.",
+  "route_labels": [
+    "pii_redaction_before_compression",
+    "reject_or_human_review"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 73,
+      "end": 84,
+      "text": "123-45-6789",
+      "policy": "redact",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 86,
+      "end": 97,
+      "text": "987-65-4321",
+      "policy": "redact",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 99,
+      "end": 110,
+      "text": "555-12-3456",
+      "policy": "redact",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 112,
+      "end": 123,
+      "text": "111-22-3333",
+      "policy": "redact",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 125,
+      "end": 136,
+      "text": "444-55-6666",
+      "policy": "redact",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 138,
+      "end": 149,
+      "text": "777-88-9999",
+      "policy": "redact",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 159,
+      "end": 176,
+      "text": "alice@example.com",
+      "policy": "redact",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 178,
+      "end": 193,
+      "text": "bob@example.com",
+      "policy": "redact",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "reject_or_human_review",
+    "expected_risk": "critical",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "ssn",
+        "start": 73,
+        "end": 84,
+        "text": "123-45-6789",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "ssn",
+        "start": 86,
+        "end": 97,
+        "text": "987-65-4321",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "ssn",
+        "start": 99,
+        "end": 110,
+        "text": "555-12-3456",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "ssn",
+        "start": 112,
+        "end": 123,
+        "text": "111-22-3333",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "ssn",
+        "start": 125,
+        "end": 136,
+        "text": "444-55-6666",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "ssn",
+        "start": 138,
+        "end": 149,
+        "text": "777-88-9999",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "email",
+        "start": 159,
+        "end": 176,
+        "text": "alice@example.com",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "email",
+        "start": 178,
+        "end": 193,
+        "text": "bob@example.com",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 73,
+        "end": 84,
+        "text": "123-45-6789",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 86,
+        "end": 97,
+        "text": "987-65-4321",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 99,
+        "end": 110,
+        "text": "555-12-3456",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 112,
+        "end": 123,
+        "text": "111-22-3333",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 125,
+        "end": 136,
+        "text": "444-55-6666",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 138,
+        "end": 149,
+        "text": "777-88-9999",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 159,
+        "end": 176,
+        "text": "alice@example.com",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 178,
+        "end": 193,
+        "text": "bob@example.com",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 73,
+        "end": 84,
+        "text": "123-45-6789",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 86,
+        "end": 97,
+        "text": "987-65-4321",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 99,
+        "end": 110,
+        "text": "555-12-3456",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 112,
+        "end": 123,
+        "text": "111-22-3333",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 125,
+        "end": 136,
+        "text": "444-55-6666",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 138,
+        "end": 149,
+        "text": "777-88-9999",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 159,
+        "end": 176,
+        "text": "alice@example.com",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 178,
+        "end": 193,
+        "text": "bob@example.com",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 73,
+        "end": 84,
+        "text": "123-45-6789",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 86,
+        "end": 97,
+        "text": "987-65-4321",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 99,
+        "end": 110,
+        "text": "555-12-3456",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 112,
+        "end": 123,
+        "text": "111-22-3333",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 125,
+        "end": 136,
+        "text": "444-55-6666",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 138,
+        "end": 149,
+        "text": "777-88-9999",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 159,
+        "end": 176,
+        "text": "alice@example.com",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 178,
+        "end": 193,
+        "text": "bob@example.com",
+        "policy": "redact",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "reject_or_human_review",
+    "allowed_outcomes": [
+      "reject_or_human_review",
+      "pii_redaction_before_compression",
+      "reject_or_human_review"
+    ],
+    "compressible": false,
+    "human_review": false,
+    "redaction_only": true
+  },
+  "blocks": [
+    {
+      "type": "pii_message",
+      "content": "CRITICAL: bulk PII exposure detected in leaked support transcript. SSNs: 123-45-6789, 987-65-4321, 555-12-3456, 111-22-3333, 444-55-6666, 777-88-9999. Emails: alice@example.com, bob@example.com. Route to human review before any compression.",
+      "start": 0,
+      "end": 240,
+      "route_label": "pii_redaction_before_compression",
+      "risk_tier": "critical",
+      "protected_spans": [
+        {
+          "start": 73,
+          "end": 84,
+          "label": "ssn",
+          "span_type": "locked",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 86,
+          "end": 97,
+          "label": "ssn",
+          "span_type": "locked",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 99,
+          "end": 110,
+          "label": "ssn",
+          "span_type": "locked",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 112,
+          "end": 123,
+          "label": "ssn",
+          "span_type": "locked",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 125,
+          "end": 136,
+          "label": "ssn",
+          "span_type": "locked",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 138,
+          "end": 149,
+          "label": "ssn",
+          "span_type": "locked",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 159,
+          "end": 176,
+          "label": "email",
+          "span_type": "locked",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 178,
+          "end": 193,
+          "label": "email",
+          "span_type": "locked",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "adversarial_curated",
+    "license": "CC0-1.0",
+    "generated_by": "benchmarks/fixtures/generate_missing_routes.py",
+    "generated_at": "2026-07-15T06:43:09.106819Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "missing",
+    "reject_or_human_review",
+    "critical_pii"
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:10:03.531282+00:00",
+  "schema_version": "2.0.0"
+}

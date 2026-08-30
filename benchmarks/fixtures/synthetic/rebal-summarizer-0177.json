@@ -1,0 +1,148 @@
+{
+  "fixture_id": "rebal-summarizer-0177",
+  "content_type": "prose",
+  "risk_tier": "low",
+  "content": "Quarterly planning memo \u2014 The data team reviewed the delivery plan for the Pulsar initiative during the week of 2026-12-17. Engineering identified three blockers: third-party API rate limits, stale dependency versions, and CI pipeline latency. The leadership team requested a revised spending proposal by 2026-09-20 and asked the program manager to communicate priorities to all regional leads. No final decisions were recorded.",
+  "route_labels": [
+    "prose_token_compressor",
+    "summarizer"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 112,
+      "end": 122,
+      "text": "2026-12-17",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 305,
+      "end": 315,
+      "text": "2026-09-20",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 75,
+      "end": 81,
+      "text": "Pulsar",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "summarizer",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "date",
+        "start": 112,
+        "end": 122,
+        "text": "2026-12-17",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "date",
+        "start": 305,
+        "end": 315,
+        "text": "2026-09-20",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "project_name",
+        "start": 75,
+        "end": 81,
+        "text": "Pulsar",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 112,
+        "end": 122,
+        "text": "2026-12-17",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 305,
+        "end": 315,
+        "text": "2026-09-20",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 75,
+        "end": 81,
+        "text": "Pulsar",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "summarizer",
+    "allowed_outcomes": [
+      "summarizer"
+    ],
+    "compressible": true
+  },
+  "provenance": {
+    "source": "public_sample",
+    "license": "MIT",
+    "generated_by": "benchmarks/fixtures/generate_rebalance_fixtures.py",
+    "generated_at": "2026-07-18T01:23:06.875748Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "rebalance",
+    "summarizer"
+  ],
+  "blocks": [
+    {
+      "type": "prose",
+      "content": "Quarterly planning memo \u2014 The data team reviewed the delivery plan for the Pulsar initiative during the week of 2026-12-17. Engineering identified three blockers: third-party API rate limits, stale dependency versions, and CI pipeline latency. The leadership team requested a revised spending proposal by 2026-09-20 and asked the program manager to communicate priorities to all regional leads. No final decisions were recorded.",
+      "start": 0,
+      "end": 428,
+      "route_label": "prose_token_compressor",
+      "risk_tier": "low",
+      "protected_spans": [
+        {
+          "start": 112,
+          "end": 122,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 305,
+          "end": 315,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:23:06.878063+00:00",
+  "schema_version": "2.0.0"
+}

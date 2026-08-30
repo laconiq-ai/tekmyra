@@ -1,0 +1,169 @@
+{
+  "$defs": {
+    "ProtectedSpan": {
+      "additionalProperties": false,
+      "properties": {
+        "span_type": {
+          "title": "Span Type",
+          "type": "string"
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "end": {
+          "minimum": 0,
+          "title": "End",
+          "type": "integer"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "policy": {
+          "enum": [
+            "preserve",
+            "redact",
+            "anchorize",
+            "human_review"
+          ],
+          "title": "Policy",
+          "type": "string"
+        },
+        "detector": {
+          "title": "Detector",
+          "type": "string"
+        },
+        "confidence": {
+          "default": 0.0,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        }
+      },
+      "required": [
+        "span_type",
+        "start",
+        "end",
+        "text",
+        "policy",
+        "detector"
+      ],
+      "title": "ProtectedSpan",
+      "type": "object"
+    },
+    "RiskClass": {
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ],
+      "title": "RiskClass",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "sample_id": {
+      "title": "Sample Id",
+      "type": "string"
+    },
+    "content_ref": {
+      "title": "Content Ref",
+      "type": "string"
+    },
+    "content_type": {
+      "title": "Content Type",
+      "type": "string"
+    },
+    "risk_mode": {
+      "$ref": "#/$defs/RiskClass"
+    },
+    "protected_spans": {
+      "items": {
+        "$ref": "#/$defs/ProtectedSpan"
+      },
+      "title": "Protected Spans",
+      "type": "array"
+    },
+    "keep_labels": {
+      "items": {
+        "type": "boolean"
+      },
+      "title": "Keep Labels",
+      "type": "array"
+    },
+    "importance_scores": {
+      "items": {
+        "type": "number"
+      },
+      "title": "Importance Scores",
+      "type": "array"
+    },
+    "must_preserve": {
+      "items": {
+        "type": "boolean"
+      },
+      "title": "Must Preserve",
+      "type": "array"
+    },
+    "retrieval_anchor": {
+      "items": {
+        "type": "boolean"
+      },
+      "title": "Retrieval Anchor",
+      "type": "array"
+    },
+    "budget_class": {
+      "default": "moderate",
+      "title": "Budget Class",
+      "type": "string"
+    },
+    "downstream_score": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Downstream Score"
+    },
+    "uncertainty": {
+      "default": false,
+      "title": "Uncertainty",
+      "type": "boolean"
+    },
+    "label_source": {
+      "title": "Label Source",
+      "type": "string"
+    },
+    "reviewer": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reviewer"
+    }
+  },
+  "required": [
+    "sample_id",
+    "content_ref",
+    "content_type",
+    "risk_mode",
+    "protected_spans",
+    "label_source"
+  ],
+  "title": "LabelRecord",
+  "type": "object"
+}

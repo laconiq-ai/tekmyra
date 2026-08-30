@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "code-httpx-361c5daf",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "code",
+  "risk_tier": "low",
+  "content": "from __future__ import annotations\n\nimport inspect\nimport warnings\nfrom json import dumps as json_dumps\nfrom typing import (\n    Any,\n    AsyncIterable,\n    AsyncIterator,\n    Iterable,\n    Iterator,\n    Mapping,\n)\nfrom urllib.parse import urlencode\n\nfrom ._exceptions import StreamClosed, StreamConsumed\nfrom ._multipart import MultipartStream\nfrom ._types import (\n    AsyncByteStream,\n    RequestContent,\n    RequestData,\n    RequestFiles,\n    ResponseContent,\n    SyncByteStream,\n)\nfrom ._utils import peek_filelike_length, primitive_value_to_str\n\n__all__ = [\"ByteStream\"]\n\n\nclass ByteStream(AsyncByteStream, SyncByteStream):\n    def __init__(self, stream: bytes) -> None:\n        self._stream = stream\n\n    def __iter__(self) -> Iterator[bytes]:\n        yield self._stream\n\n    async def __aiter__(self) -> AsyncIterator[bytes]:\n        yield self._stream\n\n\nclass IteratorByteStream(SyncByteStream):\n    CHUNK_SIZE = 65_536\n\n    def __init__(self, stream: Iterable[bytes]) -> None:\n        self._stream = stream\n        self._is_stream_consumed = False\n        self._is_generator = inspect.isgenerator(stream)\n\n    def __iter__(self) -> Iterator[bytes]:\n        if self._is_stream_consumed and self._is_generator:\n            raise StreamConsumed()\n\n        self._is_stream_consumed = True\n        if hasattr(self._stream, \"read\"):\n            # File-like interfaces should use 'read' directly.\n            chunk = self._stream.read(self.CHUNK_SIZE)\n            while chunk:\n                yield chunk\n                chunk = self._stream.read(self.CHUNK_SIZE)\n        else:\n            # Otherwise iterate.\n            for part in self._stream:\n                yield part\n\n\nclass AsyncIteratorByteStream(AsyncByteStream):\n    CHUNK_SIZE = 65_536\n\n    def __init__(self, stream: AsyncIterable[bytes]) -> None:\n        self._stream = stream\n        self._is_stream_consumed = False\n        self._is_generator = inspect.isasyncgen(stream)\n\n    async def __aiter__(self) -> AsyncIterator[bytes]:\n        if self._is_stream_consumed and self._is_generator:\n            raise StreamConsumed()\n\n        self._is_stream_consumed = True\n        if hasattr(self._stream, \"aread\"):\n            # File-like interfaces should use 'aread' directly.\n            chunk = await self._stream.aread(self.CHUNK_SIZE)\n            while chunk:\n                yield chunk\n                chunk = await self._stream.aread(self.CHUNK_SIZE)\n        else:\n            # Otherwise iterate.\n            async for part in self._stream:\n                yield part\n\n\nclass UnattachedStream(AsyncByteStream, SyncByteStream):\n    \"\"\"\n    If a request or response is serialized using pickle, then it is no longer\n    attached to a stream for I/O purposes. Any stream operations should result\n    in `httpx.StreamClosed`.\n    \"\"\"\n\n    def __iter__(self) -> Iterator[bytes]:\n        raise StreamClosed()\n\n    async def __aiter__(self) -> AsyncIterator[bytes]:\n        raise StreamClosed()\n        yield b\"\"  # pragma: no cover\n\n\ndef encode_content(\n    content: str | bytes | Iterable[bytes] | AsyncIterable[bytes],\n) -> tuple[dict[str, str], SyncByteStream | AsyncByteStream]:\n    if isinstance(content, (bytes, str)):\n        body = content.encode(\"utf-8\") if isinstance(content, str) else content\n        content_length = len(body)\n        headers = {\"Content-Length\": str(content_length)} if body else {}\n        return headers, ByteStream(body)\n\n    elif isinstance(content, Iterable) and not isinstance(content, dict):\n        # `not isinstance(content, dict)` is a bit oddly specific, but it\n        # catches a case that's easy for users to make in error, and would\n        # otherwise pass through here, like any other bytes-iterable,\n        # because `dict` happens to be iterable. See issue #2491.\n        content_length_or_none = peek_filelike_length(content)\n\n        if content_length_or_none is None:\n            headers = {\"Transfer-Encoding\": \"chunked\"}\n        else:\n            headers = {\"Content-Length\": str(content_length_or_none)}\n        return headers, IteratorByteStream(content)  # type: ignore\n\n    elif isinstance(content, AsyncIterable):\n        headers = {\"Transfer-Encoding\": \"chunked\"}\n        return headers, AsyncIteratorByteStream(content)\n\n    raise TypeError(f\"Unexpected type for 'content', {type(content)!r}\")\n\n\ndef encode_urlencoded_data(\n    data: RequestData,\n) -> tuple[dict[str, str], ByteStream]:\n    plain_data = []\n    for key, value in data.items():\n        if isinstance(value, (list, tuple)):\n            plain_data.extend([(key, primitive_value_to_str(item)) for item in value])\n        else:\n            plain_data.append((key, primitive_value_to_str(value)))\n    body = urlencode(plain_data, doseq=True).encode(\"utf-8\")\n    content_length = str(len(body))\n    content_type = \"application/x-www-form-urlencoded\"\n    headers = {\"Content-Length\": content_length, \"Content-Type\": content_type}\n    return headers, ByteStream(body)\n\n\ndef encode_multipart_data(\n    data: RequestData, files: RequestFiles, boundary: bytes | None\n) -> tuple[dict[str, str], MultipartStream]:\n    multipart = MultipartStream(data=data, files=files, boundary=boundary)\n    headers = multipart.get_headers()\n    return headers, multipart\n\n\ndef encode_text(text: str) -> tuple[dict[str, str], ByteStream]:\n    body = text.encode(\"utf-8\")\n    content_length = str(len(body))\n    content_type = \"text/plain; charset=utf-8\"\n    headers = {\"Content-Length\": content_length, \"Content-Type\": content_type}\n    return headers, ByteStream(body)\n\n\ndef encode_html(html: str) -> tuple[dict[str, str], ByteStream]:\n    body = html.encode(\"utf-8\")\n    content_length = str(len(body))\n    content_type = \"text/html; charset=utf-8\"\n    headers = {\"Content-Length\": content_length, \"Content-Type\": content_type}\n    return headers, ByteStream(body)\n\n\ndef encode_json(json: Any) -> tuple[dict[str, str], ByteStream]:\n    body = json_dumps(\n        json, ensure_ascii=False, separators=(\",\", \":\"), allow_nan=False\n    ).encode(\"utf-8\")\n    content_length = str(len(body))\n    content_type = \"application/json\"\n    headers = {\"Content-Length\": content_length, \"Content-Type\": content_type}\n    return headers, ByteStream(body)\n\n\ndef encode_request(\n    content: RequestContent | None = None,\n    data: RequestData | None = None,\n    files: RequestFiles | None = None,\n    json: Any | None = None,\n    boundary: bytes | None = None,\n) -> tuple[dict[str, str], SyncByteStream | AsyncByteStream]:\n    \"\"\"\n    Handles encoding the given `content`, `data`, `files`, and `json`,\n    returning a two-tuple of (<headers>, <stream>).\n    \"\"\"\n    if data is not None and not isinstance(data, Mapping):\n        # We prefer to separate `content=<bytes|str|byte iterator|bytes aiterator>`\n        # for raw request content, and `data=<form data>` for url encoded or\n        # multipart form content.\n        #\n        # However for compat with requests, we *do* still support\n        # `data=<bytes...>` usages. We deal with that case here, treating it\n        # as if `content=<...>` had been supplied instead.\n        message = \"Use 'content=<...>' to upload raw bytes/text content.\"\n        warnings.warn(message, DeprecationWarning, stacklevel=2)\n        return encode_content(data)\n\n    if content is not None:\n        return encode_content(content)\n    elif files:\n        return encode_multipart_data(data or {}, files, boundary)\n    elif data:\n        return encode_urlencoded_data(data)\n    elif json is not None:\n        return encode_json(json)\n\n    return {}, ByteStream(b\"\")\n\n\ndef encode_response(\n    content: ResponseContent | None = None,\n    text: str | None = None,\n    html: str | None = None,\n    json: Any | None = None,\n) -> tuple[dict[str, str], SyncByteStream | AsyncByteStream]:\n    \"\"\"\n    Handles encoding the given `content`, returning a two-tuple of\n    (<headers>, <stream>).\n    \"\"\"\n    if content is not None:\n        return encode_content(content)\n    elif text is not None:\n        return encode_text(text)\n    elif html is not None:\n        return encode_html(html)\n    elif json is not None:\n        return encode_json(json)\n\n    return {}, ByteStream(b\"\")\n",
+  "route_labels": [
+    "code_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "code_compressor",
+    "allowed_outcomes": [
+      "code_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "code_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:encode/httpx",
+    "license": "BSD-3-Clause",
+    "generated_by": null,
+    "external": {
+      "publisher": "encode/httpx",
+      "source_url": "https://github.com/encode/httpx/blob/b5addb64f0161ff6bfe94c124ef76f6a1fba5254/httpx/_content.py",
+      "retrieved_at": "2026-08-09T10:50:35.933109Z",
+      "licence_basis": "SPDX BSD-3-Clause, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/encode/httpx",
+      "licence_evidence_sha256": "5ed6d55a881846e6924c391624875889bae6782ad1a93227bb4c846b2d527d0b",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": null
+    },
+    "generated_at": "2026-08-09T10:50:36.004912Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "code",
+    "python"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

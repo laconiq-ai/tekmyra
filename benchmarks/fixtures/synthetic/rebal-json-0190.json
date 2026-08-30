@@ -1,0 +1,101 @@
+{
+  "fixture_id": "rebal-json-0190",
+  "content_type": "json",
+  "risk_tier": "low",
+  "content": "{\n  \"request_id\": \"req-0001\",\n  \"user_id\": \"user-0001\",\n  \"timestamp\": \"2026-07-06T00:00:00Z\",\n  \"service\": \"inventory\",\n  \"region\": \"us-east-1\",\n  \"items\": [\n    {\"id\": 0, \"value\": 10},\n    {\"id\": 1, \"value\": 20},\n    {\"id\": 2, \"value\": 30}\n  ]\n}",
+  "route_labels": [
+    "deterministic_json_compressor"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "anchor",
+      "start": 4,
+      "end": 28,
+      "text": "\"request_id\": \"req-0001\"",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "deterministic_json_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "request_id",
+        "start": 4,
+        "end": 28,
+        "text": "\"request_id\": \"req-0001\"",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "anchor",
+        "start": 4,
+        "end": 28,
+        "text": "\"request_id\": \"req-0001\"",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "deterministic_json_compressor",
+    "allowed_outcomes": [
+      "deterministic_json_compressor"
+    ],
+    "compressible": true
+  },
+  "provenance": {
+    "source": "synthetic",
+    "license": "CC0-1.0",
+    "generated_by": "benchmarks/fixtures/generate_rebalance_fixtures.py",
+    "generated_at": "2026-07-18T01:43:36.491313Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "rebalance",
+    "deterministic_json_compressor"
+  ],
+  "blocks": [
+    {
+      "type": "json",
+      "content": "{\n  \"request_id\": \"req-0001\",\n  \"user_id\": \"user-0001\",\n  \"timestamp\": \"2026-07-06T00:00:00Z\",\n  \"service\": \"inventory\",\n  \"region\": \"us-east-1\",\n  \"items\": [\n    {\"id\": 0, \"value\": 10},\n    {\"id\": 1, \"value\": 20},\n    {\"id\": 2, \"value\": 30}\n  ]\n}",
+      "start": 0,
+      "end": 247,
+      "route_label": "deterministic_json_compressor",
+      "risk_tier": "low",
+      "protected_spans": [
+        {
+          "start": 5,
+          "end": 17,
+          "label": "retrieval_key",
+          "span_type": "anchor",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 19,
+          "end": 29,
+          "label": "retrieval_key",
+          "span_type": "anchor",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 72,
+          "end": 92,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:43:36.492233+00:00",
+  "schema_version": "2.0.0"
+}

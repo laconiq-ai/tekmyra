@@ -1,0 +1,109 @@
+{
+  "fixture_id": "rebal-diff-0040",
+  "content_type": "diff",
+  "risk_tier": "low",
+  "content": "diff --git a/api/handlers.py b/api/middleware.py\n--- a/api/clients.py\n+++ b/api/handlers.py\n@@ -42,7 +42,8 @@ def get_account(account_id):\n-    return fetch(account_id)\n+    record = fetch(account_id)\n+    return record if record else None\n\n def list_accounts():\n     return []\n",
+  "route_labels": [
+    "diff_compressor"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 13,
+      "end": 28,
+      "text": "api/handlers.py",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "diff_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "file_path",
+        "start": 13,
+        "end": 28,
+        "text": "api/handlers.py",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 13,
+        "end": 28,
+        "text": "api/handlers.py",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "diff_compressor",
+    "allowed_outcomes": [
+      "diff_compressor"
+    ],
+    "compressible": true
+  },
+  "provenance": {
+    "source": "synthetic",
+    "license": "CC0-1.0",
+    "generated_by": "benchmarks/fixtures/generate_rebalance_fixtures.py",
+    "generated_at": "2026-07-18T01:23:06.790264Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "rebalance",
+    "diff_compressor"
+  ],
+  "blocks": [
+    {
+      "type": "diff",
+      "content": "diff --git a/api/handlers.py b/api/middleware.py\n--- a/api/clients.py\n+++ b/api/handlers.py\n@@ -42,7 +42,8 @@ def get_account(account_id):\n-    return fetch(account_id)\n+    record = fetch(account_id)\n+    return record if record else None\n\n def list_accounts():\n     return []\n",
+      "start": 0,
+      "end": 278,
+      "route_label": "diff_compressor",
+      "risk_tier": "low",
+      "protected_spans": [
+        {
+          "start": 12,
+          "end": 28,
+          "label": "file_path",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 30,
+          "end": 48,
+          "label": "file_path",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 54,
+          "end": 69,
+          "label": "file_path",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 75,
+          "end": 91,
+          "label": "file_path",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:23:06.791337+00:00",
+  "schema_version": "2.0.0"
+}

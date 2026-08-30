@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "code-rich-5955eb50",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "code",
+  "risk_tier": "low",
+  "content": "\"\"\"\nDemonstrates a Rich \"application\" using the Layout and Live classes.\n\n\"\"\"\n\nfrom datetime import datetime\n\nfrom rich import box\nfrom rich.align import Align\nfrom rich.console import Console, Group\nfrom rich.layout import Layout\nfrom rich.panel import Panel\nfrom rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn\nfrom rich.syntax import Syntax\nfrom rich.table import Table\n\nconsole = Console()\n\n\ndef make_layout() -> Layout:\n    \"\"\"Define the layout.\"\"\"\n    layout = Layout(name=\"root\")\n\n    layout.split(\n        Layout(name=\"header\", size=3),\n        Layout(name=\"main\", ratio=1),\n        Layout(name=\"footer\", size=7),\n    )\n    layout[\"main\"].split_row(\n        Layout(name=\"side\"),\n        Layout(name=\"body\", ratio=2, minimum_size=60),\n    )\n    layout[\"side\"].split(Layout(name=\"box1\"), Layout(name=\"box2\"))\n    return layout\n\n\ndef make_sponsor_message() -> Panel:\n    \"\"\"Some example content.\"\"\"\n    sponsor_message = Table.grid(padding=1)\n    sponsor_message.add_column(style=\"green\", justify=\"right\")\n    sponsor_message.add_column(no_wrap=True)\n    sponsor_message.add_row(\n        \"Twitter\",\n        \"[u blue link=https://twitter.com/textualize]https://twitter.com/textualize\",\n    )\n    sponsor_message.add_row(\n        \"CEO\",\n        \"[u blue link=https://twitter.com/willmcgugan]https://twitter.com/willmcgugan\",\n    )\n    sponsor_message.add_row(\n        \"Textualize\", \"[u blue link=https://www.textualize.io]https://www.textualize.io\"\n    )\n\n    message = Table.grid(padding=1)\n    message.add_column()\n    message.add_column(no_wrap=True)\n    message.add_row(sponsor_message)\n\n    message_panel = Panel(\n        Align.center(\n            Group(\"\\n\", Align.center(sponsor_message)),\n            vertical=\"middle\",\n        ),\n        box=box.ROUNDED,\n        padding=(1, 2),\n        title=\"[b red]Thanks for trying out Rich!\",\n        border_style=\"bright_blue\",\n    )\n    return message_panel\n\n\nclass Header:\n    \"\"\"Display header with clock.\"\"\"\n\n    def __rich__(self) -> Panel:\n        grid = Table.grid(expand=True)\n        grid.add_column(justify=\"center\", ratio=1)\n        grid.add_column(justify=\"right\")\n        grid.add_row(\n            \"[b]Rich[/b] Layout application\",\n            datetime.now().ctime().replace(\":\", \"[blink]:[/]\"),\n        )\n        return Panel(grid, style=\"white on blue\")\n\n\ndef make_syntax() -> Syntax:\n    code = \"\"\"\\\ndef ratio_resolve(total: int, edges: List[Edge]) -> List[int]:\n    sizes = [(edge.size or None) for edge in edges]\n\n    # While any edges haven't been calculated\n    while any(size is None for size in sizes):\n        # Get flexible edges and index to map these back on to sizes list\n        flexible_edges = [\n            (index, edge)\n            for index, (size, edge) in enumerate(zip(sizes, edges))\n            if size is None\n        ]\n        # Remaining space in total\n        remaining = total - sum(size or 0 for size in sizes)\n        if remaining <= 0:\n            # No room for flexible edges\n            sizes[:] = [(size or 0) for size in sizes]\n            break\n        # Calculate number of characters in a ratio portion\n        portion = remaining / sum((edge.ratio or 1) for _, edge in flexible_edges)\n\n        # If any edges will be less than their minimum, replace size with the minimum\n        for index, edge in flexible_edges:\n            if portion * edge.ratio <= edge.minimum_size:\n                sizes[index] = edge.minimum_size\n                break\n        else:\n            # Distribute flexible space and compensate for rounding error\n            # Since edge sizes can only be integers we need to add the remainder\n            # to the following line\n            _modf = modf\n            remainder = 0.0\n            for index, edge in flexible_edges:\n                remainder, size = _modf(portion * edge.ratio + remainder)\n                sizes[index] = int(size)\n            break\n    # Sizes now contains integers only\n    return cast(List[int], sizes)\n    \"\"\"\n    syntax = Syntax(code, \"python\", line_numbers=True)\n    return syntax\n\n\njob_progress = Progress(\n    \"{task.description}\",\n    SpinnerColumn(),\n    BarColumn(),\n    TextColumn(\"[progress.percentage]{task.percentage:>3.0f}%\"),\n)\njob_progress.add_task(\"[green]Cooking\")\njob_progress.add_task(\"[magenta]Baking\", total=200)\njob_progress.add_task(\"[cyan]Mixing\", total=400)\n\ntotal = sum(task.total for task in job_progress.tasks)\noverall_progress = Progress()\noverall_task = overall_progress.add_task(\"All Jobs\", total=int(total))\n\nprogress_table = Table.grid(expand=True)\nprogress_table.add_row(\n    Panel(\n        overall_progress,\n        title=\"Overall Progress\",\n        border_style=\"green\",\n        padding=(2, 2),\n    ),\n    Panel(job_progress, title=\"[b]Jobs\", border_style=\"red\", padding=(1, 2)),\n)\n\n\nlayout = make_layout()\nlayout[\"header\"].update(Header())\nlayout[\"body\"].update(make_sponsor_message())\nlayout[\"box2\"].update(Panel(make_syntax(), border_style=\"green\"))\nlayout[\"box1\"].update(Panel(layout.tree, border_style=\"red\"))\nlayout[\"footer\"].update(progress_table)\n\n\nfrom time import sleep\n\nfrom rich.live import Live\n\nwith Live(layout, refresh_per_second=10, screen=True):\n    while not overall_progress.finished:\n        sleep(0.1)\n        for job in job_progress.tasks:\n            if not job.finished:\n                job_progress.advance(job.id)\n\n        completed = sum(task.completed for task in job_progress.tasks)\n        overall_progress.update(overall_task, completed=completed)\n",
+  "route_labels": [
+    "code_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "code_compressor",
+    "allowed_outcomes": [
+      "code_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "code_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:Textualize/rich",
+    "license": "MIT",
+    "generated_by": null,
+    "external": {
+      "publisher": "Textualize/rich",
+      "source_url": "https://github.com/Textualize/rich/blob/9d8f9a372cc5916fd4781fec207ced7ddac2f08f/examples/fullscreen.py",
+      "retrieved_at": "2026-08-09T10:50:35.933109Z",
+      "licence_basis": "SPDX MIT, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/Textualize/rich",
+      "licence_evidence_sha256": "4b594d6bab65718bd94af2d870649f7a645cdff71babfe9de4cc779d7923f49e",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": null
+    },
+    "generated_at": "2026-08-09T10:50:36.042289Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "code",
+    "python"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

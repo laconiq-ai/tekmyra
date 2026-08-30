@@ -1,0 +1,117 @@
+{
+  "fixture_id": "rebal-log-0135",
+  "content_type": "log",
+  "risk_tier": "low",
+  "content": "2026-07-06T00:00:01Z INFO host-02 request-1000 Starting job\n2026-07-06T00:00:02Z INFO host-02 request-1000 Processing step 1\n2026-07-06T00:00:03Z WARN host-02 request-1000 Disk full\n2026-07-06T00:00:04Z INFO host-02 request-1000 Retrying\n2026-07-06T00:00:05Z INFO host-02 request-1000 Done",
+  "route_labels": [
+    "log_compressor"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "anchor",
+      "start": 34,
+      "end": 46,
+      "text": "request-1000",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "log_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "request_id",
+        "start": 34,
+        "end": 46,
+        "text": "request-1000",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "anchor",
+        "start": 34,
+        "end": 46,
+        "text": "request-1000",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "log_compressor",
+    "allowed_outcomes": [
+      "log_compressor"
+    ],
+    "compressible": true
+  },
+  "provenance": {
+    "source": "synthetic",
+    "license": "CC0-1.0",
+    "generated_by": "benchmarks/fixtures/generate_rebalance_fixtures.py",
+    "generated_at": "2026-07-18T01:23:06.852934Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "rebalance",
+    "log_compressor"
+  ],
+  "blocks": [
+    {
+      "type": "log",
+      "content": "2026-07-06T00:00:01Z INFO host-02 request-1000 Starting job\n2026-07-06T00:00:02Z INFO host-02 request-1000 Processing step 1\n2026-07-06T00:00:03Z WARN host-02 request-1000 Disk full\n2026-07-06T00:00:04Z INFO host-02 request-1000 Retrying\n2026-07-06T00:00:05Z INFO host-02 request-1000 Done",
+      "start": 0,
+      "end": 289,
+      "route_label": "log_compressor",
+      "risk_tier": "low",
+      "protected_spans": [
+        {
+          "start": 0,
+          "end": 20,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 60,
+          "end": 80,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 125,
+          "end": 145,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 182,
+          "end": 202,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 238,
+          "end": 258,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:23:06.853429+00:00",
+  "schema_version": "2.0.0"
+}

@@ -1,0 +1,169 @@
+{
+  "fixture_id": "missing-chart_table_extraction-003",
+  "content_type": "table",
+  "risk_tier": "medium",
+  "content": "Q4 2026 sales table \u2014 extract numeric rows\n| Region | Revenue | Cost | Margin |\n|---|---|---|---|\n| North | $156,000.00 | $104,000.00 | 36% |\n| South | $125,000.00 | $78,000.00 | 40% |\n| East | $143,000.00 | $91,000.00 | 39% |\n| Total | $424,000.00 | $273,000.00 | 38% |",
+  "route_labels": [
+    "chart_table_extraction"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 43,
+      "end": 79,
+      "text": "| Region | Revenue | Cost | Margin |",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 227,
+      "end": 270,
+      "text": "| Total | $424,000.00 | $273,000.00 | 38% |",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "chart_table_extraction",
+    "expected_risk": "medium",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "table_header",
+        "start": 43,
+        "end": 79,
+        "text": "| Region | Revenue | Cost | Margin |",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "total_row",
+        "start": 227,
+        "end": 270,
+        "text": "| Total | $424,000.00 | $273,000.00 | 38% |",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 43,
+        "end": 79,
+        "text": "| Region | Revenue | Cost | Margin |",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 227,
+        "end": 270,
+        "text": "| Total | $424,000.00 | $273,000.00 | 38% |",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "chart_table_extraction",
+    "allowed_outcomes": [
+      "chart_table_extraction"
+    ],
+    "compressible": true
+  },
+  "blocks": [
+    {
+      "type": "table",
+      "content": "Q4 2026 sales table \u2014 extract numeric rows\n| Region | Revenue | Cost | Margin |\n|---|---|---|---|\n| North | $156,000.00 | $104,000.00 | 36% |\n| South | $125,000.00 | $78,000.00 | 40% |\n| East | $143,000.00 | $91,000.00 | 39% |\n| Total | $424,000.00 | $273,000.00 | 38% |",
+      "start": 0,
+      "end": 270,
+      "route_label": "chart_table_extraction",
+      "risk_tier": "medium",
+      "protected_spans": [
+        {
+          "start": 108,
+          "end": 119,
+          "label": "amount",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 122,
+          "end": 133,
+          "label": "amount",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 152,
+          "end": 163,
+          "label": "amount",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 166,
+          "end": 176,
+          "label": "amount",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 194,
+          "end": 205,
+          "label": "amount",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 208,
+          "end": 218,
+          "label": "amount",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 237,
+          "end": 248,
+          "label": "amount",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 251,
+          "end": 262,
+          "label": "amount",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "public_sample",
+    "license": "MIT",
+    "generated_by": "benchmarks/fixtures/generate_missing_routes.py",
+    "generated_at": "2026-07-15T06:43:09.106131Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "missing",
+    "chart_table_extraction",
+    "markdown_table"
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:10:03.519886+00:00",
+  "schema_version": "2.0.0"
+}

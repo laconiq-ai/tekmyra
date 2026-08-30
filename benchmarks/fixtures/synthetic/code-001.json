@@ -1,0 +1,48 @@
+{
+  "fixture_id": "code-001",
+  "content_type": "code",
+  "risk_tier": "low",
+  "content": "def calculate_total(items):\n    # Sum all line items\n    total = sum(item['price'] * item['quantity'] for item in items)\n    return total\n",
+  "route_labels": [
+    "code_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "code_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "route_intent": "code_compressor",
+    "allowed_outcomes": [
+      "code_compressor"
+    ],
+    "compressible": true
+  },
+  "blocks": [
+    {
+      "type": "code",
+      "content": "def calculate_total(items):\n    # Sum all line items\n    total = sum(item['price'] * item['quantity'] for item in items)\n    return total\n",
+      "start": 0,
+      "end": 138,
+      "route_label": "code_compressor",
+      "risk_tier": "low",
+      "protected_spans": []
+    }
+  ],
+  "provenance": {
+    "source": "synthetic",
+    "license": "CC0-1.0",
+    "generated_by": "benchmarks/fixtures/generate_fixtures.py",
+    "generated_at": "2026-07-15T06:43:08.697295Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "code",
+    "python",
+    "structured"
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:10:03.503005+00:00",
+  "schema_version": "2.0.0"
+}

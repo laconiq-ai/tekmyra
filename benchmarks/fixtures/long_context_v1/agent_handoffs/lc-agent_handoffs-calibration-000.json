@@ -1,0 +1,153 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "lc-agent_handoffs-calibration-000",
+  "content_type": "agent_handoffs",
+  "risk_tier": "low",
+  "content": "tool:runbook_lookup(incident_id='INC-2026-07-23-001'); this detail must remain available. action: throttle ingress by 12 percent. observation: three replica lag spikes detected.\n\nstate: pending approval from on-call engineer. observation: three replica lag spikes detected. tool:runbook_lookup(incident_id='INC-2026-07-23-001')\n\naction: throttle ingress by 12 percent; this detail must remain available. handoff: agent-lc-7 -> agent-lc-8 with context checksum. agent-lc-7 received state marker RUNNING.\n\ntool:search_kb(query='rollback procedure', top_k=3) state: pending approval from on-call engineer. tool:runbook_lookup(incident_id='INC-2026-07-23-001')\n\ntool:escalate(severity='SEV-2', owner='Platform Reliability Team'); this detail must remain available. tool:search_kb(query='rollback procedure', top_k=3) action: notify Platform Reliability Team via pager.\n\naction: notify Platform Reliability Team via pager. handoff: agent-lc-7 -> agent-lc-8 with context checksum. state: pending approval from on-call engineer.\n\ntool:escalate(severity='SEV-2', owner='Platform Reliability Team') action: notify Platform Reliability Team via pager. tool:runbook_lookup(incident_id='INC-2026-07-23-001')\n\nhandoff: agent-lc-7 -> agent-lc-8 with context checksum. action: throttle ingress by 12 percent. action: throttle ingress by 12 percent.\n\ntool:search_kb(query='rollback procedure', top_k=3); this detail must remain available. tool:escalate(severity='SEV-2', owner='Platform Reliability Team') action: throttle ingress by 12 percent.\n\ntool:runbook_lookup(incident_id='INC-2026-07-23-001') handoff: agent-lc-7 -> agent-lc-8 with context checksum. observation: three replica lag spikes detected.\n\nobservation: database connection pool at 94 percent. action: notify Platform Reliability Team via pager. handoff: agent-lc-7 -> agent-lc-8 with context checksum.\n\ntool:search_kb(query='rollback procedure', top_k=3) action: throttle ingress by 12 percent. tool:escalate(severity='SEV-2', owner='Platform Reliability Team')\n\nobservation: database connection pool at 94 percent. observation: three replica lag spikes detected. agent-lc-7 received state marker RUNNING.\n\ntool:escalate(severity='SEV-2', owner='Platform Reliability Team') handoff: agent-lc-7 -> agent-lc-8 with context checksum. observation: database connection pool at 94 percent.\n\ntool:escalate(severity='SEV-2', owner='Platform Reliability Team') tool:runbook_lookup(incident_id='INC-2026-07-23-001'); this detail must remain available. agent-lc-7 received state marker RUNNING.\n\nstate: pending approval from on-call engineer; this detail must remain available. agent-lc-7 received state marker RUNNING. observation: database connection pool at 94 percent.\n\nhandoff: agent-lc-7 -> agent-lc-8 with context checksum. tool:escalate(severity='SEV-2', owner='Platform Reliability Team') agent-lc-7 received state marker RUNNING; this detail must remain available.\n\nstate: pending approval from on-call engineer. tool:search_kb(query='rollback procedure', top_k=3) tool:search_kb(query='rollback procedure', top_k=3)\n\nhandoff: agent-lc-7 -> agent-lc-8 with context checksum. agent-lc-7 received state marker RUNNING. tool:runbook_lookup(incident_id='INC-2026-07-23-001')\n\nobservation: three replica lag spikes detected; this detail must remain available. observation: database connection pool at 94 percent. observation: three replica lag spikes detected.\n\ntool:runbook_lookup(incident_id='INC-2026-07-23-001') tool:search_kb(query='rollback procedure', top_k=3) agent-lc-7 received state marker RUNNING.\n\nobservation: three replica lag spikes detected. agent-lc-7 received state marker RUNNING. state: pending approval from on-call engineer.\n\ntool:runbook_lookup(incident_id='INC-2026-07-23-001') tool:search_kb(query='rollback procedure', top_k=3) observation: three replica lag spikes detected.\n\naction: notify Platform Reliability Team via pager. tool:escalate(severity='SEV-2', owner='Platform Reliability Team') tool:search_kb(query='rollback procedure', top_k=3)\n\nobservation: database connection pool at 94 percent. state: pending approval from on-call engineer. state: pending approval from on-call engineer.\n\nobservation: three replica lag spikes detected. agent-lc-7 received state marker RUNNING. tool:search_kb(query='rollback procedure', top_k=3)\n\naction: throttle ingress by 12 percent. tool:escalate(severity='SEV-2', owner='Platform Reliability Team') tool:runbook_lookup(incident_id='INC-2026-07-23-001')\n\ntool:escalate(severity='SEV-2', owner='Platform Reliability Team') tool:search_kb(query='rollback procedure', top_k=3) tool:search_kb(query='rollback procedure', top_k=3)\n\nstate: pending approval from on-call engineer. tool:search_kb(query='rollback procedure', top_k=3) action: throttle ingress by 12 percent.\n\nhandoff: agent-lc-7 -> agent-lc-8 with context checksum. action: throttle ingress by 12 percent; this detail must remain available. action: throttle ingress by 12 percent; this detail must remain available.\n\nstate: pending approval from on-call engineer. tool:escalate(severity='SEV-2', owner='Platform Reliability Team') action: notify Platform Reliability Team via pager.\n\nhandoff: agent-lc-7 -> agent-lc-8 with context checksum. observation: database connection pool at 94 percent. state: pending approval from on-call engineer.\n\nagent-lc-7 received state marker RUNNING; this detail must remain available. tool:runbook_lookup(incident_id='INC-2026-07-23-001') action: notify Platform Reliability Team via pager.\n\nagent-lc-7 received state marker RUNNING. tool:escalate(severity='SEV-2', owner='Platform Reliability Team') agent-lc-7 received state marker RUNNING.\n\nobservation: database connection pool at 94 percent. tool:runbook_lookup(incident_id='INC-2026-07-23-001') handoff: agent-lc-7 -> agent-lc-8 with context checksum.\n\nhandoff: agent-lc-7 -> agent-lc-8 with context checksum. agent-lc-7 received state marker RUNNING. tool:runbook_lookup(incident_id='INC-2026-07-23-001')\n\ntool:search_kb(query='rollback procedure', top_k=3) action: throttle ingress by 12 percent. agent-lc-7 received state marker RUNNING.\n\naction: throttle ingress by 12 percent. observation: database connection pool at 94 percent. observation: three replica lag spikes detected.\n\nstate: pending approval from on-call engineer. tool:escalate(severity='SEV-2', owner='Platform Reliability Team') handoff: agent-lc-7 -> agent-lc-8 with context checksum.\n\nagent-lc-7 received state marker RUNNING. observation: database connection pool at 94 percent. observation: three replica lag spikes detected.\n\ntool:search_kb(query='rollback procedure', top_k=3) action: throttle ingress by 12 percent. observation: database connection pool at 94 percent; this detail must remain available.\n\nstate: pending approval from on-call engineer. tool:escalate(severity='SEV-2', owner='Platform Reliability Team') handoff: agent-lc-7 -> agent-lc-8 with context checksum; this detail must remain available.\n\naction: throttle ingress by 12 percent. observation: three replica lag spikes detected. observation: database connection pool at 94 percent.\n\ntool:runbook_lookup(incident_id='INC-2026-07-23-001') observation: three replica lag spikes detected. handoff: agent-lc-7 -> agent-lc-8 with context checksum.\n\nagent-lc-7 received state marker RUNNING. action: notify Platform Reliability Team via pager. observation: three replica lag spikes detected.\n\naction: throttle ingress by 12 percent. tool:search_kb(query='rollback procedure', top_k=3) state: pending approval from on-call engineer.\n\ntool:escalate(severity='SEV-2', owner='Platform Reliability Team')\n\nVerified fact: Dr. Aris Thorne [f-protagonist]. Verified fact: Customer Seven [f-customer-alias]. Verified fact: SEV-2 [f-severity]. Verified fact: Codex Meridian [f-artifact].",
+  "route_labels": [
+    "extractive_keypoint_compressor",
+    "passthrough"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "fact",
+      "start": 7623,
+      "end": 7638,
+      "text": "Dr. Aris Thorne",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0,
+      "span_id": "span-age-000",
+      "fact_id": "f-protagonist"
+    },
+    {
+      "span_type": "fact",
+      "start": 7671,
+      "end": 7685,
+      "text": "Customer Seven",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0,
+      "span_id": "span-age-001",
+      "fact_id": "f-customer-alias"
+    },
+    {
+      "span_type": "fact",
+      "start": 682,
+      "end": 687,
+      "text": "SEV-2",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0,
+      "span_id": "span-age-002",
+      "fact_id": "f-severity"
+    },
+    {
+      "span_type": "fact",
+      "start": 7756,
+      "end": 7770,
+      "text": "Codex Meridian",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0,
+      "span_id": "span-age-003",
+      "fact_id": "f-artifact"
+    }
+  ],
+  "gold_output": {
+    "route_intent": "extractive_keypoint_compressor",
+    "allowed_outcomes": [
+      "extractive_keypoint_compressor",
+      "passthrough"
+    ],
+    "compressible": false,
+    "passthrough": true,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "extractive_keypoint_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "fact",
+        "start": 7623,
+        "end": 7638,
+        "text": "Dr. Aris Thorne",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0,
+        "span_id": "span-age-000",
+        "fact_id": "f-protagonist"
+      },
+      {
+        "span_type": "fact",
+        "start": 7671,
+        "end": 7685,
+        "text": "Customer Seven",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0,
+        "span_id": "span-age-001",
+        "fact_id": "f-customer-alias"
+      },
+      {
+        "span_type": "fact",
+        "start": 682,
+        "end": 687,
+        "text": "SEV-2",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0,
+        "span_id": "span-age-002",
+        "fact_id": "f-severity"
+      },
+      {
+        "span_type": "fact",
+        "start": 7756,
+        "end": 7770,
+        "text": "Codex Meridian",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0,
+        "span_id": "span-age-003",
+        "fact_id": "f-artifact"
+      }
+    ],
+    "expected_compression_eligibility": false,
+    "expected_allowed_bypass_reasons": [
+      "too_short"
+    ],
+    "query_task": "What is the current agent state and next action?",
+    "answer_required_fact_ids": [
+      "f-protagonist",
+      "f-customer-alias",
+      "f-severity",
+      "f-artifact"
+    ],
+    "allowed_safety_overrides": [
+      "allow_passthrough_short"
+    ]
+  },
+  "provenance": {
+    "source": "synthetic",
+    "license": "CC0-1.0",
+    "generated_by": "benchmarks/fixtures/long_context_v1/generate_long_context_fixtures.py",
+    "generated_at": "2026-07-23T00:00:00Z",
+    "adjudicated_by": null
+  },
+  "tags": [
+    "long_context",
+    "agent_handoffs",
+    "calibration"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {
+    "f-protagonist": "Dr. Aris Thorne",
+    "f-customer-alias": "Customer Seven",
+    "f-severity": "SEV-2",
+    "f-artifact": "Codex Meridian"
+  }
+}

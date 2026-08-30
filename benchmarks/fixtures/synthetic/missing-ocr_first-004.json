@@ -1,0 +1,149 @@
+{
+  "fixture_id": "missing-ocr_first-004",
+  "content_type": "ocr_text",
+  "risk_tier": "low",
+  "content": "[OCR: 0.94] Scanned memorandum \u2014 reference SCAN-2026-4404, dated 2026-07-24.\nSubject: Visitor log summary\nBody: All visitors signed the acknowledgment form.\n[OCR artifact: page corner fold artifact]",
+  "route_labels": [
+    "ocr_first",
+    "prose_token_compressor"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 43,
+      "end": 57,
+      "text": "SCAN-2026-4404",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 65,
+      "end": 75,
+      "text": "2026-07-24",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 86,
+      "end": 105,
+      "text": "Visitor log summary",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "ocr_first",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "scan_reference",
+        "start": 43,
+        "end": 57,
+        "text": "SCAN-2026-4404",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "date",
+        "start": 65,
+        "end": 75,
+        "text": "2026-07-24",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "subject",
+        "start": 86,
+        "end": 105,
+        "text": "Visitor log summary",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 43,
+        "end": 57,
+        "text": "SCAN-2026-4404",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 65,
+        "end": 75,
+        "text": "2026-07-24",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 86,
+        "end": 105,
+        "text": "Visitor log summary",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "ocr_first",
+    "allowed_outcomes": [
+      "ocr_first"
+    ],
+    "compressible": true
+  },
+  "blocks": [
+    {
+      "type": "prose",
+      "content": "[OCR: 0.94] Scanned memorandum \u2014 reference SCAN-2026-4404, dated 2026-07-24.\nSubject: Visitor log summary\nBody: All visitors signed the acknowledgment form.\n[OCR artifact: page corner fold artifact]",
+      "start": 0,
+      "end": 198,
+      "route_label": "prose_token_compressor",
+      "risk_tier": "low",
+      "protected_spans": [
+        {
+          "start": 43,
+          "end": 58,
+          "label": "retrieval_key",
+          "span_type": "anchor",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 65,
+          "end": 75,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "public_sample",
+    "license": "MIT",
+    "generated_by": "benchmarks/fixtures/generate_missing_routes.py",
+    "generated_at": "2026-07-15T06:43:09.103389Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "missing",
+    "ocr_first",
+    "scanned_document"
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:10:03.530401+00:00",
+  "schema_version": "2.0.0"
+}

@@ -1,0 +1,133 @@
+{
+  "fixture_id": "pii-003",
+  "content_type": "pii_message",
+  "risk_tier": "high",
+  "content": "Customer Jane Doe called from 555-0199. Account 9988776655. SSN: 123-45-6789. Requested address change to 123 Maple St.",
+  "route_labels": [
+    "pii_redaction_before_compression"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 30,
+      "end": 38,
+      "text": "555-0199",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 65,
+      "end": 76,
+      "text": "123-45-6789",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "pii_redaction_before_compression",
+    "expected_risk": "high",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "phone",
+        "start": 30,
+        "end": 38,
+        "text": "555-0199",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "ssn",
+        "start": 65,
+        "end": 76,
+        "text": "123-45-6789",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 30,
+        "end": 38,
+        "text": "555-0199",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 65,
+        "end": 76,
+        "text": "123-45-6789",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 30,
+        "end": 38,
+        "text": "555-0199",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 65,
+        "end": 76,
+        "text": "123-45-6789",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "pii_redaction_before_compression",
+    "allowed_outcomes": [
+      "pii_redaction_before_compression",
+      "pii_redaction_before_compression",
+      "reject_or_human_review"
+    ],
+    "compressible": false,
+    "redaction_only": true
+  },
+  "blocks": [
+    {
+      "type": "pii_message",
+      "content": "Customer Jane Doe called from 555-0199. Account 9988776655. SSN: 123-45-6789. Requested address change to 123 Maple St.",
+      "start": 0,
+      "end": 119,
+      "route_label": "pii_redaction_before_compression",
+      "risk_tier": "critical",
+      "protected_spans": [
+        {
+          "start": 65,
+          "end": 76,
+          "label": "ssn",
+          "span_type": "locked",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "enterprise_mock",
+    "license": "proprietary_laconiq_mock",
+    "generated_by": "benchmarks/fixtures/generate_fixtures.py",
+    "generated_at": "2026-07-15T06:43:08.702741Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "pii",
+    "high-risk"
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:10:03.541677+00:00",
+  "schema_version": "2.0.0"
+}

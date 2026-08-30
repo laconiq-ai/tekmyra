@@ -1,0 +1,422 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://laconiq.com/contracts/tekmyra/production-admission-v1.json",
+  "title": "TekMyra customer-production admission evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "release",
+    "model_quality",
+    "provider_audit",
+    "gateway",
+    "runtime_image_binding",
+    "topology",
+    "capacity",
+    "operations",
+    "canary",
+    "rights"
+  ],
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "required": ["evidence_path", "evidence_sha256", "evidence_signature_path"],
+      "properties": {
+        "evidence_path": {"type": "string", "minLength": 1},
+        "evidence_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "evidence_signature_path": {"type": "string", "minLength": 1}
+      }
+    },
+    "artifact_locator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "signature_path"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "signature_path": {"type": "string", "minLength": 1}
+      }
+    },
+    "file_locator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    }
+  },
+  "properties": {
+    "schema_version": {"const": "tekmyra-production-admission/v1"},
+    "release": {
+      "allOf": [{"$ref": "#/$defs/evidence"}],
+      "type": "object",
+      "required": ["source_revision", "release_tag", "image_reference", "rollback_image_reference", "rollback_source_revision", "rollback_tag", "publication_artifact", "authorization_artifact", "checked_at", "evidence_path", "evidence_sha256", "evidence_signature_path"],
+      "properties": {
+        "source_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "release_tag": {"type": "string", "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+(-rc[0-9]+)?$"},
+        "image_reference": {"type": "string", "pattern": "^[^\\s@:]+(/[^\\s@:]+)+@sha256:[0-9a-f]{64}$"},
+        "rollback_image_reference": {"type": "string", "pattern": "^[^\\s@:]+(/[^\\s@:]+)+@sha256:[0-9a-f]{64}$"},
+        "rollback_source_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "rollback_tag": {"type": "string", "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+(-rc[0-9]+)?$"},
+        "publication_artifact": {"$ref": "#/$defs/artifact_locator"},
+        "authorization_artifact": {"$ref": "#/$defs/artifact_locator"},
+        "checked_at": {"type": "string"},
+        "evidence_path": {"type": "string"},
+        "evidence_sha256": {"type": "string"},
+        "evidence_signature_path": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "model_quality": {
+      "allOf": [{"$ref": "#/$defs/evidence"}],
+      "type": "object",
+      "required": ["source_revision", "image_reference", "fixture_corpus_sha256", "provider_policy_sha256", "corpus_manifest_artifact", "checked_at", "offline_checkpoint", "downstream_quality", "openrouter_free", "deepseek_direct", "evidence_path", "evidence_sha256", "evidence_signature_path"],
+      "properties": {
+        "source_revision": {"type": "string"},
+        "image_reference": {"type": "string"},
+        "fixture_corpus_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "provider_policy_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "corpus_manifest_artifact": {"$ref": "#/$defs/artifact_locator"},
+        "checked_at": {"type": "string"},
+        "offline_checkpoint": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["source_revision", "image_reference", "decision", "offline_enforced", "focused_tests_passed", "focused_tests_skipped_count", "bundle_sha256", "checkpoint_artifact_sha256", "checkpoint_artifact", "checkpoint_bundle", "generated_at"],
+          "properties": {
+            "source_revision": {"type": "string"},
+            "image_reference": {"type": "string"},
+            "decision": {"enum": ["GO", "NO-GO"]},
+            "offline_enforced": {"type": "boolean"},
+            "focused_tests_passed": {"type": "boolean"},
+            "focused_tests_skipped_count": {"type": "integer", "minimum": 0},
+            "bundle_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "checkpoint_artifact_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "checkpoint_artifact": {"$ref": "#/$defs/file_locator"},
+            "checkpoint_bundle": {"$ref": "#/$defs/file_locator"},
+            "generated_at": {"type": "string"}
+          }
+        },
+        "downstream_quality": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["source_revision", "image_reference", "fixture_corpus_sha256", "eligibility_set_sha256", "decision", "verified", "provider", "route", "evaluation_method", "model_id", "paid_campaign_authorization_id", "paid_campaign_id", "paid_campaign_cohort_id", "paid_campaign_identity_sha256", "spend_usd", "eligible_fixture_count", "evaluated_fixture_count", "report_sha256", "generated_at", "thresholds", "metrics", "eligibility_artifact", "evaluation_artifact", "provider_response_artifact", "cost_artifact"],
+          "properties": {
+            "source_revision": {"type": "string"},
+            "image_reference": {"type": "string"},
+            "fixture_corpus_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "eligibility_set_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "decision": {"enum": ["GO", "NO-GO"]},
+            "verified": {"type": "boolean"},
+            "provider": {"const": "deepseek"},
+            "route": {"const": "direct"},
+            "evaluation_method": {"const": "direct_provider_judge"},
+            "model_id": {"type": "string", "minLength": 1},
+            "paid_campaign_authorization_id": {"type": "string", "minLength": 8},
+            "paid_campaign_id": {"type": "string", "minLength": 8},
+            "paid_campaign_cohort_id": {"type": "string", "minLength": 8},
+            "paid_campaign_identity_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "spend_usd": {"type": "number", "minimum": 0},
+            "eligible_fixture_count": {"type": "integer", "minimum": 0},
+            "evaluated_fixture_count": {"type": "integer", "minimum": 0},
+            "report_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "generated_at": {"type": "string"},
+            "eligibility_artifact": {"$ref": "#/$defs/artifact_locator"},
+            "evaluation_artifact": {"$ref": "#/$defs/artifact_locator"},
+            "provider_response_artifact": {"$ref": "#/$defs/artifact_locator"},
+            "cost_artifact": {"$ref": "#/$defs/artifact_locator"},
+            "thresholds": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["min_raw_correct_rate", "min_compressed_correct_rate", "max_quality_degradation", "min_semantic_similarity", "min_critical_detail_retention", "min_locked_span_recall", "max_pii_leakage_count", "max_introduced_duplicate_count"],
+              "properties": {
+                "min_raw_correct_rate": {"type": "number", "minimum": 0, "maximum": 1},
+                "min_compressed_correct_rate": {"type": "number", "minimum": 0, "maximum": 1},
+                "max_quality_degradation": {"type": "number", "minimum": 0, "maximum": 1},
+                "min_semantic_similarity": {"type": "number", "minimum": 0, "maximum": 1},
+                "min_critical_detail_retention": {"type": "number", "minimum": 0, "maximum": 1},
+                "min_locked_span_recall": {"type": "number", "minimum": 0, "maximum": 1},
+                "max_pii_leakage_count": {"type": "integer", "minimum": 0},
+                "max_introduced_duplicate_count": {"type": "integer", "minimum": 0}
+              }
+            },
+            "metrics": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["raw_correct_rate", "compressed_correct_rate", "quality_degradation", "semantic_similarity", "critical_detail_retention", "locked_span_recall", "pii_leakage_count", "introduced_duplicate_count"],
+              "properties": {
+                "raw_correct_rate": {"type": "number", "minimum": 0, "maximum": 1},
+                "compressed_correct_rate": {"type": "number", "minimum": 0, "maximum": 1},
+                "quality_degradation": {"type": "number", "minimum": -1, "maximum": 1},
+                "semantic_similarity": {"type": "number", "minimum": 0, "maximum": 1},
+                "critical_detail_retention": {"type": "number", "minimum": 0, "maximum": 1},
+                "locked_span_recall": {"type": "number", "minimum": 0, "maximum": 1},
+                "pii_leakage_count": {"type": "integer", "minimum": 0},
+                "introduced_duplicate_count": {"type": "integer", "minimum": 0}
+              }
+            }
+          }
+        },
+        "openrouter_free": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["source_revision", "image_reference", "fixture_corpus_sha256", "eligibility_set_sha256", "decision", "verified", "provider", "route", "evaluation_method", "model_id", "spend_usd", "eligible_fixture_count", "evaluated_fixture_count", "report_sha256", "generated_at", "eligibility_artifact", "evaluation_artifact", "provider_response_artifact", "cost_artifact"],
+          "properties": {
+            "source_revision": {"type": "string"},
+            "image_reference": {"type": "string"},
+            "fixture_corpus_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "eligibility_set_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "decision": {"enum": ["GO", "NO-GO"]},
+            "verified": {"type": "boolean"},
+            "provider": {"const": "openrouter"},
+            "route": {"const": "openrouter_free"},
+            "evaluation_method": {"const": "live_provider_response"},
+            "model_id": {"type": "string", "minLength": 1},
+            "spend_usd": {"type": "number", "minimum": 0},
+            "eligible_fixture_count": {"type": "integer", "minimum": 0},
+            "evaluated_fixture_count": {"type": "integer", "minimum": 0},
+            "report_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "generated_at": {"type": "string"},
+            "eligibility_artifact": {"$ref": "#/$defs/artifact_locator"},
+            "evaluation_artifact": {"$ref": "#/$defs/artifact_locator"},
+            "provider_response_artifact": {"$ref": "#/$defs/artifact_locator"},
+            "cost_artifact": {"$ref": "#/$defs/artifact_locator"}
+          }
+        },
+        "deepseek_direct": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["source_revision", "image_reference", "fixture_corpus_sha256", "eligibility_set_sha256", "decision", "verified", "provider", "route", "evaluation_method", "model_id", "paid_campaign_authorization_id", "paid_campaign_id", "paid_campaign_cohort_id", "paid_campaign_identity_sha256", "authorized_cap_usd", "spend_usd", "eligible_fixture_count", "evaluated_fixture_count", "report_sha256", "generated_at", "eligibility_artifact", "evaluation_artifact", "provider_response_artifact", "cost_artifact"],
+          "properties": {
+            "source_revision": {"type": "string"},
+            "image_reference": {"type": "string"},
+            "fixture_corpus_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "eligibility_set_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "decision": {"enum": ["GO", "NO-GO", "NO_ELIGIBLE_STOP"]},
+            "verified": {"type": "boolean"},
+            "provider": {"const": "deepseek"},
+            "route": {"const": "direct"},
+            "evaluation_method": {"const": "live_provider_response"},
+            "model_id": {"type": "string", "minLength": 1},
+            "paid_campaign_authorization_id": {"type": "string", "minLength": 8},
+            "paid_campaign_id": {"type": "string", "minLength": 8},
+            "paid_campaign_cohort_id": {"type": "string", "minLength": 8},
+            "paid_campaign_identity_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "authorized_cap_usd": {"type": "number", "exclusiveMinimum": 0, "maximum": 2},
+            "spend_usd": {"type": "number", "minimum": 0},
+            "eligible_fixture_count": {"type": "integer", "minimum": 0},
+            "evaluated_fixture_count": {"type": "integer", "minimum": 0},
+            "report_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "generated_at": {"type": "string"},
+            "eligibility_artifact": {"$ref": "#/$defs/artifact_locator"},
+            "evaluation_artifact": {"$ref": "#/$defs/artifact_locator"},
+            "provider_response_artifact": {"$ref": "#/$defs/artifact_locator"},
+            "cost_artifact": {"$ref": "#/$defs/artifact_locator"},
+            "no_eligible_reason": {"type": "string"},
+            "eligibility_report_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+          }
+        },
+        "evidence_path": {"type": "string"},
+        "evidence_sha256": {"type": "string"},
+        "evidence_signature_path": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "provider_audit": {
+      "allOf": [{"$ref": "#/$defs/evidence"}],
+      "type": "object",
+      "required": ["source_revision", "image_reference", "image_digest", "checkpoint_bundle_sha256", "fixture_corpus_sha256", "provider_policy_sha256", "paid_campaign_authorization_id", "paid_campaign_id", "paid_campaign_cohort_id", "paid_campaign_identity_sha256", "provider", "model_id", "provider_request_id_set_sha256", "provider_request_count", "provider_response_id_set_sha256", "provider_response_count", "spend_usd", "tls_egress_log_sha256", "provider_billing_record_sha256", "account_fingerprint_sha256", "request_response_ids_reconciled", "tls_egress_log_reconciled", "provider_billing_reconciled", "exact_spend_reconciled", "provider_account_verified", "provider_audit_key_custody_verified", "checked_at", "evidence_path", "evidence_sha256", "evidence_signature_path"],
+      "properties": {
+        "source_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "image_reference": {"type": "string", "minLength": 1},
+        "image_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "checkpoint_bundle_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "fixture_corpus_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "provider_policy_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "paid_campaign_authorization_id": {"type": "string", "minLength": 8},
+        "paid_campaign_id": {"type": "string", "minLength": 8},
+        "paid_campaign_cohort_id": {"type": "string", "minLength": 8},
+        "paid_campaign_identity_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "provider": {"const": "deepseek"},
+        "model_id": {"type": "string", "minLength": 1},
+        "provider_request_id_set_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "provider_request_count": {"type": "integer", "minimum": 0},
+        "provider_response_id_set_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "provider_response_count": {"type": "integer", "minimum": 0},
+        "spend_usd": {"type": "number", "minimum": 0},
+        "tls_egress_log_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "provider_billing_record_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "account_fingerprint_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "request_response_ids_reconciled": {"type": "boolean"},
+        "tls_egress_log_reconciled": {"type": "boolean"},
+        "provider_billing_reconciled": {"type": "boolean"},
+        "exact_spend_reconciled": {"type": "boolean"},
+        "provider_account_verified": {"type": "boolean"},
+        "provider_audit_key_custody_verified": {"type": "boolean"},
+        "checked_at": {"type": "string"},
+        "evidence_path": {"type": "string"},
+        "evidence_sha256": {"type": "string"},
+        "evidence_signature_path": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "gateway": {
+      "allOf": [{"$ref": "#/$defs/evidence"}],
+      "type": "object",
+      "required": ["url", "dns_resolved_publicly", "tls_chain_trusted", "tls_hostname_verified", "tls_not_after", "readyz_verified", "metrics_route_private_verified", "customer_production_mode_verified", "observed_source_revision", "observed_image_reference", "checked_at"],
+      "properties": {
+        "url": {"type": "string"},
+        "dns_resolved_publicly": {"type": "boolean"},
+        "tls_chain_trusted": {"type": "boolean"},
+        "tls_hostname_verified": {"type": "boolean"},
+        "tls_not_after": {"type": "string"},
+        "readyz_verified": {"type": "boolean"},
+        "metrics_route_private_verified": {"type": "boolean"},
+        "customer_production_mode_verified": {"type": "boolean"},
+        "observed_source_revision": {"type": "string"},
+        "observed_image_reference": {"type": "string"},
+        "checked_at": {"type": "string"},
+        "evidence_path": {"type": "string"},
+        "evidence_sha256": {"type": "string"},
+        "evidence_signature_path": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "runtime_image_binding": {
+      "allOf": [{"$ref": "#/$defs/evidence"}],
+      "type": "object",
+      "required": ["authorized_index_reference", "authorized_index_digest", "node_count", "application_failure_domains", "platforms", "node_binding_set_sha256", "runtime_trust_policy_sha256", "checked_at", "evidence_path", "evidence_sha256", "evidence_signature_path"],
+      "properties": {
+        "authorized_index_reference": {"type": "string", "pattern": "^[^\\s@:]+(/[^\\s@:]+)+@sha256:[0-9a-f]{64}$"},
+        "authorized_index_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+        "node_count": {"type": "integer", "minimum": 2},
+        "application_failure_domains": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"type": "string", "minLength": 3}},
+        "platforms": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["linux/amd64", "linux/arm64"]}},
+        "node_binding_set_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "runtime_trust_policy_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "checked_at": {"type": "string"},
+        "evidence_path": {"type": "string"},
+        "evidence_sha256": {"type": "string"},
+        "evidence_signature_path": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "topology": {
+      "allOf": [{"$ref": "#/$defs/evidence"}],
+      "type": "object",
+      "required": ["application_replicas", "application_failure_domains", "rate_limit_backend", "rate_limit_replicas", "rate_limit_failure_domains", "rate_limit_failover_verified", "global_quota_verified", "rate_limit_transport_tls_verified", "rate_limit_ca_verified", "all_hosts_overcommit_memory_1", "anchor_backend", "anchor_replicas", "anchor_failure_domains", "anchor_failover_verified", "anchor_backup_restore_verified", "checked_at"],
+      "properties": {
+        "application_replicas": {"type": "integer", "minimum": 0},
+        "application_failure_domains": {"type": "array", "items": {"type": "string"}},
+        "rate_limit_backend": {"type": "string"},
+        "rate_limit_replicas": {"type": "integer", "minimum": 0},
+        "rate_limit_failure_domains": {"type": "array", "items": {"type": "string"}},
+        "rate_limit_failover_verified": {"type": "boolean"},
+        "global_quota_verified": {"type": "boolean"},
+        "rate_limit_transport_tls_verified": {"type": "boolean"},
+        "rate_limit_ca_verified": {"type": "boolean"},
+        "all_hosts_overcommit_memory_1": {"type": "boolean"},
+        "anchor_backend": {"type": "string"},
+        "anchor_replicas": {"type": "integer", "minimum": 0},
+        "anchor_failure_domains": {"type": "array", "items": {"type": "string"}},
+        "anchor_failover_verified": {"type": "boolean"},
+        "anchor_backup_restore_verified": {"type": "boolean"},
+        "checked_at": {"type": "string"},
+        "evidence_path": {"type": "string"},
+        "evidence_sha256": {"type": "string"},
+        "evidence_signature_path": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "capacity": {
+      "allOf": [{"$ref": "#/$defs/evidence"}],
+      "type": "object",
+      "required": ["configured_max_concurrency", "tested_concurrency", "sustained_rps", "p95_latency_ms", "p95_slo_ms", "unexpected_5xx_rate", "load_shedding_verified", "checked_at"],
+      "properties": {
+        "configured_max_concurrency": {"type": "integer", "minimum": 0},
+        "tested_concurrency": {"type": "integer", "minimum": 0},
+        "sustained_rps": {"type": "number", "minimum": 0},
+        "p95_latency_ms": {"type": "number", "minimum": 0},
+        "p95_slo_ms": {"type": "number", "minimum": 0},
+        "unexpected_5xx_rate": {"type": "number", "minimum": 0, "maximum": 1},
+        "load_shedding_verified": {"type": "boolean"},
+        "checked_at": {"type": "string"},
+        "evidence_path": {"type": "string"},
+        "evidence_sha256": {"type": "string"},
+        "evidence_signature_path": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "operations": {
+      "allOf": [{"$ref": "#/$defs/evidence"}],
+      "type": "object",
+      "required": ["metrics_scrape_verified", "metrics_aggregation_verified", "alerts_tested", "rollback_drill_verified", "dependency_readiness_refresh_scheduled_verified", "dashboard_uri", "runbook_uri", "on_call_owner", "rollback_owner", "checked_at"],
+      "properties": {
+        "metrics_scrape_verified": {"type": "boolean"},
+        "metrics_aggregation_verified": {"type": "boolean"},
+        "alerts_tested": {"type": "boolean"},
+        "rollback_drill_verified": {"type": "boolean"},
+        "dependency_readiness_refresh_scheduled_verified": {"type": "boolean"},
+        "dashboard_uri": {"type": "string"},
+        "runbook_uri": {"type": "string"},
+        "on_call_owner": {"type": "string"},
+        "rollback_owner": {"type": "string"},
+        "checked_at": {"type": "string"},
+        "evidence_path": {"type": "string"},
+        "evidence_sha256": {"type": "string"},
+        "evidence_signature_path": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "canary": {
+      "allOf": [{"$ref": "#/$defs/evidence"}],
+      "type": "object",
+      "required": ["no_customer_canary_completed", "automated_abort_verified", "connection_draining_verified", "customer_cohort_authorized", "approver", "cohort_id", "checked_at"],
+      "properties": {
+        "no_customer_canary_completed": {"type": "boolean"},
+        "automated_abort_verified": {"type": "boolean"},
+        "connection_draining_verified": {"type": "boolean"},
+        "customer_cohort_authorized": {"type": "boolean"},
+        "approver": {"type": "string"},
+        "cohort_id": {"type": "string"},
+        "checked_at": {"type": "string"},
+        "evidence_path": {"type": "string"},
+        "evidence_sha256": {"type": "string"},
+        "evidence_signature_path": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "rights": {
+      "allOf": [{"$ref": "#/$defs/evidence"}],
+      "type": "object",
+      "required": ["approval_sha256", "trusted_key_sha256", "package_evidence_sha256", "license_sha256", "notice_sha256", "package_artifacts", "checked_at", "evidence_path", "evidence_sha256", "evidence_signature_path"],
+      "properties": {
+        "approval_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "trusted_key_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "package_evidence_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "license_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "notice_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "package_artifacts": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "sha256"],
+            "properties": {
+              "name": {"type": "string", "minLength": 1},
+              "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+            }
+          }
+        },
+        "checked_at": {"type": "string"},
+        "evidence_path": {"type": "string"},
+        "evidence_sha256": {"type": "string"},
+        "evidence_signature_path": {"type": "string"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

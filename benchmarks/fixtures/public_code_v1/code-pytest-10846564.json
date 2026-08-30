@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "code-pytest-10846564",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "code",
+  "risk_tier": "low",
+  "content": "# mypy: allow-untyped-defs\nfrom __future__ import annotations\n\nimport ast\nfrom bisect import bisect_right\nfrom collections.abc import Iterable\nfrom collections.abc import Iterator\nimport inspect\nimport linecache\nimport textwrap\nimport tokenize\nimport types\nfrom typing import overload\nimport warnings\n\n\nclass Source:\n    \"\"\"An immutable object holding a source code fragment.\n\n    When using Source(...), the source lines are deindented.\n    \"\"\"\n\n    def __init__(self, obj: object = None) -> None:\n        if not obj:\n            self.lines: list[str] = []\n            self.raw_lines: list[str] = []\n            return\n        match obj:\n            case Source():\n                self.lines = obj.lines\n                self.raw_lines = obj.raw_lines\n            case tuple() | list():\n                self.lines = deindent(x.rstrip(\"\\n\") for x in obj)\n                self.raw_lines = list(x.rstrip(\"\\n\") for x in obj)\n            case str():\n                self.lines = deindent(obj.split(\"\\n\"))\n                self.raw_lines = obj.split(\"\\n\")\n            case _:\n                try:\n                    rawcode = getrawcode(obj)\n                    src = inspect.getsource(rawcode)\n                except TypeError:\n                    src = inspect.getsource(obj)  # type: ignore[arg-type]\n                self.lines = deindent(src.split(\"\\n\"))\n                self.raw_lines = src.split(\"\\n\")\n\n    def __eq__(self, other: object) -> bool:\n        if not isinstance(other, Source):\n            return NotImplemented\n        return self.lines == other.lines\n\n    # Ignore type because of https://github.com/python/mypy/issues/4266.\n    __hash__ = None  # type: ignore\n\n    @overload\n    def __getitem__(self, key: int) -> str: ...\n\n    @overload\n    def __getitem__(self, key: slice) -> Source: ...\n\n    def __getitem__(self, key: int | slice) -> str | Source:\n        if isinstance(key, int):\n            return self.lines[key]\n        else:\n            if key.step not in (None, 1):\n                raise IndexError(\"cannot slice a Source with a step\")\n            newsource = Source()\n            newsource.lines = self.lines[key.start : key.stop]\n            newsource.raw_lines = self.raw_lines[key.start : key.stop]\n            return newsource\n\n    def __iter__(self) -> Iterator[str]:\n        return iter(self.lines)\n\n    def __len__(self) -> int:\n        return len(self.lines)\n\n    def strip(self) -> Source:\n        \"\"\"Return new Source object with trailing and leading blank lines removed.\"\"\"\n        start, end = 0, len(self)\n        while start < end and not self.lines[start].strip():\n            start += 1\n        while end > start and not self.lines[end - 1].strip():\n            end -= 1\n        source = Source()\n        source.raw_lines = self.raw_lines\n        source.lines[:] = self.lines[start:end]\n        return source\n\n    def indent(self, indent: str = \" \" * 4) -> Source:\n        \"\"\"Return a copy of the source object with all lines indented by the\n        given indent-string.\"\"\"\n        newsource = Source()\n        newsource.raw_lines = self.raw_lines\n        newsource.lines = [(indent + line) for line in self.lines]\n        return newsource\n\n    def getstatement(self, lineno: int) -> Source:\n        \"\"\"Return Source statement which contains the given linenumber\n        (counted from 0).\"\"\"\n        start, end = self.getstatementrange(lineno)\n        return self[start:end]\n\n    def getstatementrange(self, lineno: int) -> tuple[int, int]:\n        \"\"\"Return (start, end) tuple which spans the minimal statement region\n        which containing the given lineno.\"\"\"\n        if not (0 <= lineno < len(self)):\n            raise IndexError(\"lineno out of range\")\n        _ast, start, end = getstatementrange_ast(lineno, self)\n        return start, end\n\n    def deindent(self) -> Source:\n        \"\"\"Return a new Source object deindented.\"\"\"\n        newsource = Source()\n        newsource.lines[:] = deindent(self.lines)\n        newsource.raw_lines = self.raw_lines\n        return newsource\n\n    def __str__(self) -> str:\n        return \"\\n\".join(self.lines)\n\n\n#\n# helper functions\n#\n\n\ndef findsource(obj) -> tuple[Source | None, int]:\n    try:\n        sourcelines, lineno = inspect.findsource(obj)\n    except Exception:\n        # inspect.findsource() fails for code objects whose co_filename is\n        # relative to a directory other than the cwd, e.g. compiled Cython\n        # modules when running pytest from a subdirectory (#1139).\n        # Fall back to linecache, which also searches sys.path for bare\n        # filenames, as the standard traceback module does.\n        code = (\n            obj if isinstance(obj, types.CodeType) else getattr(obj, \"__code__\", None)\n        )\n        if code is None:\n            return None, -1\n        sourcelines = linecache.getlines(code.co_filename)\n        if not sourcelines:\n            return None, -1\n        lineno = code.co_firstlineno - 1\n    source = Source()\n    source.lines = [line.rstrip() for line in sourcelines]\n    source.raw_lines = sourcelines\n    return source, lineno\n\n\ndef getrawcode(obj: object, trycall: bool = True) -> types.CodeType:\n    \"\"\"Return code object for given function.\"\"\"\n    try:\n        return obj.__code__  # type: ignore[attr-defined,no-any-return]\n    except AttributeError:\n        pass\n    if trycall:\n        call = getattr(obj, \"__call__\", None)\n        if call and not isinstance(obj, type):\n            return getrawcode(call, trycall=False)\n    raise TypeError(f\"could not get code object for {obj!r}\")\n\n\ndef deindent(lines: Iterable[str]) -> list[str]:\n    return textwrap.dedent(\"\\n\".join(lines)).splitlines()\n\n\ndef get_statement_startend2(lineno: int, node: ast.AST) -> tuple[int, int | None]:\n    # Flatten all statements and except handlers into one lineno-list.\n    # AST's line numbers start indexing at 1.\n    values: list[int] = []\n    for x in ast.walk(node):\n        if isinstance(x, ast.stmt | ast.ExceptHandler):\n            # The lineno points to the class/def, so need to include the decorators.\n            if isinstance(x, ast.ClassDef | ast.FunctionDef | ast.AsyncFunctionDef):\n                for d in x.decorator_list:\n                    values.append(d.lineno - 1)\n            values.append(x.lineno - 1)\n            for name in (\"finalbody\", \"orelse\"):\n                val: list[ast.stmt] | None = getattr(x, name, None)\n                if val:\n                    # Treat the finally/orelse part as its own statement.\n                    values.append(val[0].lineno - 1 - 1)\n    values.sort()\n    insert_index = bisect_right(values, lineno)\n    if insert_index == 0:\n        return 0, None\n    start = values[insert_index - 1]\n    if insert_index >= len(values):\n        end = None\n    else:\n        end = values[insert_index]\n    return start, end\n\n\ndef getstatementrange_ast(\n    lineno: int,\n    source: Source,\n    assertion: bool = False,\n    astnode: ast.AST | None = None,\n) -> tuple[ast.AST, int, int]:\n    if astnode is None:\n        content = str(source)\n        # See #4260:\n        # Don't produce duplicate warnings when compiling source to find AST.\n        with warnings.catch_warnings():\n            warnings.simplefilter(\"ignore\")\n            astnode = ast.parse(content, \"source\", \"exec\")\n\n    start, end = get_statement_startend2(lineno, astnode)\n    # We need to correct the end:\n    # - ast-parsing strips comments\n    # - there might be empty lines\n    # - we might have lesser indented code blocks at the end\n    if end is None:\n        end = len(source.lines)\n\n    if end > start + 1:\n        # Make sure we don't span differently indented code blocks\n        # by using the BlockFinder helper used which inspect.getsource() uses itself.\n        block_finder = inspect.BlockFinder()\n        # If we start with an indented line, put blockfinder to \"started\" mode.\n        block_finder.started = (\n            bool(source.lines[start]) and source.lines[start][0].isspace()\n        )\n        it = ((x + \"\\n\") for x in source.lines[start:end])\n        try:\n            for tok in tokenize.generate_tokens(lambda: next(it)):\n                block_finder.tokeneater(*tok)\n        except (inspect.EndOfBlock, IndentationError):\n            end = block_finder.last + start\n        except Exception:\n            pass\n\n    # The end might still point to a comment or empty line, correct it.\n    end = min(end, len(source.lines))\n    while end:\n        line = source.lines[end - 1].lstrip()\n        if line.startswith(\"#\") or not line:\n            end -= 1\n        else:\n            break\n    return astnode, start, end\n",
+  "route_labels": [
+    "code_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "code_compressor",
+    "allowed_outcomes": [
+      "code_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "code_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:pytest-dev/pytest",
+    "license": "MIT",
+    "generated_by": null,
+    "external": {
+      "publisher": "pytest-dev/pytest",
+      "source_url": "https://github.com/pytest-dev/pytest/blob/006884bac1cff49d2e2908c20fbbb0f0bc8e671b/src/_pytest/_code/source.py",
+      "retrieved_at": "2026-08-09T10:50:35.933109Z",
+      "licence_basis": "SPDX MIT, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/pytest-dev/pytest",
+      "licence_evidence_sha256": "32c6e3a713cc1781341fff4b2c872ad5287be84640dacfc99bf9ddc29a41e87a",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": null
+    },
+    "generated_at": "2026-08-09T10:50:35.983839Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "code",
+    "python"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

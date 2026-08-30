@@ -1,0 +1,89 @@
+[project]
+name = "tekmyra-core"
+version = "0.1.0"
+authors = [{ name = "LaconIQ", email = "hello@tekmyra.ai" }]
+keywords = ["llm", "context", "compression", "prompt", "tokens"]
+# A PyPI PAGE WITH NO LINKS IS AN ORPHAN. Measured on the red-team pass:
+# the built wheel's METADATA carried zero Project-URL headers, so the
+# package page would have linked to nothing - not the repo, not the paper,
+# not the site that explains the refusal semantics.
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+# Without this the PyPI page is BARE: twine warns long_description missing and
+# the project renders as a name with no story. The staged README is the page.
+readme = "README.md"
+description = "Deterministic and learned context compression, with fidelity verification."
+requires-python = ">=3.11"
+# THE PAYLOAD SHIPPED AN APACHE-2.0 LICENSE FILE AND DECLARED NO LICENCE AT
+# ALL IN ITS METADATA. Tools read the metadata, not the file: PyPI, SBOM
+# scanners and corporate policy gates would have seen an unlicensed package,
+# which blocks exactly the enterprise consumer this release is aimed at and
+# muddies a grant we did make. This states the decision of 2026-08-11 on the
+# tree that decision was FOR; it creates no new grant.
+license = "Apache-2.0"
+# DERIVED from the staged modules' own imports, not copied from the closed
+# project's manifest. tiktoken is a CORE dependency and not an extra: it is
+# imported by token_measure.py, so the token-reduction figure is unobtainable
+# without it. In the closed repo it sat in an optional extra that was missing
+# from the lock entirely, which is why a bare install printed WITHHELD instead
+# of a number.
+dependencies = [
+    "click>=8.1",
+    "numpy>=1.24",
+    "pydantic>=2.5",
+    "scikit-learn>=1.8",
+    "scipy>=1.10",
+    "tiktoken>=0.7",
+    "pyyaml>=6.0"
+]
+
+[project.optional-dependencies]
+transformer = ["torch>=2.0", "transformers>=4.40", "onnxruntime>=1.16", "onnx>=1.15"]
+baselines = ["llmlingua>=0.2", "sentence-transformers>=2.2"]
+dev = ["pytest>=8.0", "jsonschema>=4.0"]
+
+[project.urls]
+Homepage = "https://tekmyra.ai"
+Repository = "https://github.com/laconiq-ai/tekmyra"
+Documentation = "https://tekmyra.ai/docs.html"
+Paper = "https://tekmyra.ai/tekmyra-paper.html"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["tekmyra*"]
+
+# WITHOUT THIS THE WHEEL DOES NOT IMPORT. `packages.find` collects PYTHON
+# MODULES and nothing else, so a payload declaring only that section built a
+# wheel of 61 files, every one a .py, with `contracts/` and `configs/` silently
+# absent. `tekmyra/contracts.py:15` resolves CONTRACTS_DIR at MODULE level, and
+# `tekmyra.contracts` is imported by anchor_interface, runtime, baselines and
+# benchmark — so a normal `pip install` of the published package raised
+# FileNotFoundError on the first import of essentially the whole library.
+#
+# `tekmyra/resources.py` looks in exactly two places: beside the source tree,
+# and `share/tekmyra` under the install's data path. The first only ever
+# resolves for an EDITABLE install, where `contracts/` is still a sibling of
+# `tekmyra/`. That is why this survived every measurement we took — the
+# README's own `pip install -e .`, the verification script, and the container
+# rehearsal all installed editable or ran from a cwd that happened to have
+# `contracts/` sitting next to `tekmyra/`, and `sys.path[0]` did the rest.
+#
+# The source repo declares the same section; the generated one omitted it, so
+# the two builds diverged in the one direction nobody tests. Mirrored here
+# rather than reinvented, because the source mechanism is the one `resources.py`
+# was written against. The durable fix is to move this data INSIDE the package
+# and read it through importlib.resources, which removes the install-layout
+# dependency entirely — structural, and post-launch.
+[tool.setuptools.data-files]
+"share/tekmyra/contracts" = ["contracts/*.json"]
+"share/tekmyra/configs" = ["configs/*.yaml"]

@@ -1,0 +1,213 @@
+{
+  "fixture_id": "rebal-governance-0079",
+  "content_type": "governance",
+  "risk_tier": "high",
+  "content": "Control ID: PCI-DSS-8.2 | Owner: alice@example.com | Status: Open | Finding: Third-party access was granted without documented risk acceptance. Remediation owner: alice@example.com | Due date: 2026-12-27",
+  "route_labels": [
+    "governance_safe_compression",
+    "prose_token_compressor"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 12,
+      "end": 23,
+      "text": "PCI-DSS-8.2",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 33,
+      "end": 50,
+      "text": "alice@example.com",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 193,
+      "end": 203,
+      "text": "2026-12-27",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "governance_safe_compression",
+    "expected_risk": "high",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "control_id",
+        "start": 12,
+        "end": 23,
+        "text": "PCI-DSS-8.2",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "email",
+        "start": 33,
+        "end": 50,
+        "text": "alice@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "date",
+        "start": 193,
+        "end": 203,
+        "text": "2026-12-27",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 12,
+        "end": 23,
+        "text": "PCI-DSS-8.2",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 33,
+        "end": 50,
+        "text": "alice@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 193,
+        "end": 203,
+        "text": "2026-12-27",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 12,
+        "end": 23,
+        "text": "PCI-DSS-8.2",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 33,
+        "end": 50,
+        "text": "alice@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 193,
+        "end": 203,
+        "text": "2026-12-27",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 12,
+        "end": 23,
+        "text": "PCI-DSS-8.2",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 33,
+        "end": 50,
+        "text": "alice@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 193,
+        "end": 203,
+        "text": "2026-12-27",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "governance_safe_compression",
+    "allowed_outcomes": [
+      "governance_safe_compression",
+      "pii_redaction_before_compression",
+      "reject_or_human_review"
+    ],
+    "compressible": false,
+    "redaction_only": true
+  },
+  "provenance": {
+    "source": "enterprise_mock",
+    "license": "proprietary_laconiq_mock",
+    "generated_by": "benchmarks/fixtures/generate_rebalance_fixtures.py",
+    "generated_at": "2026-07-18T01:23:06.809426Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "rebalance",
+    "governance_safe_compression"
+  ],
+  "blocks": [
+    {
+      "type": "prose",
+      "content": "Control ID: PCI-DSS-8.2 | Owner: alice@example.com | Status: Open | Finding: Third-party access was granted without documented risk acceptance. Remediation owner: alice@example.com | Due date: 2026-12-27",
+      "start": 0,
+      "end": 203,
+      "route_label": "prose_token_compressor",
+      "risk_tier": "low",
+      "protected_spans": [
+        {
+          "start": 33,
+          "end": 50,
+          "label": "email",
+          "span_type": "locked",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 163,
+          "end": 180,
+          "label": "email",
+          "span_type": "locked",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 193,
+          "end": 203,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:23:06.818973+00:00",
+  "schema_version": "2.0.0"
+}

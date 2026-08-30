@@ -1,0 +1,85 @@
+{
+  "fixture_id": "prose-004",
+  "content_type": "prose",
+  "risk_tier": "low",
+  "content": "The quarterly review showed a 12% increase in recurring revenue. Customer churn remained below 2% for the third consecutive quarter. The board will meet on 2026-08-15 to approve the budget.",
+  "route_labels": [
+    "prose_token_compressor"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 156,
+      "end": 166,
+      "text": "2026-08-15",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "prose_token_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "date",
+        "start": 156,
+        "end": 166,
+        "text": "2026-08-15",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 156,
+        "end": 166,
+        "text": "2026-08-15",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "prose_token_compressor",
+    "allowed_outcomes": [
+      "prose_token_compressor"
+    ],
+    "compressible": true
+  },
+  "blocks": [
+    {
+      "type": "prose",
+      "content": "The quarterly review showed a 12% increase in recurring revenue. Customer churn remained below 2% for the third consecutive quarter. The board will meet on 2026-08-15 to approve the budget.",
+      "start": 0,
+      "end": 189,
+      "route_label": "prose_token_compressor",
+      "risk_tier": "low",
+      "protected_spans": [
+        {
+          "start": 156,
+          "end": 166,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "public_sample",
+    "license": "MIT",
+    "generated_by": "benchmarks/fixtures/generate_fixtures.py",
+    "generated_at": "2026-07-15T06:43:08.699229Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "prose",
+    "narrative"
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:10:03.544153+00:00",
+  "schema_version": "2.0.0"
+}

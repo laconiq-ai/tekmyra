@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "code-httpx-f2496d25",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "code",
+  "risk_tier": "low",
+  "content": "from __future__ import annotations\n\nimport hashlib\nimport os\nimport re\nimport time\nimport typing\nfrom base64 import b64encode\nfrom urllib.request import parse_http_list\n\nfrom ._exceptions import ProtocolError\nfrom ._models import Cookies, Request, Response\nfrom ._utils import to_bytes, to_str, unquote\n\nif typing.TYPE_CHECKING:  # pragma: no cover\n    from hashlib import _Hash\n\n\n__all__ = [\"Auth\", \"BasicAuth\", \"DigestAuth\", \"FunctionAuth\", \"NetRCAuth\"]\n\n\nclass Auth:\n    \"\"\"\n    Base class for all authentication schemes.\n\n    To implement a custom authentication scheme, subclass `Auth` and override\n    the `.auth_flow()` method.\n\n    If the authentication scheme does I/O such as disk access or network calls, or uses\n    synchronization primitives such as locks, you should override `.sync_auth_flow()`\n    and/or `.async_auth_flow()` instead of `.auth_flow()` to provide specialized\n    implementations that will be used by `Client` and `AsyncClient` respectively.\n    \"\"\"\n\n    requires_request_body = False\n    requires_response_body = False\n\n    def auth_flow(self, request: Request) -> typing.Generator[Request, Response, None]:\n        \"\"\"\n        Execute the authentication flow.\n\n        To dispatch a request, `yield` it:\n\n        ```\n        yield request\n        ```\n\n        The client will `.send()` the response back into the flow generator. You can\n        access it like so:\n\n        ```\n        response = yield request\n        ```\n\n        A `return` (or reaching the end of the generator) will result in the\n        client returning the last response obtained from the server.\n\n        You can dispatch as many requests as is necessary.\n        \"\"\"\n        yield request\n\n    def sync_auth_flow(\n        self, request: Request\n    ) -> typing.Generator[Request, Response, None]:\n        \"\"\"\n        Execute the authentication flow synchronously.\n\n        By default, this defers to `.auth_flow()`. You should override this method\n        when the authentication scheme does I/O and/or uses concurrency primitives.\n        \"\"\"\n        if self.requires_request_body:\n            request.read()\n\n        flow = self.auth_flow(request)\n        request = next(flow)\n\n        while True:\n            response = yield request\n            if self.requires_response_body:\n                response.read()\n\n            try:\n                request = flow.send(response)\n            except StopIteration:\n                break\n\n    async def async_auth_flow(\n        self, request: Request\n    ) -> typing.AsyncGenerator[Request, Response]:\n        \"\"\"\n        Execute the authentication flow asynchronously.\n\n        By default, this defers to `.auth_flow()`. You should override this method\n        when the authentication scheme does I/O and/or uses concurrency primitives.\n        \"\"\"\n        if self.requires_request_body:\n            await request.aread()\n\n        flow = self.auth_flow(request)\n        request = next(flow)\n\n        while True:\n            response = yield request\n            if self.requires_response_body:\n                await response.aread()\n\n            try:\n                request = flow.send(response)\n            except StopIteration:\n                break\n\n\nclass FunctionAuth(Auth):\n    \"\"\"\n    Allows the 'auth' argument to be passed as a simple callable function,\n    that takes the request, and returns a new, modified request.\n    \"\"\"\n\n    def __init__(self, func: typing.Callable[[Request], Request]) -> None:\n        self._func = func\n\n    def auth_flow(self, request: Request) -> typing.Generator[Request, Response, None]:\n        yield self._func(request)\n\n\nclass BasicAuth(Auth):\n    \"\"\"\n    Allows the 'auth' argument to be passed as a (username, password) pair,\n    and uses HTTP Basic authentication.\n    \"\"\"\n\n    def __init__(self, username: str | bytes, password: str | bytes) -> None:\n        self._auth_header = self._build_auth_header(username, password)\n\n    def auth_flow(self, request: Request) -> typing.Generator[Request, Response, None]:\n        request.headers[\"Authorization\"] = self._auth_header\n        yield request\n\n    def _build_auth_header(self, username: str | bytes, password: str | bytes) -> str:\n        userpass = b\":\".join((to_bytes(username), to_bytes(password)))\n        token = b64encode(userpass).decode()\n        return f\"Basic {token}\"\n\n\nclass NetRCAuth(Auth):\n    \"\"\"\n    Use a 'netrc' file to lookup basic auth credentials based on the url host.\n    \"\"\"\n\n    def __init__(self, file: str | None = None) -> None:\n        # Lazily import 'netrc'.\n        # There's no need for us to load this module unless 'NetRCAuth' is being used.\n        import netrc\n\n        self._netrc_info = netrc.netrc(file)\n\n    def auth_flow(self, request: Request) -> typing.Generator[Request, Response, None]:\n        auth_info = self._netrc_info.authenticators(request.url.host)\n        if auth_info is None or not auth_info[2]:\n            # The netrc file did not have authentication credentials for this host.\n            yield request\n        else:\n            # Build a basic auth header with credentials from the netrc file.\n            request.headers[\"Authorization\"] = self._build_auth_header(\n                username=auth_info[0], password=auth_info[2]\n            )\n            yield request\n\n    def _build_auth_header(self, username: str | bytes, password: str | bytes) -> str:\n        userpass = b\":\".join((to_bytes(username), to_bytes(password)))\n        token = b64encode(userpass).decode()\n        return f\"Basic {token}\"\n\n\nclass DigestAuth(Auth):\n    _ALGORITHM_TO_HASH_FUNCTION: dict[str, typing.Callable[[bytes], _Hash]] = {\n        \"MD5\": hashlib.md5,\n        \"MD5-SESS\": hashlib.md5,\n        \"SHA\": hashlib.sha1,\n        \"SHA-SESS\": hashlib.sha1,\n        \"SHA-256\": hashlib.sha256,\n        \"SHA-256-SESS\": hashlib.sha256,\n        \"SHA-512\": hashlib.sha512,\n        \"SHA-512-SESS\": hashlib.sha512,\n    }\n\n    def __init__(self, username: str | bytes, password: str | bytes) -> None:\n        self._username = to_bytes(username)\n        self._password = to_bytes(password)\n        self._last_challenge: _DigestAuthChallenge | None = None\n        self._nonce_count = 1\n\n    def auth_flow(self, request: Request) -> typing.Generator[Request, Response, None]:\n        if self._last_challenge:\n            request.headers[\"Authorization\"] = self._build_auth_header(\n                request, self._last_challenge\n            )\n\n        response = yield request\n\n        if response.status_code != 401 or \"www-authenticate\" not in response.headers:\n            # If the response is not a 401 then we don't\n            # need to build an authenticated request.\n            return\n\n        for auth_header in response.headers.get_list(\"www-authenticate\"):\n            if auth_header.lower().startswith(\"digest \"):\n                break\n        else:\n            # If the response does not include a 'WWW-Authenticate: Digest ...'\n            # header, then we don't need to build an authenticated request.\n            return\n\n        self._last_challenge = self._parse_challenge(request, response, auth_header)\n        self._nonce_count = 1\n\n        request.headers[\"Authorization\"] = self._build_auth_header(\n            request, self._last_challenge\n        )\n        if response.cookies:\n            Cookies(response.cookies).set_cookie_header(request=request)\n        yield request\n\n    def _parse_challenge(\n        self, request: Request, response: Response, auth_header: str\n    ) -> _DigestAuthChallenge:\n        \"\"\"\n        Returns a challenge from a Digest WWW-Authenticate header.\n        These take the form of:\n        `Digest realm=\"realm@host.com\",qop=\"auth,auth-int\",nonce=\"abc\",opaque=\"xyz\"`\n        \"\"\"\n        scheme, _, fields = auth_header.partition(\" \")\n\n        # This method should only ever have been called with a Digest auth header.\n        assert scheme.lower() == \"digest\"\n\n        header_dict: dict[str, str] = {}\n        for field in parse_http_list(fields):\n            key, value = field.strip().split(\"=\", 1)\n            header_dict[key] = unquote(value)\n\n        try:\n            realm = header_dict[\"realm\"].encode()\n            nonce = header_dict[\"nonce\"].encode()\n            algorithm = header_dict.get(\"algorithm\", \"MD5\")\n            opaque = header_dict[\"opaque\"].encode() if \"opaque\" in header_dict else None\n            qop = header_dict[\"qop\"].encode() if \"qop\" in header_dict else None\n            return _DigestAuthChallenge(\n                realm=realm, nonce=nonce, algorithm=algorithm, opaque=opaque, qop=qop\n            )\n        except KeyError as exc:\n            message = \"Malformed Digest WWW-Authenticate header\"\n            raise ProtocolError(message, request=request) from exc\n\n    def _build_auth_header(\n        self, request: Request, challenge: _DigestAuthChallenge\n    ) -> str:\n        hash_func = self._ALGORITHM_TO_HASH_FUNCTION[challenge.algorithm.upper()]\n\n        def digest(data: bytes) -> bytes:\n            return hash_func(data).hexdigest().encode()\n\n        A1 = b\":\".join((self._username, challenge.realm, self._password))\n\n        path = request.url.raw_path\n        A2 = b\":\".join((request.method.encode(), path))\n        # TODO: implement auth-int\n        HA2 = digest(A2)\n\n        nc_value = b\"%08x\" % self._nonce_count\n        cnonce = self._get_client_nonce(self._nonce_count, challenge.nonce)\n        self._nonce_count += 1\n\n        HA1 = digest(A1)\n        if challenge.algorithm.lower().endswith(\"-sess\"):\n            HA1 = digest(b\":\".join((HA1, challenge.nonce, cnonce)))\n\n        qop = self._resolve_qop(challenge.qop, request=request)\n        if qop is None:\n            # Following RFC 2069\n            digest_data = [HA1, challenge.nonce, HA2]\n        else:\n            # Following RFC 2617/7616\n            digest_data = [HA1, challenge.nonce, nc_value, cnonce, qop, HA2]\n\n        format_args = {\n            \"username\": self._username,\n            \"realm\": challenge.realm,\n            \"nonce\": challenge.nonce,\n            \"uri\": path,\n            \"response\": digest(b\":\".join(digest_data)),\n            \"algorithm\": challenge.algorithm.encode(),\n        }\n        if challenge.opaque:\n            format_args[\"opaque\"] = challenge.opaque\n        if qop:\n            format_args[\"qop\"] = b\"auth\"\n            format_args[\"nc\"] = nc_value\n            format_args[\"cnonce\"] = cnonce\n\n        return \"Digest \" + self._get_header_value(format_args)\n\n    def _get_client_nonce(self, nonce_count: int, nonce: bytes) -> bytes:\n        s = str(nonce_count).encode()\n        s += nonce\n        s += time.ctime().encode()\n        s += os.urandom(8)\n\n        return hashlib.sha1(s).hexdigest()[:16].encode()\n\n    def _get_header_value(self, header_fields: dict[str, bytes]) -> str:\n        NON_QUOTED_FIELDS = (\"algorithm\", \"qop\", \"nc\")\n        QUOTED_TEMPLATE = '{}=\"{}\"'\n        NON_QUOTED_TEMPLATE = \"{}={}\"\n\n        header_value = \"\"\n        for i, (field, value) in enumerate(header_fields.items()):\n            if i > 0:\n                header_value += \", \"\n            template = (\n                QUOTED_TEMPLATE\n                if field not in NON_QUOTED_FIELDS\n                else NON_QUOTED_TEMPLATE\n            )\n            header_value += template.format(field, to_str(value))\n\n        return header_value\n\n    def _resolve_qop(self, qop: bytes | None, request: Request) -> bytes | None:\n        if qop is None:\n            return None\n        qops = re.split(b\", ?\", qop)\n        if b\"auth\" in qops:\n            return b\"auth\"\n\n        if qops == [b\"auth-int\"]:\n            raise NotImplementedError(\"Digest auth-int support is not yet implemented\")\n\n        message = f'Unexpected qop value \"{qop!r}\" in digest auth'\n        raise ProtocolError(message, request=request)\n\n\nclass _DigestAuthChallenge(typing.NamedTuple):\n    realm: bytes\n    nonce: bytes\n    algorithm: str\n    opaque: bytes | None\n    qop: bytes | None\n",
+  "route_labels": [
+    "code_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "code_compressor",
+    "allowed_outcomes": [
+      "code_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "code_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:encode/httpx",
+    "license": "BSD-3-Clause",
+    "generated_by": null,
+    "external": {
+      "publisher": "encode/httpx",
+      "source_url": "https://github.com/encode/httpx/blob/b5addb64f0161ff6bfe94c124ef76f6a1fba5254/httpx/_auth.py",
+      "retrieved_at": "2026-08-09T10:50:35.933109Z",
+      "licence_basis": "SPDX BSD-3-Clause, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/encode/httpx",
+      "licence_evidence_sha256": "5ed6d55a881846e6924c391624875889bae6782ad1a93227bb4c846b2d527d0b",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": null
+    },
+    "generated_at": "2026-08-09T10:50:36.004544Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "code",
+    "python"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

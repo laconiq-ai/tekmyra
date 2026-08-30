@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "code-pytest-2ad13208",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "code",
+  "risk_tier": "low",
+  "content": "# mypy: disallow-untyped-defs\n\"\"\"\nThis script is part of the pytest release process which is triggered manually in the Actions\ntab of the repository.\n\nThe user will need to enter the base branch to start the release from (for example\n``6.1.x`` or ``main``) and if it should be a major release.\n\nThe appropriate version will be obtained based on the given branch automatically.\n\nAfter that, it will create a release using the `release` tox environment, and push a new PR.\n\nNote: the script uses the `gh` command-line tool, so `GH_TOKEN` must be set in the environment.\n\"\"\"\n\nfrom __future__ import annotations\n\nimport argparse\nfrom pathlib import Path\nimport re\nfrom subprocess import check_call\nfrom subprocess import check_output\nfrom subprocess import run\n\nfrom colorama import Fore\nfrom colorama import init\n\n\nclass InvalidFeatureRelease(Exception):\n    pass\n\n\nSLUG = \"pytest-dev/pytest\"\n\nPR_BODY = \"\"\"\\\nCreated by the [prepare release pr]\\\n(https://github.com/pytest-dev/pytest/actions/workflows/prepare-release-pr.yml) workflow.\n\nOnce all builds pass and it has been **approved** by one or more maintainers, start the \\\n[deploy](https://github.com/pytest-dev/pytest/actions/workflows/deploy.yml) workflow, using these parameters:\n\n* `Use workflow from`: `release-{version}`.\n* `Release version`: `{version}`.\n\nOr execute on the command line:\n\n```console\ngh workflow run deploy.yml -r release-{version} -f version={version}\n```\n\nAfter the workflow has been approved by a core maintainer, the package will be uploaded to PyPI automatically.\n\"\"\"\n\n\ndef prepare_release_pr(base_branch: str, is_major: bool, prerelease: str) -> None:\n    print()\n    print(f\"Processing release for branch {Fore.CYAN}{base_branch}\")\n\n    check_call([\"git\", \"checkout\", f\"origin/{base_branch}\"])\n\n    changelog = Path(\"changelog\")\n\n    features = list(changelog.glob(\"*.feature.rst\"))\n    breaking = list(changelog.glob(\"*.breaking.rst\"))\n    is_feature_release = bool(features or breaking)\n\n    try:\n        version = find_next_version(\n            base_branch, is_major, is_feature_release, prerelease\n        )\n    except InvalidFeatureRelease as e:\n        print(f\"{Fore.RED}{e}\")\n        raise SystemExit(1) from None\n\n    print(f\"Version: {Fore.CYAN}{version}\")\n\n    release_branch = f\"release-{version}\"\n\n    run(\n        [\"git\", \"config\", \"user.name\", \"pytest bot\"],\n        check=True,\n    )\n    run(\n        [\"git\", \"config\", \"user.email\", \"pytestbot@gmail.com\"],\n        check=True,\n    )\n\n    run(\n        [\"git\", \"checkout\", \"-b\", release_branch, f\"origin/{base_branch}\"],\n        check=True,\n    )\n\n    print(f\"Branch {Fore.CYAN}{release_branch}{Fore.RESET} created.\")\n\n    if is_major:\n        template_name = \"release.major.rst\"\n    elif prerelease:\n        template_name = \"release.pre.rst\"\n    elif is_feature_release:\n        template_name = \"release.minor.rst\"\n    else:\n        template_name = \"release.patch.rst\"\n\n    # important to use tox here because we have changed branches, so dependencies\n    # might have changed as well\n    cmdline = [\n        \"tox\",\n        \"-e\",\n        \"release\",\n        \"--\",\n        version,\n        template_name,\n        release_branch,  # doc_version\n        \"--skip-check-links\",\n    ]\n    print(\"Running\", \" \".join(cmdline))\n    run(\n        cmdline,\n        check=True,\n    )\n\n    run(\n        [\"git\", \"push\", \"origin\", f\"HEAD:{release_branch}\", \"--force\"],\n        check=True,\n    )\n    print(f\"Branch {Fore.CYAN}{release_branch}{Fore.RESET} pushed.\")\n\n    body = PR_BODY.format(version=version)\n    run(\n        [\n            \"gh\",\n            \"pr\",\n            \"create\",\n            f\"--base={base_branch}\",\n            f\"--head={release_branch}\",\n            f\"--title=Release {version}\",\n            f\"--body={body}\",\n            \"--draft\",\n        ],\n        check=True,\n    )\n\n\ndef find_next_version(\n    base_branch: str, is_major: bool, is_feature_release: bool, prerelease: str\n) -> str:\n    output = check_output([\"git\", \"tag\"], encoding=\"UTF-8\")\n    valid_versions = []\n    for v in output.splitlines():\n        m = re.match(r\"\\d.\\d.\\d+$\", v.strip())\n        if m:\n            valid_versions.append(tuple(int(x) for x in v.split(\".\")))\n\n    valid_versions.sort()\n    last_version = valid_versions[-1]\n\n    if is_major:\n        return f\"{last_version[0] + 1}.0.0{prerelease}\"\n    elif is_feature_release:\n        return f\"{last_version[0]}.{last_version[1] + 1}.0{prerelease}\"\n    else:\n        return f\"{last_version[0]}.{last_version[1]}.{last_version[2] + 1}{prerelease}\"\n\n\ndef main() -> None:\n    init(autoreset=True)\n    parser = argparse.ArgumentParser()\n    parser.add_argument(\"base_branch\")\n    parser.add_argument(\"--major\", action=\"store_true\", default=False)\n    parser.add_argument(\"--prerelease\", default=\"\")\n    options = parser.parse_args()\n    prepare_release_pr(\n        base_branch=options.base_branch,\n        is_major=options.major,\n        prerelease=options.prerelease,\n    )\n\n\nif __name__ == \"__main__\":\n    main()\n",
+  "route_labels": [
+    "code_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "code_compressor",
+    "allowed_outcomes": [
+      "code_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "code_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:pytest-dev/pytest",
+    "license": "MIT",
+    "generated_by": null,
+    "external": {
+      "publisher": "pytest-dev/pytest",
+      "source_url": "https://github.com/pytest-dev/pytest/blob/006884bac1cff49d2e2908c20fbbb0f0bc8e671b/scripts/prepare-release-pr.py",
+      "retrieved_at": "2026-08-09T10:50:35.933109Z",
+      "licence_basis": "SPDX MIT, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/pytest-dev/pytest",
+      "licence_evidence_sha256": "32c6e3a713cc1781341fff4b2c872ad5287be84640dacfc99bf9ddc29a41e87a",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": null
+    },
+    "generated_at": "2026-08-09T10:50:35.982372Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "code",
+    "python"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

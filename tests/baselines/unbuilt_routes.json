@@ -1,0 +1,66 @@
+{
+  "_comment": [
+    "RATCHET BASELINE. Routes declared in the frozen v1.0.0 RouteClass taxonomy",
+    "that have no real codec. They fail closed by design (success=False), and",
+    "pruning them from the taxonomy would trip the WP-3 revision gate plus a",
+    "version bump, so they are retained deliberately (Vega ruling 2026-08-03).",
+    "",
+    "THIS LIST MAY ONLY SHRINK. Building a codec removes its route from here.",
+    "Adding a route requires raising max_unbuilt_routes, which is a deliberate,",
+    "reviewable act — that is the whole point of the ratchet. The defect this",
+    "guards is not any single routing table entry: it is that a route could be",
+    "DECLARED WITHOUT BEING BUILT and nothing anywhere failed."
+  ],
+  "max_unbuilt_routes": 5,
+  "unbuilt_routes": [
+    "chart_table_extraction",
+    "extractive_keypoint_compressor",
+    "image_optimizer",
+    "ocr_first",
+    "summarizer"
+  ],
+  "rules_whose_primary_route_is_unbuilt": {
+    "_comment": [
+      "Recorded, NOT fixed, per Vega 2026-08-07. These rules select a primary",
+      "route that has no codec. They are SAFE because each one's fallback IS",
+      "built, so traffic degrades rather than dying — but the consequence is",
+      "that this content never reaches its intended codec. A NEW entry here",
+      "should be treated as a defect, not absorbed silently."
+    ],
+    "R_SUMMARY_CUES": {
+      "primary": "summarizer",
+      "fallback": "prose_token_compressor",
+      "note": "summary-cue content never reaches a summarizer; falls back to prose compression"
+    },
+    "R_CONTENT_TYPE_SUMMARY": {
+      "primary": "summarizer",
+      "fallback": "prose_token_compressor",
+      "note": "content_type=summary never reaches a summarizer; falls back to prose compression"
+    },
+    "R_TABLE_MARKDOWN": {
+      "primary": "chart_table_extraction",
+      "fallback": "reversible_retrieval_mode",
+      "note": "markdown tables never reach a table codec; degrade to no compression"
+    },
+    "R_OCR_HINT": {
+      "primary": "ocr_first",
+      "fallback": "reversible_retrieval_mode",
+      "note": "OCR-hinted content never reaches an OCR codec; degrades to no compression"
+    },
+    "R_IMAGE_METADATA": {
+      "primary": "image_optimizer",
+      "fallback": "passthrough",
+      "note": "image metadata never reaches an image codec; degrades to passthrough"
+    },
+    "R_BULLET_KEYPOINTS": {
+      "primary": "extractive_keypoint_compressor",
+      "fallback": "reversible_retrieval_mode",
+      "note": "bullet notes never reach a keypoint codec; degrade to no compression"
+    },
+    "R_CONTENT_TYPE_BULLETS": {
+      "primary": "extractive_keypoint_compressor",
+      "fallback": "reversible_retrieval_mode",
+      "note": "content_type=bullet_notes never reaches a keypoint codec; degrades to no compression. Found by this ratchet on its first run — it was missing from the hand-written baseline, which is the omission the guard exists to catch."
+    }
+  }
+}

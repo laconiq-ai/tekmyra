@@ -1,0 +1,184 @@
+{
+  "fixture_id": "rebal-chart-0008",
+  "content_type": "table",
+  "risk_tier": "medium",
+  "content": "Q1 2028 sales table \u2014 extract numeric rows\n| Region | Revenue | Cost | Margin |\n|---|---|---|---|\n| North | $150.00 | $112.00 | 25% |\n| South | $165.00 | $113.00 | 32% |\n| East | $137.00 | $87.00 | 36% |\n| West | $113.00 | $74.00 | 35% |\n| Total | $565.00 | $386.00 | 32% |",
+  "route_labels": [
+    "chart_table_extraction"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 43,
+      "end": 79,
+      "text": "| Region | Revenue | Cost | Margin |",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 238,
+      "end": 273,
+      "text": "| Total | $565.00 | $386.00 | 32% |",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "chart_table_extraction",
+    "expected_risk": "medium",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "table_header",
+        "start": 43,
+        "end": 79,
+        "text": "| Region | Revenue | Cost | Margin |",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "total_row",
+        "start": 238,
+        "end": 273,
+        "text": "| Total | $565.00 | $386.00 | 32% |",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 43,
+        "end": 79,
+        "text": "| Region | Revenue | Cost | Margin |",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 238,
+        "end": 273,
+        "text": "| Total | $565.00 | $386.00 | 32% |",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "chart_table_extraction",
+    "allowed_outcomes": [
+      "chart_table_extraction"
+    ],
+    "compressible": true
+  },
+  "provenance": {
+    "source": "public_sample",
+    "license": "MIT",
+    "generated_by": "benchmarks/fixtures/generate_rebalance_fixtures.py",
+    "generated_at": "2026-07-18T01:23:06.769255Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "rebalance",
+    "chart_table_extraction"
+  ],
+  "blocks": [
+    {
+      "type": "table",
+      "content": "Q1 2028 sales table \u2014 extract numeric rows\n| Region | Revenue | Cost | Margin |\n|---|---|---|---|\n| North | $150.00 | $112.00 | 25% |\n| South | $165.00 | $113.00 | 32% |\n| East | $137.00 | $87.00 | 36% |\n| West | $113.00 | $74.00 | 35% |\n| Total | $565.00 | $386.00 | 32% |",
+      "start": 0,
+      "end": 273,
+      "route_label": "chart_table_extraction",
+      "risk_tier": "low",
+      "protected_spans": [
+        {
+          "start": 108,
+          "end": 115,
+          "label": "amount",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 118,
+          "end": 125,
+          "label": "amount",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 144,
+          "end": 151,
+          "label": "amount",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 154,
+          "end": 161,
+          "label": "amount",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 179,
+          "end": 186,
+          "label": "amount",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 189,
+          "end": 195,
+          "label": "amount",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 213,
+          "end": 220,
+          "label": "amount",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 223,
+          "end": 229,
+          "label": "amount",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 248,
+          "end": 255,
+          "label": "amount",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 258,
+          "end": 265,
+          "label": "amount",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:23:06.775856+00:00",
+  "schema_version": "2.0.0"
+}

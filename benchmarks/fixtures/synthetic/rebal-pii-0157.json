@@ -1,0 +1,177 @@
+{
+  "fixture_id": "rebal-pii-0157",
+  "content_type": "pii_message",
+  "risk_tier": "critical",
+  "content": "Customer Riley Reed called from 555-1003. Account 1000000003. SSN: 103-99-2006. Email: riley.reed@example.com. Requested address change to 103 Birch St, Springfield.",
+  "route_labels": [
+    "pii_redaction_before_compression"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 32,
+      "end": 40,
+      "text": "555-1003",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 67,
+      "end": 78,
+      "text": "103-99-2006",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 87,
+      "end": 109,
+      "text": "riley.reed@example.com",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "pii_redaction_before_compression",
+    "expected_risk": "critical",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "phone",
+        "start": 32,
+        "end": 40,
+        "text": "555-1003",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "ssn",
+        "start": 67,
+        "end": 78,
+        "text": "103-99-2006",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "email",
+        "start": 87,
+        "end": 109,
+        "text": "riley.reed@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 32,
+        "end": 40,
+        "text": "555-1003",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 67,
+        "end": 78,
+        "text": "103-99-2006",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 87,
+        "end": 109,
+        "text": "riley.reed@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 32,
+        "end": 40,
+        "text": "555-1003",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 67,
+        "end": 78,
+        "text": "103-99-2006",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 87,
+        "end": 109,
+        "text": "riley.reed@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "pii_redaction_before_compression",
+    "allowed_outcomes": [
+      "pii_redaction_before_compression",
+      "pii_redaction_before_compression",
+      "reject_or_human_review"
+    ],
+    "compressible": false,
+    "redaction_only": true
+  },
+  "provenance": {
+    "source": "enterprise_mock",
+    "license": "proprietary_laconiq_mock",
+    "generated_by": "benchmarks/fixtures/generate_rebalance_fixtures.py",
+    "generated_at": "2026-07-18T01:23:06.865681Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "rebalance",
+    "pii_redaction_before_compression"
+  ],
+  "blocks": [
+    {
+      "type": "pii_message",
+      "content": "Customer Riley Reed called from 555-1003. Account 1000000003. SSN: 103-99-2006. Email: riley.reed@example.com. Requested address change to 103 Birch St, Springfield.",
+      "start": 0,
+      "end": 165,
+      "route_label": "pii_redaction_before_compression",
+      "risk_tier": "critical",
+      "protected_spans": [
+        {
+          "start": 67,
+          "end": 78,
+          "label": "ssn",
+          "span_type": "locked",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 87,
+          "end": 109,
+          "label": "email",
+          "span_type": "locked",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:23:06.867543+00:00",
+  "schema_version": "2.0.0"
+}

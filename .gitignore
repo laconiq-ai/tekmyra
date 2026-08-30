@@ -1,0 +1,25 @@
+# Python build and cache noise — a contributor's first `git status` after
+# `pip install -e '.[dev]'; pytest` should show their change, not our exhaust.
+__pycache__/
+*.pyc
+.venv/
+venv/
+dist/
+build/
+*.egg-info/
+.pytest_cache/
+
+# The reference artifacts: the downloaded release asset itself AND where it
+# unpacks. Both carry a recorded digest and are never repository content —
+# committing a copy would detach it from the digest that verifies it, and the
+# README's own curl lands the tarball exactly here (measured: it was the one
+# thing dirtying `git status` after a by-the-book setup).
+tekmyra-reference-artifacts.tar.gz
+.cache/
+
+# pytest writes benchmark reports here (~2 MB per run, carrying your local
+# absolute paths). Exhaust, not content — the promise at the top of this file
+# was measured broken by exactly this directory.
+benchmarks/results/
+
+.DS_Store

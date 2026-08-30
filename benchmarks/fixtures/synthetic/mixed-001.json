@@ -1,0 +1,195 @@
+{
+  "fixture_id": "mixed-001",
+  "content_type": "mixed",
+  "risk_tier": "medium",
+  "content": "Incident summary: Database latency spike at 2026-07-06T01:23:00Z.\n\n```json\n{\"service\": \"payments\", \"p99_ms\": 850, \"region\": \"us-east-1\"}\n```\n\nLog excerpt:\n2026-07-06T01:23:01Z ERROR payments-7 request-9e3f Timeout waiting for db\nTraceback (most recent call last):\n  File \"/app/db.py\", line 91, in query\n    cursor.execute(\"SELECT * FROM accounts\")\nDBTimeoutError: query exceeded 5000ms\n",
+  "route_labels": [
+    "deterministic_json_compressor",
+    "log_compressor",
+    "passthrough",
+    "prose_token_compressor"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 44,
+      "end": 64,
+      "text": "2026-07-06T01:23:00Z",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "anchor",
+      "start": 193,
+      "end": 205,
+      "text": "request-9e3f",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "passthrough",
+    "expected_risk": "medium",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "timestamp",
+        "start": 44,
+        "end": 64,
+        "text": "2026-07-06T01:23:00Z",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "request_id",
+        "start": 193,
+        "end": 205,
+        "text": "request-9e3f",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 44,
+        "end": 64,
+        "text": "2026-07-06T01:23:00Z",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "anchor",
+        "start": 193,
+        "end": 205,
+        "text": "request-9e3f",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "passthrough",
+    "allowed_outcomes": [
+      "passthrough"
+    ],
+    "compressible": true
+  },
+  "blocks": [
+    {
+      "type": "prose",
+      "content": "Incident summary: Database latency spike at 2026-07-06T01:23:00Z.\n\n```json",
+      "start": 0,
+      "end": 74,
+      "route_label": "prose_token_compressor",
+      "risk_tier": "medium",
+      "protected_spans": [
+        {
+          "start": 44,
+          "end": 64,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "type": "json",
+      "content": "\n{\"service\": \"payments\", \"p99_ms\": 850, \"region\": \"us-east-1\"}\n```\n",
+      "start": 74,
+      "end": 141,
+      "route_label": "deterministic_json_compressor",
+      "risk_tier": "medium",
+      "protected_spans": []
+    },
+    {
+      "type": "prose",
+      "content": "\nLog excerpt:\n",
+      "start": 141,
+      "end": 155,
+      "route_label": "prose_token_compressor",
+      "risk_tier": "medium",
+      "protected_spans": []
+    },
+    {
+      "type": "log",
+      "content": "2026-07-06T01:23:01Z ERROR payments-7 request-9e3f Timeout waiting for db\n",
+      "start": 155,
+      "end": 229,
+      "route_label": "log_compressor",
+      "risk_tier": "medium",
+      "protected_spans": [
+        {
+          "start": 0,
+          "end": 20,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "type": "stacktrace",
+      "content": "Traceback (most recent call last):\n",
+      "start": 229,
+      "end": 264,
+      "route_label": "log_compressor",
+      "risk_tier": "medium",
+      "protected_spans": []
+    },
+    {
+      "type": "prose",
+      "content": "  File \"/app/db.py\", line 91, in query\n    cursor.execute(\"SELECT * FROM accounts\")\n",
+      "start": 264,
+      "end": 348,
+      "route_label": "prose_token_compressor",
+      "risk_tier": "medium",
+      "protected_spans": [
+        {
+          "start": 12,
+          "end": 18,
+          "label": "file_path",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 21,
+          "end": 28,
+          "label": "line_number",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "type": "stacktrace",
+      "content": "DBTimeoutError: query exceeded 5000ms\n",
+      "start": 348,
+      "end": 386,
+      "route_label": "log_compressor",
+      "risk_tier": "medium",
+      "protected_spans": []
+    }
+  ],
+  "provenance": {
+    "source": "synthetic",
+    "license": "CC0-1.0",
+    "generated_by": "benchmarks/fixtures/generate_fixtures.py",
+    "generated_at": "2026-07-15T06:43:08.703304Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "mixed",
+    "incident"
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:10:03.538880+00:00",
+  "schema_version": "2.0.0"
+}

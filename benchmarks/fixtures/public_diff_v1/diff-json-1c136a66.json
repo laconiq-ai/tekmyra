@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "diff-json-1c136a66",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "diff",
+  "risk_tier": "low",
+  "content": "Move the CBOR doc block to the function it describes (#5363)\n\n\ndiff --git a/include/nlohmann/detail/input/binary_reader.hpp b/include/nlohmann/detail/input/binary_reader.hpp\nindex f5d209b..e3574d7 100644\n--- a/include/nlohmann/detail/input/binary_reader.hpp\n+++ b/include/nlohmann/detail/input/binary_reader.hpp\n@@ -465,15 +465,6 @@ class binary_reader\n     // CBOR //\n     //////////\n \n-    /*!\n-    @param[in] get_char  whether a new character should be retrieved from the\n-                         input (true) or whether the last read character should\n-                         be considered instead (false)\n-    @param[in] tag_handler how CBOR tags should be treated\n-\n-    @return whether a valid CBOR value was passed to the SAX parser\n-    */\n-\n     template<typename NumberType>\n     bool get_cbor_negative_integer()\n     {\n@@ -492,6 +483,14 @@ class binary_reader\n         return sax->number_integer(static_cast<number_integer_t>(-1) - static_cast<number_integer_t>(number));\n     }\n \n+    /*!\n+    @param[in] get_char  whether a new character should be retrieved from the\n+                         input (true) or whether the last read character should\n+                         be considered instead (false)\n+    @param[in] tag_handler how CBOR tags should be treated\n+\n+    @return whether a valid CBOR value was passed to the SAX parser\n+    */\n     bool parse_cbor_internal(const bool get_char,\n                              const cbor_tag_handler_t tag_handler)\n     {\ndiff --git a/single_include/nlohmann/json.hpp b/single_include/nlohmann/json.hpp\nindex fa6199d..724865e 100644\n--- a/single_include/nlohmann/json.hpp\n+++ b/single_include/nlohmann/json.hpp\n@@ -11087,15 +11087,6 @@ class binary_reader\n     // CBOR //\n     //////////\n \n-    /*!\n-    @param[in] get_char  whether a new character should be retrieved from the\n-                         input (true) or whether the last read character should\n-                         be considered instead (false)\n-    @param[in] tag_handler how CBOR tags should be treated\n-\n-    @return whether a valid CBOR value was passed to the SAX parser\n-    */\n-\n     template<typename NumberType>\n     bool get_cbor_negative_integer()\n     {\n@@ -11114,6 +11105,14 @@ class binary_reader\n         return sax->number_integer(static_cast<number_integer_t>(-1) - static_cast<number_integer_t>(number));\n     }\n \n+    /*!\n+    @param[in] get_char  whether a new character should be retrieved from the\n+                         input (true) or whether the last read character should\n+                         be considered instead (false)\n+    @param[in] tag_handler how CBOR tags should be treated\n+\n+    @return whether a valid CBOR value was passed to the SAX parser\n+    */\n     bool parse_cbor_internal(const bool get_char,\n                              const cbor_tag_handler_t tag_handler)\n     {\n",
+  "route_labels": [
+    "diff_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "diff_compressor",
+    "allowed_outcomes": [
+      "diff_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "diff_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:nlohmann/json",
+    "license": "MIT",
+    "generated_by": null,
+    "external": {
+      "publisher": "nlohmann/json",
+      "source_url": "https://github.com/nlohmann/json/commit/1c136a66c4f5b826d82cd5dbb1161c466d943b3e",
+      "retrieved_at": "2026-08-09T12:18:29.629243Z",
+      "licence_basis": "SPDX MIT, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/nlohmann/json",
+      "licence_evidence_sha256": "25cfc0a8d012917eb6eb57b4cbae2916dc744e04a13bd56db51f9af401ef8f42",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": "git show, against a local clone \u2014 no foreign code executed"
+    },
+    "generated_at": "2026-08-09T12:18:30.378648Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "diff",
+    "json"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

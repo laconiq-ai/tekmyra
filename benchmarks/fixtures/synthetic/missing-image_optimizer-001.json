@@ -1,0 +1,104 @@
+{
+  "fixture_id": "missing-image_optimizer-001",
+  "content_type": "image_metadata",
+  "risk_tier": "low",
+  "content": "Image payload metadata \u2014 format=JPEG, width=2560, height=1440, dimensions=2560x1440, base64_length=27500 bytes, filename=diagram_02.png, color_space=RGBA, codec=jpeg. Optimization hint: quality=86, target_display=desktop.",
+  "route_labels": [
+    "image_optimizer"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 121,
+      "end": 135,
+      "text": "diagram_02.png",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 74,
+      "end": 83,
+      "text": "2560x1440",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "image_optimizer",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "filename",
+        "start": 121,
+        "end": 135,
+        "text": "diagram_02.png",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "dimensions",
+        "start": 74,
+        "end": 83,
+        "text": "2560x1440",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 121,
+        "end": 135,
+        "text": "diagram_02.png",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 74,
+        "end": 83,
+        "text": "2560x1440",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "image_optimizer",
+    "allowed_outcomes": [
+      "image_optimizer"
+    ],
+    "compressible": true
+  },
+  "blocks": [
+    {
+      "type": "image_metadata",
+      "content": "Image payload metadata \u2014 format=JPEG, width=2560, height=1440, dimensions=2560x1440, base64_length=27500 bytes, filename=diagram_02.png, color_space=RGBA, codec=jpeg. Optimization hint: quality=86, target_display=desktop.",
+      "start": 0,
+      "end": 221,
+      "route_label": "image_optimizer",
+      "risk_tier": "low",
+      "protected_spans": []
+    }
+  ],
+  "provenance": {
+    "source": "public_sample",
+    "license": "MIT",
+    "generated_by": "benchmarks/fixtures/generate_missing_routes.py",
+    "generated_at": "2026-07-15T06:43:09.103466Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "missing",
+    "image_optimizer",
+    "payload_metadata"
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:10:03.524111+00:00",
+  "schema_version": "2.0.0"
+}

@@ -1,0 +1,177 @@
+{
+  "fixture_id": "rebal-pii-0154",
+  "content_type": "pii_message",
+  "risk_tier": "critical",
+  "content": "Customer Jordan Morales called from 555-1000. Account 1000000000. SSN: 100-32-8228. Email: jordan.morales@example.com. Requested address change to 100 Maple St, Springfield.",
+  "route_labels": [
+    "pii_redaction_before_compression"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 36,
+      "end": 44,
+      "text": "555-1000",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 71,
+      "end": 82,
+      "text": "100-32-8228",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 91,
+      "end": 117,
+      "text": "jordan.morales@example.com",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "pii_redaction_before_compression",
+    "expected_risk": "critical",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "phone",
+        "start": 36,
+        "end": 44,
+        "text": "555-1000",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "ssn",
+        "start": 71,
+        "end": 82,
+        "text": "100-32-8228",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "email",
+        "start": 91,
+        "end": 117,
+        "text": "jordan.morales@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 36,
+        "end": 44,
+        "text": "555-1000",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 71,
+        "end": 82,
+        "text": "100-32-8228",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 91,
+        "end": 117,
+        "text": "jordan.morales@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 36,
+        "end": 44,
+        "text": "555-1000",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 71,
+        "end": 82,
+        "text": "100-32-8228",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 91,
+        "end": 117,
+        "text": "jordan.morales@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "pii_redaction_before_compression",
+    "allowed_outcomes": [
+      "pii_redaction_before_compression",
+      "pii_redaction_before_compression",
+      "reject_or_human_review"
+    ],
+    "compressible": false,
+    "redaction_only": true
+  },
+  "provenance": {
+    "source": "enterprise_mock",
+    "license": "proprietary_laconiq_mock",
+    "generated_by": "benchmarks/fixtures/generate_rebalance_fixtures.py",
+    "generated_at": "2026-07-18T01:23:06.865601Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "rebalance",
+    "pii_redaction_before_compression"
+  ],
+  "blocks": [
+    {
+      "type": "pii_message",
+      "content": "Customer Jordan Morales called from 555-1000. Account 1000000000. SSN: 100-32-8228. Email: jordan.morales@example.com. Requested address change to 100 Maple St, Springfield.",
+      "start": 0,
+      "end": 173,
+      "route_label": "pii_redaction_before_compression",
+      "risk_tier": "critical",
+      "protected_spans": [
+        {
+          "start": 71,
+          "end": 82,
+          "label": "ssn",
+          "span_type": "locked",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 91,
+          "end": 117,
+          "label": "email",
+          "span_type": "locked",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:23:06.866236+00:00",
+  "schema_version": "2.0.0"
+}

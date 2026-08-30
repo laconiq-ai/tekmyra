@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "diff-express-ae6dd376",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "diff",
+  "risk_tier": "low",
+  "content": "feat: allow conditional revalidation for QUERY requests (#7366)\n\n\ndiff --git a/History.md b/History.md\nindex 9e6ee90..8a4293a 100644\n--- a/History.md\n+++ b/History.md\n@@ -9,6 +9,16 @@\n \n ## \ud83d\ude80 Improvements\n \n+* Allow conditional revalidation for QUERY requests. `req.fresh` previously only validated freshness for GET and HEAD requests, so QUERY responses never returned 304 despite a matching validator. Since QUERY is a safe, idempotent, and cacheable method that supports conditional requests, it is now included in the freshness check - by [@Cherry](https://github.com/Cherry) in [#7366](https://github.com/expressjs/express/pull/7366)\n+\n+    ```js\n+    // QUERY /reports with If-None-Match: \"12345\"\n+    app.query('/reports', (req, res) => {\n+      res.set('ETag', '\"12345\"');\n+      res.send(results); // now responds 304 Not Modified\n+    });\n+    ```\n+\n * Improve HTML structure in `res.redirect()` responses when HTML format is accepted by adding `<!DOCTYPE html>`, `<title>`, and `<body>` tags for better browser compatibility - by [@Bernice55231](https://github.com/Bernice55231) in [#5167](https://github.com/expressjs/express/pull/5167)\n \n * When calling `app.render` with options set to null, the locals object is handled correctly, preventing unexpected errors and making the method behave the same as when options is omitted or an empty object is passed - by [AkaHarshit](https://github.com/AkaHarshit) in [#6903](https://github.com/expressjs/express/pull/6903)\ndiff --git a/lib/request.js b/lib/request.js\nindex 68243f5..1eb7f9c 100644\n--- a/lib/request.js\n+++ b/lib/request.js\n@@ -471,8 +471,8 @@ defineGetter(req, 'fresh', function(){\n   var res = this.res\n   var status = res.statusCode\n \n-  // GET or HEAD for weak freshness validation only\n-  if ('GET' !== method && 'HEAD' !== method) return false;\n+  // GET, HEAD, or QUERY for weak freshness validation only\n+  if ('GET' !== method && 'HEAD' !== method && 'QUERY' !== method) return false;\n \n   // 2xx or 304 as per rfc2616 14.26\n   if ((status >= 200 && status < 300) || 304 === status) {\ndiff --git a/test/req.fresh.js b/test/req.fresh.js\nindex 3bf6a1f..318a651 100644\n--- a/test/req.fresh.js\n+++ b/test/req.fresh.js\n@@ -2,6 +2,7 @@\n \n var express = require('../')\n   , request = require('supertest');\n+var shouldSkipQuery = require('./support/utils').shouldSkipQuery\n \n describe('req', function(){\n   describe('.fresh', function(){\n@@ -47,6 +48,43 @@ describe('req', function(){\n       .expect(200, 'false', done);\n     })\n \n+    it('should return true for a QUERY request with a body when the resource is not modified', function(done){\n+      if (shouldSkipQuery(process.versions.node)) {\n+        this.skip()\n+      }\n+      var app = express();\n+      var etag = '\"12345\"';\n+\n+      app.use(function(req, res){\n+        res.set('ETag', etag);\n+        res.send(req.fresh);\n+      });\n+\n+      request(app)\n+      .query('/')\n+      .set('If-None-Match', etag)\n+      .send({ ids: ['a', 'b'] })\n+      .expect(304, done);\n+    })\n+\n+    it('should return false for a QUERY request with a body when the resource is modified', function(done){\n+      if (shouldSkipQuery(process.versions.node)) {\n+        this.skip()\n+      }\n+      var app = express();\n+\n+      app.use(function(req, res){\n+        res.set('ETag', '\"123\"');\n+        res.send(req.fresh);\n+      });\n+\n+      request(app)\n+      .query('/')\n+      .set('If-None-Match', '\"12345\"')\n+      .send({ ids: ['a', 'b'] })\n+      .expect(200, 'false', done);\n+    })\n+\n     it('should ignore \"If-Modified-Since\" when \"If-None-Match\" is present', function(done) {\n       var app = express();\n       const etag = '\"FooBar\"'\n",
+  "route_labels": [
+    "diff_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "diff_compressor",
+    "allowed_outcomes": [
+      "diff_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "diff_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:expressjs/express",
+    "license": "MIT",
+    "generated_by": null,
+    "external": {
+      "publisher": "expressjs/express",
+      "source_url": "https://github.com/expressjs/express/commit/ae6dd37680e3a00618d6c8a3e522f0ee4eeba1a4",
+      "retrieved_at": "2026-08-09T12:18:29.629243Z",
+      "licence_basis": "SPDX MIT, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/expressjs/express",
+      "licence_evidence_sha256": "b43a1f8265068984bedfb796d8101f0f7769292cafb95f49d64c11bce5cd2769",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": "git show, against a local clone \u2014 no foreign code executed"
+    },
+    "generated_at": "2026-08-09T12:18:30.437722Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "diff",
+    "express"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

@@ -1,0 +1,176 @@
+{
+  "fixture_id": "gov-000",
+  "content_type": "governance",
+  "risk_tier": "high",
+  "content": "Control ID: SOC2-CC7.2 | Owner: alice@example.com | Status: Open | Finding: Access reviews were not completed by the 2026-06-30 deadline. Remediation owner: bob@example.com | Due date: 2026-07-20",
+  "route_labels": [
+    "governance_safe_compression",
+    "prose_token_compressor"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 12,
+      "end": 22,
+      "text": "SOC2-CC7.2",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 32,
+      "end": 49,
+      "text": "alice@example.com",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "governance_safe_compression",
+    "expected_risk": "high",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "control_id",
+        "start": 12,
+        "end": 22,
+        "text": "SOC2-CC7.2",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "email",
+        "start": 32,
+        "end": 49,
+        "text": "alice@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 12,
+        "end": 22,
+        "text": "SOC2-CC7.2",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 32,
+        "end": 49,
+        "text": "alice@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 12,
+        "end": 22,
+        "text": "SOC2-CC7.2",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 32,
+        "end": 49,
+        "text": "alice@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 12,
+        "end": 22,
+        "text": "SOC2-CC7.2",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 32,
+        "end": 49,
+        "text": "alice@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "governance_safe_compression",
+    "allowed_outcomes": [
+      "governance_safe_compression",
+      "pii_redaction_before_compression",
+      "reject_or_human_review"
+    ],
+    "compressible": false,
+    "redaction_only": true
+  },
+  "blocks": [
+    {
+      "type": "prose",
+      "content": "Control ID: SOC2-CC7.2 | Owner: alice@example.com | Status: Open | Finding: Access reviews were not completed by the 2026-06-30 deadline. Remediation owner: bob@example.com | Due date: 2026-07-20",
+      "start": 0,
+      "end": 195,
+      "route_label": "prose_token_compressor",
+      "risk_tier": "high",
+      "protected_spans": [
+        {
+          "start": 32,
+          "end": 49,
+          "label": "email",
+          "span_type": "locked",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 117,
+          "end": 127,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 157,
+          "end": 172,
+          "label": "email",
+          "span_type": "locked",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 185,
+          "end": 195,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "enterprise_mock",
+    "license": "proprietary_laconiq_mock",
+    "generated_by": "benchmarks/fixtures/generate_fixtures.py",
+    "generated_at": "2026-07-15T06:43:08.700398Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "governance",
+    "high-risk"
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:10:03.506892+00:00",
+  "schema_version": "2.0.0"
+}

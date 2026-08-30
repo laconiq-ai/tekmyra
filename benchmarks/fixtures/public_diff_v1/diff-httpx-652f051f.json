@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "diff-httpx-652f051f",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "diff",
+  "risk_tier": "low",
+  "content": "Documentation for SSL_CERT_FILE and SSL_CERT_DIR (#3579)\n\n\ndiff --git a/docs/advanced/ssl.md b/docs/advanced/ssl.md\nindex da40ed2..f61e82c 100644\n--- a/docs/advanced/ssl.md\n+++ b/docs/advanced/ssl.md\n@@ -71,19 +71,7 @@ client = httpx.Client(verify=ctx)\n \n ### Working with `SSL_CERT_FILE` and `SSL_CERT_DIR`\n \n-Unlike `requests`, the `httpx` package does not automatically pull in [the environment variables `SSL_CERT_FILE` or `SSL_CERT_DIR`](https://www.openssl.org/docs/manmaster/man3/SSL_CTX_set_default_verify_paths.html). If you want to use these they need to be enabled explicitly.\n-\n-For example...\n-\n-```python\n-# Use `SSL_CERT_FILE` or `SSL_CERT_DIR` if configured.\n-# Otherwise default to certifi.\n-ctx = ssl.create_default_context(\n-    cafile=os.environ.get(\"SSL_CERT_FILE\", certifi.where()),\n-    capath=os.environ.get(\"SSL_CERT_DIR\"),\n-)\n-client = httpx.Client(verify=ctx)\n-```\n+`httpx` does respect the `SSL_CERT_FILE` and `SSL_CERT_DIR` environment variables by default. For details, refer to [the section on the environment variables page](../environment_variables.md#ssl_cert_file).\n \n ### Making HTTPS requests to a local server\n \ndiff --git a/docs/environment_variables.md b/docs/environment_variables.md\nindex 4f7a9f5..0364deb 100644\n--- a/docs/environment_variables.md\n+++ b/docs/environment_variables.md\n@@ -51,3 +51,29 @@ python -c \"import httpx; httpx.get('http://example.com')\"\n python -c \"import httpx; httpx.get('http://127.0.0.1:5000/my-api')\"\n python -c \"import httpx; httpx.get('https://www.python-httpx.org')\"\n ```\n+\n+## `SSL_CERT_FILE`\n+\n+Valid values: a filename\n+\n+If this environment variable is set then HTTPX will load\n+CA certificate from the specified file instead of the default\n+location.\n+\n+Example:\n+\n+```console\n+SSL_CERT_FILE=/path/to/ca-certs/ca-bundle.crt python -c \"import httpx; httpx.get('https://example.com')\"\n+```\n+\n+## `SSL_CERT_DIR`\n+\n+Valid values: a directory following an [OpenSSL specific layout](https://www.openssl.org/docs/manmaster/man3/SSL_CTX_load_verify_locations.html).\n+\n+If this environment variable is set and the directory follows an [OpenSSL specific layout](https://www.openssl.org/docs/manmaster/man3/SSL_CTX_load_verify_locations.html) (ie. you ran `c_rehash`) then HTTPX will load CA certificates from this directory instead of the default location.\n+\n+Example:\n+\n+```console\n+SSL_CERT_DIR=/path/to/ca-certs/ python -c \"import httpx; httpx.get('https://example.com')\"\n+```\n",
+  "route_labels": [
+    "diff_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "diff_compressor",
+    "allowed_outcomes": [
+      "diff_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "diff_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:encode/httpx",
+    "license": "BSD-3-Clause",
+    "generated_by": null,
+    "external": {
+      "publisher": "encode/httpx",
+      "source_url": "https://github.com/encode/httpx/commit/652f051feaf1ab2828e1812eb0c48f9046a8b5ce",
+      "retrieved_at": "2026-08-09T12:18:29.629243Z",
+      "licence_basis": "SPDX BSD-3-Clause, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/encode/httpx",
+      "licence_evidence_sha256": "3f64e00043774d244e4df840ae2b20a673126e31204a97b7dff2fa0dff98e606",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": "git show, against a local clone \u2014 no foreign code executed"
+    },
+    "generated_at": "2026-08-09T12:18:29.868456Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "diff",
+    "httpx"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

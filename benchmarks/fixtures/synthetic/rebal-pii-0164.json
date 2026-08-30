@@ -1,0 +1,177 @@
+{
+  "fixture_id": "rebal-pii-0164",
+  "content_type": "pii_message",
+  "risk_tier": "critical",
+  "content": "Customer Morgan Chen called from 555-1010. Account 1000000010. SSN: 110-81-2820. Email: morgan.chen@example.com. Requested address change to 110 Willow St, Springfield.",
+  "route_labels": [
+    "pii_redaction_before_compression"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 33,
+      "end": 41,
+      "text": "555-1010",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 68,
+      "end": 79,
+      "text": "110-81-2820",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 88,
+      "end": 111,
+      "text": "morgan.chen@example.com",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "pii_redaction_before_compression",
+    "expected_risk": "critical",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "phone",
+        "start": 33,
+        "end": 41,
+        "text": "555-1010",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "ssn",
+        "start": 68,
+        "end": 79,
+        "text": "110-81-2820",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "email",
+        "start": 88,
+        "end": 111,
+        "text": "morgan.chen@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 33,
+        "end": 41,
+        "text": "555-1010",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 68,
+        "end": 79,
+        "text": "110-81-2820",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 88,
+        "end": 111,
+        "text": "morgan.chen@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 33,
+        "end": 41,
+        "text": "555-1010",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 68,
+        "end": 79,
+        "text": "110-81-2820",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 88,
+        "end": 111,
+        "text": "morgan.chen@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "pii_redaction_before_compression",
+    "allowed_outcomes": [
+      "pii_redaction_before_compression",
+      "pii_redaction_before_compression",
+      "reject_or_human_review"
+    ],
+    "compressible": false,
+    "redaction_only": true
+  },
+  "provenance": {
+    "source": "enterprise_mock",
+    "license": "proprietary_laconiq_mock",
+    "generated_by": "benchmarks/fixtures/generate_rebalance_fixtures.py",
+    "generated_at": "2026-07-18T01:23:06.865849Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "rebalance",
+    "pii_redaction_before_compression"
+  ],
+  "blocks": [
+    {
+      "type": "pii_message",
+      "content": "Customer Morgan Chen called from 555-1010. Account 1000000010. SSN: 110-81-2820. Email: morgan.chen@example.com. Requested address change to 110 Willow St, Springfield.",
+      "start": 0,
+      "end": 168,
+      "route_label": "pii_redaction_before_compression",
+      "risk_tier": "critical",
+      "protected_spans": [
+        {
+          "start": 68,
+          "end": 79,
+          "label": "ssn",
+          "span_type": "locked",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 88,
+          "end": 111,
+          "label": "email",
+          "span_type": "locked",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:23:06.870885+00:00",
+  "schema_version": "2.0.0"
+}

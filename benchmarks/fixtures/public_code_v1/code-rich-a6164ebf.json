@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "code-rich-a6164ebf",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "code",
+  "risk_tier": "low",
+  "content": "\"\"\"Same as the table_movie.py but uses Live to update\"\"\"\nimport time\nfrom contextlib import contextmanager\n\nfrom rich import box\nfrom rich.align import Align\nfrom rich.console import Console\nfrom rich.live import Live\nfrom rich.table import Table\nfrom rich.text import Text\n\nTABLE_DATA = [\n    [\n        \"May 25, 1977\",\n        \"Star Wars Ep. [b]IV[/]: [i]A New Hope\",\n        \"$11,000,000\",\n        \"$1,554,475\",\n        \"$775,398,007\",\n    ],\n    [\n        \"May 21, 1980\",\n        \"Star Wars Ep. [b]V[/]: [i]The Empire Strikes Back\",\n        \"$23,000,000\",\n        \"$4,910,483\",\n        \"$547,969,004\",\n    ],\n    [\n        \"May 25, 1983\",\n        \"Star Wars Ep. [b]VI[/b]: [i]Return of the Jedi\",\n        \"$32,500,000\",\n        \"$23,019,618\",\n        \"$475,106,177\",\n    ],\n    [\n        \"May 19, 1999\",\n        \"Star Wars Ep. [b]I[/b]: [i]The phantom Menace\",\n        \"$115,000,000\",\n        \"$64,810,870\",\n        \"$1,027,044,677\",\n    ],\n    [\n        \"May 16, 2002\",\n        \"Star Wars Ep. [b]II[/b]: [i]Attack of the Clones\",\n        \"$115,000,000\",\n        \"$80,027,814\",\n        \"$656,695,615\",\n    ],\n    [\n        \"May 19, 2005\",\n        \"Star Wars Ep. [b]III[/b]: [i]Revenge of the Sith\",\n        \"$115,500,000\",\n        \"$380,270,577\",\n        \"$848,998,877\",\n    ],\n]\n\nconsole = Console()\n\nBEAT_TIME = 0.04\n\n\n@contextmanager\ndef beat(length: int = 1) -> None:\n    yield\n    time.sleep(length * BEAT_TIME)\n\n\ntable = Table(show_footer=False)\ntable_centered = Align.center(table)\n\nconsole.clear()\n\nwith Live(table_centered, console=console, screen=False, refresh_per_second=20):\n    with beat(10):\n        table.add_column(\"Release Date\", no_wrap=True)\n\n    with beat(10):\n        table.add_column(\"Title\", Text.from_markup(\"[b]Total\", justify=\"right\"))\n\n    with beat(10):\n        table.add_column(\"Budget\", \"[u]$412,000,000\", no_wrap=True)\n\n    with beat(10):\n        table.add_column(\"Opening Weekend\", \"[u]$577,703,455\", no_wrap=True)\n\n    with beat(10):\n        table.add_column(\"Box Office\", \"[u]$4,331,212,357\", no_wrap=True)\n\n    with beat(10):\n        table.title = \"Star Wars Box Office\"\n\n    with beat(10):\n        table.title = (\n            \"[not italic]:popcorn:[/] Star Wars Box Office [not italic]:popcorn:[/]\"\n        )\n\n    with beat(10):\n        table.caption = \"Made with Rich\"\n\n    with beat(10):\n        table.caption = \"Made with [b]Rich[/b]\"\n\n    with beat(10):\n        table.caption = \"Made with [b magenta not dim]Rich[/]\"\n\n    for row in TABLE_DATA:\n        with beat(10):\n            table.add_row(*row)\n\n    with beat(10):\n        table.show_footer = True\n\n    table_width = console.measure(table).maximum\n\n    with beat(10):\n        table.columns[2].justify = \"right\"\n\n    with beat(10):\n        table.columns[3].justify = \"right\"\n\n    with beat(10):\n        table.columns[4].justify = \"right\"\n\n    with beat(10):\n        table.columns[2].header_style = \"bold red\"\n\n    with beat(10):\n        table.columns[3].header_style = \"bold green\"\n\n    with beat(10):\n        table.columns[4].header_style = \"bold blue\"\n\n    with beat(10):\n        table.columns[2].style = \"red\"\n\n    with beat(10):\n        table.columns[3].style = \"green\"\n\n    with beat(10):\n        table.columns[4].style = \"blue\"\n\n    with beat(10):\n        table.columns[0].style = \"cyan\"\n        table.columns[0].header_style = \"bold cyan\"\n\n    with beat(10):\n        table.columns[1].style = \"magenta\"\n        table.columns[1].header_style = \"bold magenta\"\n\n    with beat(10):\n        table.columns[2].footer_style = \"bright_red\"\n\n    with beat(10):\n        table.columns[3].footer_style = \"bright_green\"\n\n    with beat(10):\n        table.columns[4].footer_style = \"bright_blue\"\n\n    with beat(10):\n        table.row_styles = [\"none\", \"dim\"]\n\n    with beat(10):\n        table.border_style = \"bright_yellow\"\n\n    for box_style in [\n        box.SQUARE,\n        box.MINIMAL,\n        box.SIMPLE,\n        box.SIMPLE_HEAD,\n    ]:\n        with beat(10):\n            table.box = box_style\n\n    with beat(10):\n        table.pad_edge = False\n\n    original_width = console.measure(table).maximum\n\n    for width in range(original_width, console.width, 2):\n        with beat(1):\n            table.width = width\n\n    for width in range(console.width, original_width, -2):\n        with beat(1):\n            table.width = width\n\n    for width in range(original_width, 90, -2):\n        with beat(1):\n            table.width = width\n\n    for width in range(90, original_width + 1, 2):\n        with beat(1):\n            table.width = width\n\n    with beat(2):\n        table.width = None\n",
+  "route_labels": [
+    "code_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "code_compressor",
+    "allowed_outcomes": [
+      "code_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "code_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:Textualize/rich",
+    "license": "MIT",
+    "generated_by": null,
+    "external": {
+      "publisher": "Textualize/rich",
+      "source_url": "https://github.com/Textualize/rich/blob/9d8f9a372cc5916fd4781fec207ced7ddac2f08f/examples/table_movie.py",
+      "retrieved_at": "2026-08-09T10:50:35.933109Z",
+      "licence_basis": "SPDX MIT, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/Textualize/rich",
+      "licence_evidence_sha256": "4b594d6bab65718bd94af2d870649f7a645cdff71babfe9de4cc779d7923f49e",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": null
+    },
+    "generated_at": "2026-08-09T10:50:36.042439Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "code",
+    "python"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

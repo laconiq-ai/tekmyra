@@ -1,0 +1,153 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "lc-rag_multi_doc-calibration-001",
+  "content_type": "rag_multi_doc",
+  "risk_tier": "low",
+  "content": "The runbook states that p99 latency must remain below 500 ms. The runbook states that p99 latency must remain below 500 ms. According to the platform guide, retention policies are immutable. Reference: TICKET-48291, root cause analysis appendix.\n\nThe FAQ clarifies that control IDs must survive compression. According to the platform guide, retention policies are immutable; this detail must remain available. Citation: SRE Handbook, section 4.3, incident classification. The FAQ clarifies that control IDs must survive compression.\n\nA footnote warns against compressing verbatim citations. The glossary defines mitigation as verified user impact zero; this detail must remain available. The design doc identifies us-east-1 as the primary region. The FAQ clarifies that control IDs must survive compression.\n\nSource: Internal Wiki, POL-CONTEXT-RETENTION-09, revision 12; this detail must remain available. The design doc identifies us-east-1 as the primary region. The glossary defines mitigation as verified user impact zero; this detail must remain available. According to the platform guide, retention policies are immutable; this detail must remain available.\n\nReference: TICKET-48291, root cause analysis appendix. The design doc identifies us-east-1 as the primary region. Documentation notes that rollback requires two approvals; this detail must remain available. The design doc identifies us-east-1 as the primary region; this detail must remain available.\n\nThe design doc identifies us-east-1 as the primary region. A footnote warns against compressing verbatim citations. The glossary defines mitigation as verified user impact zero. The runbook states that p99 latency must remain below 500 ms.\n\nA footnote warns against compressing verbatim citations. According to the platform guide, retention policies are immutable. Reference: TICKET-48291, root cause analysis appendix. The glossary defines mitigation as verified user impact zero.\n\nThe runbook states that p99 latency must remain below 500 ms. A footnote warns against compressing verbatim citations. Documentation notes that rollback requires two approvals. A footnote warns against compressing verbatim citations.\n\nThe FAQ clarifies that control IDs must survive compression; this detail must remain available. Documentation notes that rollback requires two approvals. Reference: TICKET-48291, root cause analysis appendix. Citation: SRE Handbook, section 4.3, incident classification.\n\nThe glossary defines mitigation as verified user impact zero. The runbook states that p99 latency must remain below 500 ms. Reference: TICKET-48291, root cause analysis appendix. Documentation notes that rollback requires two approvals.\n\nCitation: SRE Handbook, section 4.3, incident classification. Source: Internal Wiki, POL-CONTEXT-RETENTION-09, revision 12. Reference: TICKET-48291, root cause analysis appendix. The design doc identifies us-east-1 as the primary region.\n\nCitation: SRE Handbook, section 4.3, incident classification. The design doc identifies us-east-1 as the primary region. The runbook states that p99 latency must remain below 500 ms; this detail must remain available. Reference: TICKET-48291, root cause analysis appendix.\n\nAccording to the platform guide, retention policies are immutable; this detail must remain available. Documentation notes that rollback requires two approvals. According to the platform guide, retention policies are immutable. Documentation notes that rollback requires two approvals; this detail must remain available.\n\nSource: Internal Wiki, POL-CONTEXT-RETENTION-09, revision 12. The glossary defines mitigation as verified user impact zero. Documentation notes that rollback requires two approvals. Citation: SRE Handbook, section 4.3, incident classification.\n\nSource: Internal Wiki, POL-CONTEXT-RETENTION-09, revision 12. Citation: SRE Handbook, section 4.3, incident classification. The design doc identifies us-east-1 as the primary region. Reference: TICKET-48291, root cause analysis appendix.\n\nSource: Internal Wiki, POL-CONTEXT-RETENTION-09, revision 12. According to the platform guide, retention policies are immutable. Citation: SRE Handbook, section 4.3, incident classification. A footnote warns against compressing verbatim citations.\n\nSource: Internal Wiki, POL-CONTEXT-RETENTION-09, revision 12; this detail must remain available. A footnote warns against compressing verbatim citations. Reference: TICKET-48291, root cause analysis appendix. Citation: SRE Handbook, section 4.3, incident classification; this detail must remain available.\n\nReference: TICKET-48291, root cause analysis appendix. Reference: TICKET-48291, root cause analysis appendix. Source: Internal Wiki, POL-CONTEXT-RETENTION-09, revision 12. Source: Internal Wiki, POL-CONTEXT-RETENTION-09, revision 12; this detail must remain available.\n\nSource: Internal Wiki, POL-CONTEXT-RETENTION-09, revision 12. The design doc identifies us-east-1 as the primary region. The glossary defines mitigation as verified user impact zero. Citation: SRE Handbook, section 4.3, incident classification.\n\nA footnote warns against compressing verbatim citations. The runbook states that p99 latency must remain below 500 ms; this detail must remain available. The runbook states that p99 latency must remain below 500 ms. The runbook states that p99 latency must remain below 500 ms.\n\nThe runbook states that p99 latency must remain below 500 ms. A footnote warns against compressing verbatim citations. The runbook states that p99 latency must remain below 500 ms; this detail must remain available. According to the platform guide, retention policies are immutable.\n\nThe design doc identifies us-east-1 as the primary region. A footnote warns against compressing verbatim citations. The FAQ clarifies that control IDs must survive compression. Source: Internal Wiki, POL-CONTEXT-RETENTION-09, revision 12; this detail must remain available.\n\nCitation: SRE Handbook, section 4.3, incident classification. Documentation notes that rollback requires two approvals. The glossary defines mitigation as verified user impact zero. Citation: SRE Handbook, section 4.3, incident classification.\n\nSource: Internal Wiki, POL-CONTEXT-RETENTION-09, revision 12; this detail must remain available. Source: Internal Wiki, POL-CONTEXT-RETENTION-09, revision 12. The design doc identifies us-east-1 as the primary region; this detail must remain available. A footnote warns against compressing verbatim citations.\n\nSource: Internal Wiki, POL-CONTEXT-RETENTION-09, revision 12. Reference: TICKET-48291, root cause analysis appendix. Citation: SRE Handbook, section 4.3, incident classification. Source: Internal Wiki, POL-CONTEXT-RETENTION-09, revision 12.\n\nThe runbook states that p99 latency must remain below 500 ms. Citation: SRE Handbook, section 4.3, incident classification. A footnote warns against compressing verbatim citations. The runbook states that p99 latency must remain below 500 ms.\n\nThe glossary defines mitigation as verified user impact zero; this detail must remain available. According to the platform guide, retention policies are immutable; this detail must remain available. The runbook states that p99 latency must remain below 500 ms. A footnote warns against compressing verbatim citations.\n\nThe runbook states that p99 latency must remain below 500 ms. According to the platform guide, retention policies are immutable. Source: Internal Wiki, POL-CONTEXT-RETENTION-09, revision 12. According to the platform guide, retention policies are immutable.\n\nA footnote warns against compressing verbatim citations. The runbook states that p99 latency must remain below 500 ms. The glossary defines mitigation as verified user impact zero. The design doc identifies us-east-1 as the primary region.\n\nThe FAQ clarifies that control IDs must survive compression. The FAQ clarifies that control IDs must survive compression. Citation: SRE Handbook, section 4.3, incident classification. Source: Internal Wiki, POL-CONTEXT-RETENTION-09, revision 12.\n\nThe glossary defines mitigation as verified user impact zero. The runbook states that p99 latency must remain below 500 ms. Documentation notes that rollback requires two approvals. The FAQ clarifies that control IDs must survive compression.\n\nThe design doc identifies us-east-1 as the primary region. The FAQ clarifies that control IDs must survive compression. Source: Internal Wiki, POL-CONTEXT-RETENTION-09, revision 12. A footnote warns against compressing verbatim citations.\n\nThe design doc identifies us-east-1 as the primary region. The design doc identifies us-east-1 as the primary region. Source: Internal Wiki, POL-CONTEXT-RETENTION-09, revision 12. Source: Internal Wiki, POL-CONTEXT-RETENTION-09, revision 12.\n\nThe glossary defines mitigation as verified user impact zero; this detail must remain available. Reference: TICKET-48291, root cause analysis appendix. The glossary defines mitigation as verified user impact zero.\n\nVerified fact: req-20260723-42 [f-request-id]. Verified fact: SEV-2 [f-severity]. Verified fact: 2026-07-23T14:32:11Z [f-timestamp]. Verified fact: seventeen [f-quantity].",
+  "route_labels": [
+    "extractive_keypoint_compressor",
+    "passthrough"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "fact",
+      "start": 8988,
+      "end": 9003,
+      "text": "req-20260723-42",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0,
+      "span_id": "span-rag-000",
+      "fact_id": "f-request-id"
+    },
+    {
+      "span_type": "fact",
+      "start": 9035,
+      "end": 9040,
+      "text": "SEV-2",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0,
+      "span_id": "span-rag-001",
+      "fact_id": "f-severity"
+    },
+    {
+      "span_type": "fact",
+      "start": 9070,
+      "end": 9090,
+      "text": "2026-07-23T14:32:11Z",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0,
+      "span_id": "span-rag-002",
+      "fact_id": "f-timestamp"
+    },
+    {
+      "span_type": "fact",
+      "start": 9121,
+      "end": 9130,
+      "text": "seventeen",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0,
+      "span_id": "span-rag-003",
+      "fact_id": "f-quantity"
+    }
+  ],
+  "gold_output": {
+    "route_intent": "extractive_keypoint_compressor",
+    "allowed_outcomes": [
+      "extractive_keypoint_compressor",
+      "passthrough"
+    ],
+    "compressible": false,
+    "passthrough": true,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "extractive_keypoint_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "fact",
+        "start": 8988,
+        "end": 9003,
+        "text": "req-20260723-42",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0,
+        "span_id": "span-rag-000",
+        "fact_id": "f-request-id"
+      },
+      {
+        "span_type": "fact",
+        "start": 9035,
+        "end": 9040,
+        "text": "SEV-2",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0,
+        "span_id": "span-rag-001",
+        "fact_id": "f-severity"
+      },
+      {
+        "span_type": "fact",
+        "start": 9070,
+        "end": 9090,
+        "text": "2026-07-23T14:32:11Z",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0,
+        "span_id": "span-rag-002",
+        "fact_id": "f-timestamp"
+      },
+      {
+        "span_type": "fact",
+        "start": 9121,
+        "end": 9130,
+        "text": "seventeen",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0,
+        "span_id": "span-rag-003",
+        "fact_id": "f-quantity"
+      }
+    ],
+    "expected_compression_eligibility": false,
+    "expected_allowed_bypass_reasons": [
+      "too_short"
+    ],
+    "query_task": "Answer the user's question using the cited sources.",
+    "answer_required_fact_ids": [
+      "f-request-id",
+      "f-severity",
+      "f-timestamp",
+      "f-quantity"
+    ],
+    "allowed_safety_overrides": [
+      "allow_passthrough_short"
+    ]
+  },
+  "provenance": {
+    "source": "synthetic",
+    "license": "CC0-1.0",
+    "generated_by": "benchmarks/fixtures/long_context_v1/generate_long_context_fixtures.py",
+    "generated_at": "2026-07-23T00:00:00Z",
+    "adjudicated_by": null
+  },
+  "tags": [
+    "long_context",
+    "rag_multi_doc",
+    "calibration"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {
+    "f-request-id": "req-20260723-42",
+    "f-severity": "SEV-2",
+    "f-timestamp": "2026-07-23T14:32:11Z",
+    "f-quantity": "seventeen"
+  }
+}

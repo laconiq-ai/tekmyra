@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "code-json-483b6800",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "code",
+  "risk_tier": "low",
+  "content": "//     __ _____ _____ _____\n//  __|  |   __|     |   | |  JSON for Modern C++\n// |  |  |__   |  |  | | | |  version 3.12.0\n// |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n//\n// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n// SPDX-License-Identifier: MIT\n\n#pragma once\n\n#include <cstdint> // uint8_t\n#include <cstddef> // size_t\n#include <functional> // hash\n\n#include <nlohmann/detail/abi_macros.hpp>\n#include <nlohmann/detail/value_t.hpp>\n\nNLOHMANN_JSON_NAMESPACE_BEGIN\nnamespace detail\n{\n\n// boost::hash_combine\ninline std::size_t combine(std::size_t seed, std::size_t h) noexcept\n{\n    seed ^= h + 0x9e3779b9 + (seed << 6U) + (seed >> 2U);\n    return seed;\n}\n\n/*!\n@brief hash a JSON value\n\nThe hash function tries to rely on std::hash where possible. Furthermore, the\ntype of the JSON value is taken into account to have different hash values for\nnull, 0, 0U, and false, etc.\n\n@tparam BasicJsonType basic_json specialization\n@param j JSON value to hash\n@return hash value of j\n*/\ntemplate<typename BasicJsonType>\nstd::size_t hash(const BasicJsonType& j)\n{\n    using string_t = typename BasicJsonType::string_t;\n    using number_integer_t = typename BasicJsonType::number_integer_t;\n    using number_unsigned_t = typename BasicJsonType::number_unsigned_t;\n    using number_float_t = typename BasicJsonType::number_float_t;\n\n    const auto type = static_cast<std::size_t>(j.type());\n    switch (j.type())\n    {\n        case BasicJsonType::value_t::null:\n        case BasicJsonType::value_t::discarded:\n        {\n            return combine(type, 0);\n        }\n\n        case BasicJsonType::value_t::object:\n        {\n            auto seed = combine(type, j.size());\n            for (const auto& element : j.items())\n            {\n                const auto h = std::hash<string_t> {}(element.key());\n                seed = combine(seed, h);\n                seed = combine(seed, hash(element.value()));\n            }\n            return seed;\n        }\n\n        case BasicJsonType::value_t::array:\n        {\n            auto seed = combine(type, j.size());\n            for (const auto& element : j)\n            {\n                seed = combine(seed, hash(element));\n            }\n            return seed;\n        }\n\n        case BasicJsonType::value_t::string:\n        {\n            const auto h = std::hash<string_t> {}(j.template get_ref<const string_t&>());\n            return combine(type, h);\n        }\n\n        case BasicJsonType::value_t::boolean:\n        {\n            const auto h = std::hash<bool> {}(j.template get<bool>());\n            return combine(type, h);\n        }\n\n        case BasicJsonType::value_t::number_integer:\n        {\n            const auto h = std::hash<number_integer_t> {}(j.template get<number_integer_t>());\n            return combine(type, h);\n        }\n\n        case BasicJsonType::value_t::number_unsigned:\n        {\n            const auto h = std::hash<number_unsigned_t> {}(j.template get<number_unsigned_t>());\n            return combine(type, h);\n        }\n\n        case BasicJsonType::value_t::number_float:\n        {\n            const auto h = std::hash<number_float_t> {}(j.template get<number_float_t>());\n            return combine(type, h);\n        }\n\n        case BasicJsonType::value_t::binary:\n        {\n            auto seed = combine(type, j.get_binary().size());\n            const auto h = std::hash<bool> {}(j.get_binary().has_subtype());\n            seed = combine(seed, h);\n            seed = combine(seed, static_cast<std::size_t>(j.get_binary().subtype()));\n            for (const auto byte : j.get_binary())\n            {\n                seed = combine(seed, std::hash<std::uint8_t> {}(byte));\n            }\n            return seed;\n        }\n\n        default:                   // LCOV_EXCL_LINE\n            JSON_ASSERT(false); // NOLINT(cert-dcl03-c,hicpp-static-assert,misc-static-assert) LCOV_EXCL_LINE\n            return 0;              // LCOV_EXCL_LINE\n    }\n}\n\n}  // namespace detail\nNLOHMANN_JSON_NAMESPACE_END\n",
+  "route_labels": [
+    "code_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "code_compressor",
+    "allowed_outcomes": [
+      "code_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "code_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:nlohmann/json",
+    "license": "MIT",
+    "generated_by": null,
+    "external": {
+      "publisher": "nlohmann/json",
+      "source_url": "https://github.com/nlohmann/json/blob/21af527e756435701f23e01aa8ea8dab6e050c90/include/nlohmann/detail/hash.hpp",
+      "retrieved_at": "2026-08-09T10:50:35.933109Z",
+      "licence_basis": "SPDX MIT, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/nlohmann/json",
+      "licence_evidence_sha256": "78d6cf2ad65fb58a6b47bd8bc549710f70b16989fdcce54555bb4fff00563f5d",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": null
+    },
+    "generated_at": "2026-08-09T10:50:36.080363Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "code",
+    "cpp"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

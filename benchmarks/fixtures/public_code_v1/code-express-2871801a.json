@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "code-express-2871801a",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "code",
+  "risk_tier": "low",
+  "content": "/*!\n * express\n * Copyright(c) 2009-2013 TJ Holowaychuk\n * Copyright(c) 2013 Roman Shtylman\n * Copyright(c) 2014-2015 Douglas Christopher Wilson\n * MIT Licensed\n */\n\n'use strict';\n\n/**\n * Module dependencies.\n * @private\n */\n\nvar accepts = require('accepts');\nvar isIP = require('node:net').isIP;\nvar typeis = require('type-is');\nvar http = require('node:http');\nvar fresh = require('fresh');\nvar parseRange = require('range-parser');\nvar parse = require('parseurl');\nvar proxyaddr = require('proxy-addr');\n\n/**\n * Request prototype.\n * @public\n */\n\nvar req = Object.create(http.IncomingMessage.prototype)\n\n/**\n * Module exports.\n * @public\n */\n\nmodule.exports = req\n\n/**\n * Return request header.\n *\n * The `Referrer` header field is special-cased,\n * both `Referrer` and `Referer` are interchangeable.\n *\n * Examples:\n *\n *     req.get('Content-Type');\n *     // => \"text/plain\"\n *\n *     req.get('content-type');\n *     // => \"text/plain\"\n *\n *     req.get('Something');\n *     // => undefined\n *\n * Aliased as `req.header()`.\n *\n * @param {String} name\n * @return {String}\n * @public\n */\n\nreq.get =\nreq.header = function header(name) {\n  if (!name) {\n    throw new TypeError('name argument is required to req.get');\n  }\n\n  if (typeof name !== 'string') {\n    throw new TypeError('name must be a string to req.get');\n  }\n\n  var lc = name.toLowerCase();\n\n  switch (lc) {\n    case 'referer':\n    case 'referrer':\n      return this.headers.referrer\n        || this.headers.referer;\n    default:\n      return this.headers[lc];\n  }\n};\n\n/**\n * Check if the given `type(s)` is acceptable, returning\n * the best match when true, otherwise `false`, in which\n * case you should respond with 406 \"Not Acceptable\".\n *\n * The `type` value may be a single MIME type string\n * such as \"application/json\", an extension name\n * such as \"json\", an argument list such as `\"json\", \"html\", \"text/plain\"`,\n * or an array `[\"json\", \"html\", \"text/plain\"]`. When a list\n * or array is given, the _best_ match, if any is returned.\n *\n * Examples:\n *\n *     // Accept: text/html\n *     req.accepts('html');\n *     // => \"html\"\n *\n *     // Accept: text/*, application/json\n *     req.accepts('html');\n *     // => \"html\"\n *     req.accepts('text/html');\n *     // => \"text/html\"\n *     req.accepts('json', 'text');\n *     // => \"json\"\n *     req.accepts('application/json');\n *     // => \"application/json\"\n *\n *     // Accept: text/*, application/json\n *     req.accepts('image/png');\n *     req.accepts('png');\n *     // => false\n *\n *     // Accept: text/*;q=.5, application/json\n *     req.accepts(['html', 'json']);\n *     req.accepts('html', 'json');\n *     // => \"json\"\n *\n * @param {String|Array} type(s)\n * @return {String|Array|Boolean}\n * @public\n */\n\nreq.accepts = function(){\n  var accept = accepts(this);\n  return accept.types.apply(accept, arguments);\n};\n\n/**\n * Check if the given `encoding`s are accepted.\n *\n * @param {String} ...encoding\n * @return {String|Array}\n * @public\n */\n\nreq.acceptsEncodings = function(){\n  var accept = accepts(this);\n  return accept.encodings.apply(accept, arguments);\n};\n\n/**\n * Checks if the specified `charset`s are acceptable based on the request's `Accept-Charset` header.\n * Returns the best matching charset or an array of acceptable charsets.\n *\n * The `charset` argument(s) can be:\n * - A single charset string (e.g., \"utf-8\")\n * - Multiple charset strings as arguments (e.g., `\"utf-8\", \"iso-8859-1\"`)\n * - A comma-delimited list of charsets (e.g., `\"utf-8, iso-8859-1\"`)\n *\n * Examples:\n *\n *     // Accept-Charset: utf-8, iso-8859-1\n *     req.acceptsCharsets('utf-8');\n *     // => \"utf-8\"\n *\n *     req.acceptsCharsets('utf-8', 'iso-8859-1');\n *     // => \"utf-8\"\n *\n *     req.acceptsCharsets('utf-8, utf-16');\n *     // => \"utf-8\"\n *\n * @param {...String} charsets - The charset(s) to check against the `Accept-Charset` header.\n * @return {String|Array} - The best matching charset, or an array of acceptable charsets.\n * @public\n */\n\nreq.acceptsCharsets = function(...charsets) {\n  const accept = accepts(this);\n  return accept.charsets(...charsets);\n};\n\n/**\n * Check if the given `lang`s are acceptable,\n * otherwise you should respond with 406 \"Not Acceptable\".\n *\n * @param {String} ...lang\n * @return {String|Array}\n * @public\n */\n\nreq.acceptsLanguages = function(...languages) {\n  return accepts(this).languages(...languages);\n};\n\n/**\n * Parse Range header field, capping to the given `size`.\n *\n * Unspecified ranges such as \"0-\" require knowledge of your resource length. In\n * the case of a byte range this is of course the total number of bytes. If the\n * Range header field is not given `undefined` is returned, `-1` when unsatisfiable,\n * and `-2` when syntactically invalid.\n *\n * When ranges are returned, the array has a \"type\" property which is the type of\n * range that is required (most commonly, \"bytes\"). Each array element is an object\n * with a \"start\" and \"end\" property for the portion of the range.\n *\n * The \"combine\" option can be set to `true` and overlapping & adjacent ranges\n * will be combined into a single range.\n *\n * NOTE: remember that ranges are inclusive, so for example \"Range: users=0-3\"\n * should respond with 4 users when available, not 3.\n *\n * @param {number} size\n * @param {object} [options]\n * @param {boolean} [options.combine=false]\n * @return {number|array}\n * @public\n */\n\nreq.range = function range(size, options) {\n  var range = this.get('Range');\n  if (!range) return;\n  return parseRange(size, range, options);\n};\n\n/**\n * Parse the query string of `req.url`.\n *\n * This uses the \"query parser\" setting to parse the raw\n * string into an object.\n *\n * @return {String}\n * @api public\n */\n\ndefineGetter(req, 'query', function query(){\n  var queryparse = this.app.get('query parser fn');\n\n  if (!queryparse) {\n    // parsing is disabled\n    return Object.create(null);\n  }\n\n  var querystring = parse(this).query;\n\n  return queryparse(querystring);\n});\n\n/**\n * Check if the incoming request contains the \"Content-Type\"\n * header field, and it contains the given mime `type`.\n *\n * Examples:\n *\n *      // With Content-Type: text/html; charset=utf-8\n *      req.is('html');\n *      req.is('text/html');\n *      req.is('text/*');\n *      // => true\n *\n *      // When Content-Type is application/json\n *      req.is('json');\n *      req.is('application/json');\n *      req.is('application/*');\n *      // => true\n *\n *      req.is('html');\n *      // => false\n *\n * @param {String|Array} types...\n * @return {String|false|null}\n * @public\n */\n\nreq.is = function is(types) {\n  var arr = types;\n\n  // support flattened arguments\n  if (!Array.isArray(types)) {\n    arr = new Array(arguments.length);\n    for (var i = 0; i < arr.length; i++) {\n      arr[i] = arguments[i];\n    }\n  }\n\n  return typeis(this, arr);\n};\n\n/**\n * Return the protocol string \"http\" or \"https\"\n * when requested with TLS. When the \"trust proxy\"\n * setting trusts the socket address, the\n * \"X-Forwarded-Proto\" header field will be trusted\n * and used if present.\n *\n * If you're running behind a reverse proxy that\n * supplies https for you this may be enabled.\n *\n * @return {String}\n * @public\n */\n\ndefineGetter(req, 'protocol', function protocol(){\n  var proto = this.socket.encrypted\n    ? 'https'\n    : 'http';\n  var trust = this.app.get('trust proxy fn');\n\n  if (!trust(this.socket.remoteAddress, 0)) {\n    return proto;\n  }\n\n  // Note: X-Forwarded-Proto is normally only ever a\n  //       single value, but this is to be safe.\n  var header = this.get('X-Forwarded-Proto') || proto\n  var index = header.indexOf(',')\n\n  return index !== -1\n    ? header.substring(0, index).trim()\n    : header.trim()\n});\n\n/**\n * Short-hand for:\n *\n *    req.protocol === 'https'\n *\n * @return {Boolean}\n * @public\n */\n\ndefineGetter(req, 'secure', function secure(){\n  return this.protocol === 'https';\n});\n\n/**\n * Return the remote address from the trusted proxy.\n *\n * The is the remote address on the socket unless\n * \"trust proxy\" is set.\n *\n * @return {String}\n * @public\n */\n\ndefineGetter(req, 'ip', function ip(){\n  var trust = this.app.get('trust proxy fn');\n  return proxyaddr(this, trust);\n});\n\n/**\n * When \"trust proxy\" is set, trusted proxy addresses + client.\n *\n * For example if the value were \"client, proxy1, proxy2\"\n * you would receive the array `[\"client\", \"proxy1\", \"proxy2\"]`\n * where \"proxy2\" is the furthest down-stream and \"proxy1\" and\n * \"proxy2\" were trusted.\n *\n * @return {Array}\n * @public\n */\n\ndefineGetter(req, 'ips', function ips() {\n  var trust = this.app.get('trust proxy fn');\n  var addrs = proxyaddr.all(this, trust);\n\n  // reverse the order (to farthest -> closest)\n  // and remove socket address\n  addrs.reverse().pop()\n\n  return addrs\n});\n\n/**\n * Return subdomains as an array.\n *\n * Subdomains are the dot-separated parts of the host before the main domain of\n * the app. By default, the domain of the app is assumed to be the last two\n * parts of the host. This can be changed by setting \"subdomain offset\".\n *\n * For example, if the domain is \"tobi.ferrets.example.com\":\n * If \"subdomain offset\" is not set, req.subdomains is `[\"ferrets\", \"tobi\"]`.\n * If \"subdomain offset\" is 3, req.subdomains is `[\"tobi\"]`.\n *\n * @return {Array}\n * @public\n */\n\ndefineGetter(req, 'subdomains', function subdomains() {\n  var hostname = this.hostname;\n\n  if (!hostname) return [];\n\n  var offset = this.app.get('subdomain offset');\n  var subdomains = !isIP(hostname)\n    ? hostname.split('.').reverse()\n    : [hostname];\n\n  return subdomains.slice(offset);\n});\n\n/**\n * Short-hand for `url.parse(req.url).pathname`.\n *\n * @return {String}\n * @public\n */\n\ndefineGetter(req, 'path', function path() {\n  return parse(this).pathname;\n});\n\n/**\n * Parse the \"Host\" header field to a host.\n *\n * When the \"trust proxy\" setting trusts the socket\n * address, the \"X-Forwarded-Host\" header field will\n * be trusted.\n *\n * @return {String}\n * @public\n */\n\ndefineGetter(req, 'host', function host(){\n  var trust = this.app.get('trust proxy fn');\n  var val = this.get('X-Forwarded-Host');\n\n  if (!val || !trust(this.socket.remoteAddress, 0)) {\n    val = this.get('Host');\n  } else if (val.indexOf(',') !== -1) {\n    // Note: X-Forwarded-Host is normally only ever a\n    //       single value, but this is to be safe.\n    val = val.substring(0, val.indexOf(',')).trimEnd()\n  }\n\n  return val || undefined;\n});\n\n/**\n * Parse the \"Host\" header field to a hostname.\n *\n * When the \"trust proxy\" setting trusts the socket\n * address, the \"X-Forwarded-Host\" header field will\n * be trusted.\n *\n * @return {String}\n * @api public\n */\n\ndefineGetter(req, 'hostname', function hostname(){\n  var host = this.host;\n\n  if (!host) return;\n\n  // IPv6 literal support\n  var offset = host[0] === '['\n    ? host.indexOf(']') + 1\n    : 0;\n  var index = host.indexOf(':', offset);\n\n  return index !== -1\n    ? host.substring(0, index)\n    : host;\n});\n\n/**\n * Check if the request is fresh, aka\n * Last-Modified or the ETag\n * still match.\n *\n * @return {Boolean}\n * @public\n */\n\ndefineGetter(req, 'fresh', function(){\n  var method = this.method;\n  var res = this.res\n  var status = res.statusCode\n\n  // GET, HEAD, or QUERY for weak freshness validation only\n  if ('GET' !== method && 'HEAD' !== method && 'QUERY' !== method) return false;\n\n  // 2xx or 304 as per rfc2616 14.26\n  if ((status >= 200 && status < 300) || 304 === status) {\n    return fresh(this.headers, {\n      'etag': res.get('ETag'),\n      'last-modified': res.get('Last-Modified')\n    })\n  }\n\n  return false;\n});\n\n/**\n * Check if the request is stale, aka\n * \"Last-Modified\" and / or the \"ETag\" for the\n * resource has changed.\n *\n * @return {Boolean}\n * @public\n */\n\ndefineGetter(req, 'stale', function stale(){\n  return !this.fresh;\n});\n\n/**\n * Check if the request was an _XMLHttpRequest_.\n *\n * @return {Boolean}\n * @public\n */\n\ndefineGetter(req, 'xhr', function xhr(){\n  var val = this.get('X-Requested-With') || '';\n  return val.toLowerCase() === 'xmlhttprequest';\n});\n\n/**\n * Helper function for creating a getter on an object.\n *\n * @param {Object} obj\n * @param {String} name\n * @param {Function} getter\n * @private\n */\nfunction defineGetter(obj, name, getter) {\n  Object.defineProperty(obj, name, {\n    configurable: true,\n    enumerable: true,\n    get: getter\n  });\n}\n",
+  "route_labels": [
+    "code_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "code_compressor",
+    "allowed_outcomes": [
+      "code_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "code_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:expressjs/express",
+    "license": "MIT",
+    "generated_by": null,
+    "external": {
+      "publisher": "expressjs/express",
+      "source_url": "https://github.com/expressjs/express/blob/a3714473feb3d2908add734d340e7755fd85e0a3/lib/request.js",
+      "retrieved_at": "2026-08-09T10:50:35.933109Z",
+      "licence_basis": "SPDX MIT, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/expressjs/express",
+      "licence_evidence_sha256": "eddc1bfa7ea454ae4c57781822dcdcf791b089429c9c4618198f2122017515d2",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": null
+    },
+    "generated_at": "2026-08-09T10:50:36.112098Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "code",
+    "javascript"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

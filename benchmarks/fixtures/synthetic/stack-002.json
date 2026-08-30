@@ -1,0 +1,136 @@
+{
+  "fixture_id": "stack-002",
+  "content_type": "stacktrace",
+  "risk_tier": "medium",
+  "content": "Traceback (most recent call last):\n  File \"/app/main.py\", line 42, in handler\n    process_payment(account_id=\"acct_12345\", amount=100.00)\n  File \"/app/payments.py\", line 18, in process_payment\n    raise PaymentError(\"Insufficient funds\")\nPaymentError: Insufficient funds\n",
+  "route_labels": [
+    "log_compressor"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 203,
+      "end": 215,
+      "text": "PaymentError",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 146,
+      "end": 176,
+      "text": "/app/payments.py",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "log_compressor",
+    "expected_risk": "medium",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "exception_class",
+        "start": 203,
+        "end": 215,
+        "text": "PaymentError",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "file_line",
+        "start": 146,
+        "end": 176,
+        "text": "/app/payments.py",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 203,
+        "end": 215,
+        "text": "PaymentError",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 146,
+        "end": 176,
+        "text": "/app/payments.py",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "log_compressor",
+    "allowed_outcomes": [
+      "log_compressor"
+    ],
+    "compressible": true
+  },
+  "blocks": [
+    {
+      "type": "stacktrace",
+      "content": "Traceback (most recent call last):\n  File \"/app/main.py\", line 42, in handler\n    process_payment(account_id=\"acct_12345\", amount=100.00)\n  File \"/app/payments.py\", line 18, in process_payment\n    raise PaymentError(\"Insufficient funds\")\nPaymentError: Insufficient funds\n",
+      "start": 0,
+      "end": 271,
+      "route_label": "log_compressor",
+      "risk_tier": "medium",
+      "protected_spans": [
+        {
+          "start": 47,
+          "end": 55,
+          "label": "file_path",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 58,
+          "end": 65,
+          "label": "line_number",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 150,
+          "end": 162,
+          "label": "file_path",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 165,
+          "end": 172,
+          "label": "line_number",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "synthetic",
+    "license": "CC0-1.0",
+    "generated_by": "benchmarks/fixtures/generate_fixtures.py",
+    "generated_at": "2026-07-15T06:43:08.694819Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "stacktrace",
+    "structured"
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:10:03.546619+00:00",
+  "schema_version": "2.0.0"
+}

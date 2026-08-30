@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "diff-pytest-f86f2879",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "diff",
+  "risk_tier": "low",
+  "content": "[pre-commit.ci] pre-commit autoupdate\n\n\ndiff --git a/.pre-commit-config.yaml b/.pre-commit-config.yaml\nindex 1f3e8f3..1b40df3 100644\n--- a/.pre-commit-config.yaml\n+++ b/.pre-commit-config.yaml\n@@ -1,7 +1,7 @@\n minimum_pre_commit_version: \"4.4.0\"\n repos:\n - repo: https://github.com/astral-sh/ruff-pre-commit\n-  rev: \"v0.15.22\"\n+  rev: \"v0.16.0\"\n   hooks:\n     - id: ruff-check\n       args: [\"--fix\"]\n@@ -13,7 +13,7 @@ repos:\n     -   id: end-of-file-fixer\n     -   id: check-yaml\n - repo: https://github.com/woodruffw/zizmor-pre-commit\n-  rev: v1.27.0\n+  rev: v1.28.0\n   hooks:\n     - id: zizmor\n       args: [\"--fix\", \"--no-progress\"]\ndiff --git a/doc/en/example/.ruff.toml b/doc/en/example/.ruff.toml\ndeleted file mode 100644\nindex feddc5c..0000000\n--- a/doc/en/example/.ruff.toml\n+++ /dev/null\n@@ -1 +0,0 @@\n-lint.ignore = [\"RUF059\"]\ndiff --git a/pyproject.toml b/pyproject.toml\nindex a0e2c40..b467ed0 100644\n--- a/pyproject.toml\n+++ b/pyproject.toml\n@@ -171,6 +171,7 @@ lint.ignore = [\n     \"PLR0912\", # Too many branches\n     \"PLR0913\", # Too many arguments in function definition\n     \"PLR0915\", # Too many statements\n+    \"PLR0917\", # Too many positional arguments\n     \"PLR2004\", # Magic value used in comparison\n     \"PLR2044\", # Line with empty comment\n     \"PLR5501\", # Use `elif` instead of `else` then `if`\n@@ -182,6 +183,12 @@ lint.ignore = [\n     \"RUF012\", # Mutable class attributes should be annotated with `typing.ClassVar`\n     \"RUF061\", # Use context-manager form of `pytest.raises()`\n ]\n+lint.per-file-ignores.\"doc/**/*.py\" = [\n+    \"PLR0133\", # Two constants compared in a comparison,\n+    \"RUF059\",  # Unpacked variable is never used\n+    \"S102\",    # Use of `exec` detected\n+    \"TRY002\",  # Create your own exception\n+]\n lint.per-file-ignores.\"src/_pytest/_py/**/*.py\" = [\n     \"B\",\n     \"PYI\",\n@@ -189,8 +196,9 @@ lint.per-file-ignores.\"src/_pytest/_py/**/*.py\" = [\n lint.per-file-ignores.\"src/_pytest/_version.py\" = [\n     \"I001\",\n ]\n-# 'Unnecessary membership test on empty collection', always voluntary in tests\n-lint.per-file-ignores.\"testing/**/*.py\" = [ \"RUF060\" ]\n+lint.per-file-ignores.\"testing/**/*.py\" = [\n+    \"RUF060\", # 'Unnecessary membership test on empty collection', always voluntary in tests\n+]\n # can't be disabled on a line-by-line basis in file\n lint.per-file-ignores.\"testing/code/test_source.py\" = [\n     \"F841\",\ndiff --git a/src/_pytest/config/__init__.py b/src/_pytest/config/__init__.py\nindex c5f75ce..6f30406 100644\n--- a/src/_pytest/config/__init__.py\n+++ b/src/_pytest/config/__init__.py\n@@ -881,7 +881,7 @@ class PytestPluginManager(PluginManager):\n         self._import_plugin_specs(getattr(mod, \"pytest_plugins\", []))\n \n     def _import_plugin_specs(\n-        self, spec: None | types.ModuleType | str | Sequence[str]\n+        self, spec: types.ModuleType | str | Sequence[str] | None\n     ) -> None:\n         plugins = _get_plugin_specs_as_list(spec)\n         for import_spec in plugins:\n@@ -931,7 +931,7 @@ class PytestPluginManager(PluginManager):\n \n \n def _get_plugin_specs_as_list(\n-    specs: None | types.ModuleType | str | Sequence[str],\n+    specs: types.ModuleType | str | Sequence[str] | None,\n ) -> list[str]:\n     \"\"\"Parse a plugins specification into a list of plugin names.\"\"\"\n     # None means empty.\ndiff --git a/src/_pytest/fixtures.py b/src/_pytest/fixtures.py\nindex 1b1591d..44c3049 100644\n--- a/src/_pytest/fixtures.py\n+++ b/src/_pytest/fixtures.py\n@@ -1118,7 +1118,7 @@ class FixtureDef(Generic[FixtureValue]):\n     def __init__(\n         self,\n         config: Config,\n-        baseid: str | None | NotSetType,\n+        baseid: str | NotSetType | None,\n         argname: str,\n         func: _FixtureFunc[FixtureValue],\n         scope: Scope | ScopeName | Callable[[str, Config], ScopeName] | None,\n@@ -2049,7 +2049,7 @@ class FixtureManager:\n         *,\n         name: str,\n         func: _FixtureFunc[object],\n-        nodeid: str | None | NotSetType = NOTSET,\n+        nodeid: str | NotSetType | None = NOTSET,\n         scope: Scope | ScopeName | Callable[[str, Config], ScopeName] = \"function\",\n         params: Sequence[object] | None = None,\n         ids: tuple[object | None, ...] | Callable[[Any], object | None] | None = None,\n@@ -2247,7 +2247,7 @@ class FixtureManager:\n     def parsefactories(\n         self,\n         node_or_obj: nodes.Node | object | NotSetType = NOTSET,\n-        nodeid: str | None | NotSetType = NOTSET,\n+        nodeid: str | NotSetType | None = NOTSET,\n         *,\n         holder: object | NotSetType = NOTSET,\n         node: nodes.Node | NotSetType = NOTSET,\n@@ -2267,7 +2267,7 @@ class FixtureManager:\n         # Translate legacy API to holder/node sources of truth\n         # Either effective_node or effective_nodeid will be set, not both\n         effective_node: nodes.Node | NotSetType = NOTSET\n-        effective_nodeid: str | None | NotSetType = NOTSET\n+        effective_nodeid: str | NotSetType | None = NOTSET\n \n         if holder is not NOTSET:\n             # New API: holder and node explicitly provided\ndiff --git a/src/_pytest/hookspec.py b/src/_pytest/hookspec.py\nindex ba7ac2b..350b333 100644\n--- a/src/_pytest/hookspec.py\n+++ b/src/_pytest/hookspec.py\n@@ -508,7 +508,7 @@ def pytest_pycollect_makemodule(module_path: Path, parent) -> Module | None:\n @hookspec(firstresult=True)\n def pytest_pycollect_makeitem(\n     collector: Module | Class, name: str, obj: object\n-) -> None | Item | Collector | list[Item | Collector]:\n+) -> Item | Collector | list[Item | Collector] | None:\n     \"\"\"Return a custom item/collector for a Python object in a module, or None.\n \n     Stops at first non-None result, see :ref:`firstresult`.\ndiff --git a/src/_pytest/mark/structures.py b/src/_pytest/mark/structures.py\nindex e14e140..18057f0 100644\n--- a/src/_pytest/mark/structures.py\n+++ b/src/_pytest/mark/structures.py\n@@ -531,10 +531,10 @@ if TYPE_CHECKING:\n             *conditions: str | bool,\n             reason: str = ...,\n             run: bool = ...,\n-            raises: None\n-            | type[BaseException]\n+            raises: type[BaseException]\n             | tuple[type[BaseException], ...]\n-            | AbstractRaises[BaseException] = ...,\n+            | AbstractRaises[BaseException]\n+            | None = ...,\n             strict: bool = ...,\n         ) -> MarkDecorator: ...\n \n@@ -548,7 +548,7 @@ if TYPE_CHECKING:\n             # argvalues: Collection[ParameterSet | Sequence[object] | object],\n             *,\n             indirect: bool | Sequence[str] = ...,\n-            ids: Iterable[None | str | float | int | bool | _HiddenParam]\n+            ids: Iterable[str | float | int | bool | _HiddenParam | None]\n             | Callable[[Any], object | None]\n             | None = ...,\n             scope: ScopeName | None = ...,\ndiff --git a/src/_pytest/python.py b/src/_pytest/python.py\nindex 4f16801..03bf832 100644\n--- a/src/_pytest/python.py\n+++ b/src/_pytest/python.py\n@@ -238,7 +238,7 @@ def pytest_pycollect_makemodule(module_path: Path, parent) -> Module:\n @hookimpl(trylast=True)\n def pytest_pycollect_makeitem(\n     collector: Module | Class, name: str, obj: object\n-) -> None | nodes.Item | nodes.Collector | list[nodes.Item | nodes.Collector]:\n+) -> nodes.Item | nodes.Collector | list[nodes.Item | nodes.Collector] | None:\n     assert isinstance(collector, Class | Module), type(collector)\n     # Nothing was collected elsewhere, let's do it here.\n     if safe_isclass(obj):\ndiff --git a/src/_pytest/reports.py b/src/_pytest/reports.py\nindex 011a69d..72fe10e 100644\n--- a/src/_pytest/reports.py\n+++ b/src/_pytest/reports.py\n@@ -62,7 +62,7 @@ class BaseReport:\n     when: str | None\n     location: tuple[str, int | None, str] | None\n     longrepr: (\n-        None | ExceptionInfo[BaseException] | tuple[str, int, str] | str | TerminalRepr\n+        ExceptionInfo[BaseException] | tuple[str, int, str] | str | TerminalRepr | None\n     )\n     sections: list[tuple[str, str]]\n     nodeid: str\n@@ -321,11 +321,11 @@ class TestReport(BaseReport):\n         location: tuple[str, int | None, str],\n         keywords: Mapping[str, Any],\n         outcome: Literal[\"passed\", \"failed\", \"skipped\"],\n-        longrepr: None\n-        | ExceptionInfo[BaseException]\n+        longrepr: ExceptionInfo[BaseException]\n         | tuple[str, int, str]\n         | str\n-        | TerminalRepr,\n+        | TerminalRepr\n+        | None,\n         when: Literal[\"setup\", \"call\", \"teardown\"],\n         sections: Iterable[tuple[str, str]] = (),\n         duration: float = 0,\n@@ -399,11 +399,11 @@ class TestReport(BaseReport):\n         if not call.excinfo:\n             outcome: Literal[\"passed\", \"failed\", \"skipped\"] = \"passed\"\n             longrepr: (\n-                None\n-                | ExceptionInfo[BaseException]\n+                ExceptionInfo[BaseException]\n                 | tuple[str, int, str]\n                 | str\n                 | TerminalRepr\n+                | None\n             ) = None\n         else:\n             if not isinstance(excinfo, ExceptionInfo):\n@@ -466,11 +466,11 @@ class CollectReport(BaseReport):\n         self,\n         nodeid: str,\n         outcome: Literal[\"passed\", \"failed\", \"skipped\"],\n-        longrepr: None\n-        | ExceptionInfo[BaseException]\n+        longrepr: ExceptionInfo[BaseException]\n         | tuple[str, int, str]\n         | str\n-        | TerminalRepr,\n+        | TerminalRepr\n+        | None,\n         result: list[Item | Collector] | None,\n         sections: Iterable[tuple[str, str]] = (),\n         **extra,\ndiff --git a/src/_pytest/runner.py b/src/_pytest/runner.py\nindex 3f03cfa..cb723d1 100644\n--- a/src/_pytest/runner.py\n+++ b/src/_pytest/runner.py\n@@ -408,7 +408,7 @@ def pytest_make_collect_report(collector: Collector) -> CollectReport:\n     call = CallInfo.from_call(\n         collect, \"collect\", reraise=(KeyboardInterrupt, SystemExit)\n     )\n-    longrepr: None | tuple[str, int, str] | str | TerminalRepr = None\n+    longrepr: tuple[str, int, str] | str | TerminalRepr | None = None\n     if not call.excinfo:\n         outcome: Literal[\"passed\", \"skipped\", \"failed\"] = \"passed\"\n     else:\ndiff --git a/src/_pytest/terminal.py b/src/_pytest/terminal.py\nindex e3de07a..852153b 100644\n--- a/src/_pytest/terminal.py\n+++ b/src/_pytest/terminal.py\n@@ -400,7 +400,7 @@ class TerminalReporter:\n             file = sys.stdout\n         self._tw = _pytest.config.create_terminal_writer(config, file)\n         self._screen_width = self._tw.fullwidth\n-        self.currentfspath: None | Path | str | int = None\n+        self.currentfspath: Path | str | int | None = None\n         self.reportchars = getreportopt(config)\n         self.foldskipped = config.option.fold_skipped\n         self.hasmarkup = self._tw.hasmarkup\ndiff --git a/testing/python/metafunc.py b/testing/python/metafunc.py\nindex 654c992..566071d 100644\n--- a/testing/python/metafunc.py\n+++ b/testing/python/metafunc.py\n@@ -175,7 +175,7 @@ class TestMetafunc:\n             def __repr__(self):\n                 return \"Exc(from_gen)\"\n \n-        def gen() -> Iterator[int | None | Exc]:\n+        def gen() -> Iterator[int | Exc | None]:\n             yield 0\n             yield None\n             yield Exc()\n",
+  "route_labels": [
+    "diff_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "diff_compressor",
+    "allowed_outcomes": [
+      "diff_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "diff_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:pytest-dev/pytest",
+    "license": "MIT",
+    "generated_by": null,
+    "external": {
+      "publisher": "pytest-dev/pytest",
+      "source_url": "https://github.com/pytest-dev/pytest/commit/f86f2879e1fc74aa6b8db493b24a321711414565",
+      "retrieved_at": "2026-08-09T12:18:29.629243Z",
+      "licence_basis": "SPDX MIT, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/pytest-dev/pytest",
+      "licence_evidence_sha256": "f96abb52f9d19c22cc1373dcbee9dfd6246c5d8735de5157734451c579e9dc25",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": "git show, against a local clone \u2014 no foreign code executed"
+    },
+    "generated_at": "2026-08-09T12:18:29.796293Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "diff",
+    "pytest"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

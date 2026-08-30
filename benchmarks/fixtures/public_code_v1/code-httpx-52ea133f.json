@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "code-httpx-52ea133f",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "code",
+  "risk_tier": "low",
+  "content": "from __future__ import annotations\n\nimport typing\nfrom contextlib import contextmanager\n\nfrom ._client import Client\nfrom ._config import DEFAULT_TIMEOUT_CONFIG\nfrom ._models import Response\nfrom ._types import (\n    AuthTypes,\n    CookieTypes,\n    HeaderTypes,\n    ProxyTypes,\n    QueryParamTypes,\n    RequestContent,\n    RequestData,\n    RequestFiles,\n    TimeoutTypes,\n)\nfrom ._urls import URL\n\nif typing.TYPE_CHECKING:\n    import ssl  # pragma: no cover\n\n\n__all__ = [\n    \"delete\",\n    \"get\",\n    \"head\",\n    \"options\",\n    \"patch\",\n    \"post\",\n    \"put\",\n    \"request\",\n    \"stream\",\n]\n\n\ndef request(\n    method: str,\n    url: URL | str,\n    *,\n    params: QueryParamTypes | None = None,\n    content: RequestContent | None = None,\n    data: RequestData | None = None,\n    files: RequestFiles | None = None,\n    json: typing.Any | None = None,\n    headers: HeaderTypes | None = None,\n    cookies: CookieTypes | None = None,\n    auth: AuthTypes | None = None,\n    proxy: ProxyTypes | None = None,\n    timeout: TimeoutTypes = DEFAULT_TIMEOUT_CONFIG,\n    follow_redirects: bool = False,\n    verify: ssl.SSLContext | str | bool = True,\n    trust_env: bool = True,\n) -> Response:\n    \"\"\"\n    Sends an HTTP request.\n\n    **Parameters:**\n\n    * **method** - HTTP method for the new `Request` object: `GET`, `OPTIONS`,\n    `HEAD`, `POST`, `PUT`, `PATCH`, or `DELETE`.\n    * **url** - URL for the new `Request` object.\n    * **params** - *(optional)* Query parameters to include in the URL, as a\n    string, dictionary, or sequence of two-tuples.\n    * **content** - *(optional)* Binary content to include in the body of the\n    request, as bytes or a byte iterator.\n    * **data** - *(optional)* Form data to include in the body of the request,\n    as a dictionary.\n    * **files** - *(optional)* A dictionary of upload files to include in the\n    body of the request.\n    * **json** - *(optional)* A JSON serializable object to include in the body\n    of the request.\n    * **headers** - *(optional)* Dictionary of HTTP headers to include in the\n    request.\n    * **cookies** - *(optional)* Dictionary of Cookie items to include in the\n    request.\n    * **auth** - *(optional)* An authentication class to use when sending the\n    request.\n    * **proxy** - *(optional)* A proxy URL where all the traffic should be routed.\n    * **timeout** - *(optional)* The timeout configuration to use when sending\n    the request.\n    * **follow_redirects** - *(optional)* Enables or disables HTTP redirects.\n    * **verify** - *(optional)* Either `True` to use an SSL context with the\n    default CA bundle, `False` to disable verification, or an instance of\n    `ssl.SSLContext` to use a custom context.\n    * **trust_env** - *(optional)* Enables or disables usage of environment\n    variables for configuration.\n\n    **Returns:** `Response`\n\n    Usage:\n\n    ```\n    >>> import httpx\n    >>> response = httpx.request('GET', 'https://httpbin.org/get')\n    >>> response\n    <Response [200 OK]>\n    ```\n    \"\"\"\n    with Client(\n        cookies=cookies,\n        proxy=proxy,\n        verify=verify,\n        timeout=timeout,\n        trust_env=trust_env,\n    ) as client:\n        return client.request(\n            method=method,\n            url=url,\n            content=content,\n            data=data,\n            files=files,\n            json=json,\n            params=params,\n            headers=headers,\n            auth=auth,\n            follow_redirects=follow_redirects,\n        )\n\n\n@contextmanager\ndef stream(\n    method: str,\n    url: URL | str,\n    *,\n    params: QueryParamTypes | None = None,\n    content: RequestContent | None = None,\n    data: RequestData | None = None,\n    files: RequestFiles | None = None,\n    json: typing.Any | None = None,\n    headers: HeaderTypes | None = None,\n    cookies: CookieTypes | None = None,\n    auth: AuthTypes | None = None,\n    proxy: ProxyTypes | None = None,\n    timeout: TimeoutTypes = DEFAULT_TIMEOUT_CONFIG,\n    follow_redirects: bool = False,\n    verify: ssl.SSLContext | str | bool = True,\n    trust_env: bool = True,\n) -> typing.Iterator[Response]:\n    \"\"\"\n    Alternative to `httpx.request()` that streams the response body\n    instead of loading it into memory at once.\n\n    **Parameters**: See `httpx.request`.\n\n    See also: [Streaming Responses][0]\n\n    [0]: /quickstart#streaming-responses\n    \"\"\"\n    with Client(\n        cookies=cookies,\n        proxy=proxy,\n        verify=verify,\n        timeout=timeout,\n        trust_env=trust_env,\n    ) as client:\n        with client.stream(\n            method=method,\n            url=url,\n            content=content,\n            data=data,\n            files=files,\n            json=json,\n            params=params,\n            headers=headers,\n            auth=auth,\n            follow_redirects=follow_redirects,\n        ) as response:\n            yield response\n\n\ndef get(\n    url: URL | str,\n    *,\n    params: QueryParamTypes | None = None,\n    headers: HeaderTypes | None = None,\n    cookies: CookieTypes | None = None,\n    auth: AuthTypes | None = None,\n    proxy: ProxyTypes | None = None,\n    follow_redirects: bool = False,\n    verify: ssl.SSLContext | str | bool = True,\n    timeout: TimeoutTypes = DEFAULT_TIMEOUT_CONFIG,\n    trust_env: bool = True,\n) -> Response:\n    \"\"\"\n    Sends a `GET` request.\n\n    **Parameters**: See `httpx.request`.\n\n    Note that the `data`, `files`, `json` and `content` parameters are not available\n    on this function, as `GET` requests should not include a request body.\n    \"\"\"\n    return request(\n        \"GET\",\n        url,\n        params=params,\n        headers=headers,\n        cookies=cookies,\n        auth=auth,\n        proxy=proxy,\n        follow_redirects=follow_redirects,\n        verify=verify,\n        timeout=timeout,\n        trust_env=trust_env,\n    )\n\n\ndef options(\n    url: URL | str,\n    *,\n    params: QueryParamTypes | None = None,\n    headers: HeaderTypes | None = None,\n    cookies: CookieTypes | None = None,\n    auth: AuthTypes | None = None,\n    proxy: ProxyTypes | None = None,\n    follow_redirects: bool = False,\n    verify: ssl.SSLContext | str | bool = True,\n    timeout: TimeoutTypes = DEFAULT_TIMEOUT_CONFIG,\n    trust_env: bool = True,\n) -> Response:\n    \"\"\"\n    Sends an `OPTIONS` request.\n\n    **Parameters**: See `httpx.request`.\n\n    Note that the `data`, `files`, `json` and `content` parameters are not available\n    on this function, as `OPTIONS` requests should not include a request body.\n    \"\"\"\n    return request(\n        \"OPTIONS\",\n        url,\n        params=params,\n        headers=headers,\n        cookies=cookies,\n        auth=auth,\n        proxy=proxy,\n        follow_redirects=follow_redirects,\n        verify=verify,\n        timeout=timeout,\n        trust_env=trust_env,\n    )\n\n\ndef head(\n    url: URL | str,\n    *,\n    params: QueryParamTypes | None = None,\n    headers: HeaderTypes | None = None,\n    cookies: CookieTypes | None = None,\n    auth: AuthTypes | None = None,\n    proxy: ProxyTypes | None = None,\n    follow_redirects: bool = False,\n    verify: ssl.SSLContext | str | bool = True,\n    timeout: TimeoutTypes = DEFAULT_TIMEOUT_CONFIG,\n    trust_env: bool = True,\n) -> Response:\n    \"\"\"\n    Sends a `HEAD` request.\n\n    **Parameters**: See `httpx.request`.\n\n    Note that the `data`, `files`, `json` and `content` parameters are not available\n    on this function, as `HEAD` requests should not include a request body.\n    \"\"\"\n    return request(\n        \"HEAD\",\n        url,\n        params=params,\n        headers=headers,\n        cookies=cookies,\n        auth=auth,\n        proxy=proxy,\n        follow_redirects=follow_redirects,\n        verify=verify,\n        timeout=timeout,\n        trust_env=trust_env,\n    )\n\n\ndef post(\n    url: URL | str,\n    *,\n    content: RequestContent | None = None,\n    data: RequestData | None = None,\n    files: RequestFiles | None = None,\n    json: typing.Any | None = None,\n    params: QueryParamTypes | None = None,\n    headers: HeaderTypes | None = None,\n    cookies: CookieTypes | None = None,\n    auth: AuthTypes | None = None,\n    proxy: ProxyTypes | None = None,\n    follow_redirects: bool = False,\n    verify: ssl.SSLContext | str | bool = True,\n    timeout: TimeoutTypes = DEFAULT_TIMEOUT_CONFIG,\n    trust_env: bool = True,\n) -> Response:\n    \"\"\"\n    Sends a `POST` request.\n\n    **Parameters**: See `httpx.request`.\n    \"\"\"\n    return request(\n        \"POST\",\n        url,\n        content=content,\n        data=data,\n        files=files,\n        json=json,\n        params=params,\n        headers=headers,\n        cookies=cookies,\n        auth=auth,\n        proxy=proxy,\n        follow_redirects=follow_redirects,\n        verify=verify,\n        timeout=timeout,\n        trust_env=trust_env,\n    )\n\n\ndef put(\n    url: URL | str,\n    *,\n    content: RequestContent | None = None,\n    data: RequestData | None = None,\n    files: RequestFiles | None = None,\n    json: typing.Any | None = None,\n    params: QueryParamTypes | None = None,\n    headers: HeaderTypes | None = None,\n    cookies: CookieTypes | None = None,\n    auth: AuthTypes | None = None,\n    proxy: ProxyTypes | None = None,\n    follow_redirects: bool = False,\n    verify: ssl.SSLContext | str | bool = True,\n    timeout: TimeoutTypes = DEFAULT_TIMEOUT_CONFIG,\n    trust_env: bool = True,\n) -> Response:\n    \"\"\"\n    Sends a `PUT` request.\n\n    **Parameters**: See `httpx.request`.\n    \"\"\"\n    return request(\n        \"PUT\",\n        url,\n        content=content,\n        data=data,\n        files=files,\n        json=json,\n        params=params,\n        headers=headers,\n        cookies=cookies,\n        auth=auth,\n        proxy=proxy,\n        follow_redirects=follow_redirects,\n        verify=verify,\n        timeout=timeout,\n        trust_env=trust_env,\n    )\n\n\ndef patch(\n    url: URL | str,\n    *,\n    content: RequestContent | None = None,\n    data: RequestData | None = None,\n    files: RequestFiles | None = None,\n    json: typing.Any | None = None,\n    params: QueryParamTypes | None = None,\n    headers: HeaderTypes | None = None,\n    cookies: CookieTypes | None = None,\n    auth: AuthTypes | None = None,\n    proxy: ProxyTypes | None = None,\n    follow_redirects: bool = False,\n    verify: ssl.SSLContext | str | bool = True,\n    timeout: TimeoutTypes = DEFAULT_TIMEOUT_CONFIG,\n    trust_env: bool = True,\n) -> Response:\n    \"\"\"\n    Sends a `PATCH` request.\n\n    **Parameters**: See `httpx.request`.\n    \"\"\"\n    return request(\n        \"PATCH\",\n        url,\n        content=content,\n        data=data,\n        files=files,\n        json=json,\n        params=params,\n        headers=headers,\n        cookies=cookies,\n        auth=auth,\n        proxy=proxy,\n        follow_redirects=follow_redirects,\n        verify=verify,\n        timeout=timeout,\n        trust_env=trust_env,\n    )\n\n\ndef delete(\n    url: URL | str,\n    *,\n    params: QueryParamTypes | None = None,\n    headers: HeaderTypes | None = None,\n    cookies: CookieTypes | None = None,\n    auth: AuthTypes | None = None,\n    proxy: ProxyTypes | None = None,\n    follow_redirects: bool = False,\n    timeout: TimeoutTypes = DEFAULT_TIMEOUT_CONFIG,\n    verify: ssl.SSLContext | str | bool = True,\n    trust_env: bool = True,\n) -> Response:\n    \"\"\"\n    Sends a `DELETE` request.\n\n    **Parameters**: See `httpx.request`.\n\n    Note that the `data`, `files`, `json` and `content` parameters are not available\n    on this function, as `DELETE` requests should not include a request body.\n    \"\"\"\n    return request(\n        \"DELETE\",\n        url,\n        params=params,\n        headers=headers,\n        cookies=cookies,\n        auth=auth,\n        proxy=proxy,\n        follow_redirects=follow_redirects,\n        verify=verify,\n        timeout=timeout,\n        trust_env=trust_env,\n    )\n",
+  "route_labels": [
+    "code_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "code_compressor",
+    "allowed_outcomes": [
+      "code_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "code_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:encode/httpx",
+    "license": "BSD-3-Clause",
+    "generated_by": null,
+    "external": {
+      "publisher": "encode/httpx",
+      "source_url": "https://github.com/encode/httpx/blob/b5addb64f0161ff6bfe94c124ef76f6a1fba5254/httpx/_api.py",
+      "retrieved_at": "2026-08-09T10:50:35.933109Z",
+      "licence_basis": "SPDX BSD-3-Clause, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/encode/httpx",
+      "licence_evidence_sha256": "5ed6d55a881846e6924c391624875889bae6782ad1a93227bb4c846b2d527d0b",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": null
+    },
+    "generated_at": "2026-08-09T10:50:36.004208Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "code",
+    "python"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

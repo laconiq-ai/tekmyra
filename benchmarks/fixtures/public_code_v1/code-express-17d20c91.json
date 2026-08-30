@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "code-express-17d20c91",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "code",
+  "risk_tier": "low",
+  "content": "'use strict'\n\nvar after = require('after');\nvar assert = require('node:assert')\nvar express = require('../')\n  , Route = express.Route\n  , methods = require('../lib/utils').methods\n\ndescribe('Route', function(){\n  it('should work without handlers', function(done) {\n    var req = { method: 'GET', url: '/' }\n    var route = new Route('/foo')\n    route.dispatch(req, {}, done)\n  })\n\n  it('should not stack overflow with a large sync stack', function (done) {\n    this.timeout(5000) // long-running test\n\n    var req = { method: 'GET', url: '/' }\n    var route = new Route('/foo')\n\n    route.get(function (req, res, next) {\n      req.counter = 0\n      next()\n    })\n\n    for (var i = 0; i < 6000; i++) {\n      route.all(function (req, res, next) {\n        req.counter++\n        next()\n      })\n    }\n\n    route.get(function (req, res, next) {\n      req.called = true\n      next()\n    })\n\n    route.dispatch(req, {}, function (err) {\n      if (err) return done(err)\n      assert.ok(req.called)\n      assert.strictEqual(req.counter, 6000)\n      done()\n    })\n  })\n\n  describe('.all', function(){\n    it('should add handler', function(done){\n      var req = { method: 'GET', url: '/' };\n      var route = new Route('/foo');\n\n      route.all(function(req, res, next) {\n        req.called = true;\n        next();\n      });\n\n      route.dispatch(req, {}, function (err) {\n        if (err) return done(err);\n        assert.ok(req.called)\n        done();\n      });\n    })\n\n    it('should handle VERBS', function(done) {\n      var count = 0;\n      var route = new Route('/foo');\n      var cb = after(methods.length, function (err) {\n        if (err) return done(err);\n        assert.strictEqual(count, methods.length)\n        done();\n      });\n\n      route.all(function(req, res, next) {\n        count++;\n        next();\n      });\n\n      methods.forEach(function testMethod(method) {\n        var req = { method: method, url: '/' };\n        route.dispatch(req, {}, cb);\n      });\n    })\n\n    it('should stack', function(done) {\n      var req = { count: 0, method: 'GET', url: '/' };\n      var route = new Route('/foo');\n\n      route.all(function(req, res, next) {\n        req.count++;\n        next();\n      });\n\n      route.all(function(req, res, next) {\n        req.count++;\n        next();\n      });\n\n      route.dispatch(req, {}, function (err) {\n        if (err) return done(err);\n        assert.strictEqual(req.count, 2)\n        done();\n      });\n    })\n  })\n\n  describe('.VERB', function(){\n    it('should support .get', function(done){\n      var req = { method: 'GET', url: '/' };\n      var route = new Route('');\n\n      route.get(function(req, res, next) {\n        req.called = true;\n        next();\n      })\n\n      route.dispatch(req, {}, function (err) {\n        if (err) return done(err);\n        assert.ok(req.called)\n        done();\n      });\n    })\n\n    it('should limit to just .VERB', function(done){\n      var req = { method: 'POST', url: '/' };\n      var route = new Route('');\n\n      route.get(function () {\n        throw new Error('not me!');\n      })\n\n      route.post(function(req, res, next) {\n        req.called = true;\n        next();\n      })\n\n      route.dispatch(req, {}, function (err) {\n        if (err) return done(err);\n        assert.ok(req.called)\n        done();\n      });\n    })\n\n    it('should allow fallthrough', function(done){\n      var req = { order: '', method: 'GET', url: '/' };\n      var route = new Route('');\n\n      route.get(function(req, res, next) {\n        req.order += 'a';\n        next();\n      })\n\n      route.all(function(req, res, next) {\n        req.order += 'b';\n        next();\n      });\n\n      route.get(function(req, res, next) {\n        req.order += 'c';\n        next();\n      })\n\n      route.dispatch(req, {}, function (err) {\n        if (err) return done(err);\n        assert.strictEqual(req.order, 'abc')\n        done();\n      });\n    })\n  })\n\n  describe('errors', function(){\n    it('should handle errors via arity 4 functions', function(done){\n      var req = { order: '', method: 'GET', url: '/' };\n      var route = new Route('');\n\n      route.all(function(req, res, next){\n        next(new Error('foobar'));\n      });\n\n      route.all(function(req, res, next){\n        req.order += '0';\n        next();\n      });\n\n      route.all(function(err, req, res, next){\n        req.order += 'a';\n        next(err);\n      });\n\n      route.dispatch(req, {}, function (err) {\n        assert.ok(err)\n        assert.strictEqual(err.message, 'foobar')\n        assert.strictEqual(req.order, 'a')\n        done();\n      });\n    })\n\n    it('should handle throw', function(done) {\n      var req = { order: '', method: 'GET', url: '/' };\n      var route = new Route('');\n\n      route.all(function () {\n        throw new Error('foobar');\n      });\n\n      route.all(function(req, res, next){\n        req.order += '0';\n        next();\n      });\n\n      route.all(function(err, req, res, next){\n        req.order += 'a';\n        next(err);\n      });\n\n      route.dispatch(req, {}, function (err) {\n        assert.ok(err)\n        assert.strictEqual(err.message, 'foobar')\n        assert.strictEqual(req.order, 'a')\n        done();\n      });\n    });\n\n    it('should handle throwing inside error handlers', function(done) {\n      var req = { method: 'GET', url: '/' };\n      var route = new Route('');\n\n      route.get(function () {\n        throw new Error('boom!');\n      });\n\n      route.get(function(err, req, res, next){\n        throw new Error('oops');\n      });\n\n      route.get(function(err, req, res, next){\n        req.message = err.message;\n        next();\n      });\n\n      route.dispatch(req, {}, function (err) {\n        if (err) return done(err);\n        assert.strictEqual(req.message, 'oops')\n        done();\n      });\n    });\n\n    it('should handle throw in .all', function(done) {\n      var req = { method: 'GET', url: '/' };\n      var route = new Route('');\n\n      route.all(function(req, res, next){\n        throw new Error('boom!');\n      });\n\n      route.dispatch(req, {}, function(err){\n        assert.ok(err)\n        assert.strictEqual(err.message, 'boom!')\n        done();\n      });\n    });\n\n    it('should handle single error handler', function(done) {\n      var req = { method: 'GET', url: '/' };\n      var route = new Route('');\n\n      route.all(function(err, req, res, next){\n        // this should not execute\n        throw new Error('should not be called')\n      });\n\n      route.dispatch(req, {}, done);\n    });\n  })\n})\n",
+  "route_labels": [
+    "code_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "code_compressor",
+    "allowed_outcomes": [
+      "code_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "code_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:expressjs/express",
+    "license": "MIT",
+    "generated_by": null,
+    "external": {
+      "publisher": "expressjs/express",
+      "source_url": "https://github.com/expressjs/express/blob/a3714473feb3d2908add734d340e7755fd85e0a3/test/Route.js",
+      "retrieved_at": "2026-08-09T10:50:35.933109Z",
+      "licence_basis": "SPDX MIT, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/expressjs/express",
+      "licence_evidence_sha256": "eddc1bfa7ea454ae4c57781822dcdcf791b089429c9c4618198f2122017515d2",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": null
+    },
+    "generated_at": "2026-08-09T10:50:36.112591Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "code",
+    "javascript"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

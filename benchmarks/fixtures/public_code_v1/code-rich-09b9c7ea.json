@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "code-rich-09b9c7ea",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "code",
+  "risk_tier": "low",
+  "content": "from io import StringIO\n\nfrom benchmarks import snippets\nfrom rich.color import Color, ColorSystem\nfrom rich.console import Console\nfrom rich.pretty import Pretty\nfrom rich.segment import Segment\nfrom rich.style import Style\nfrom rich.syntax import Syntax\nfrom rich.table import Table\nfrom rich.text import Text\n\n\nclass TextSuite:\n    def setup(self):\n        self.console = Console(\n            file=StringIO(), color_system=\"truecolor\", legacy_windows=False\n        )\n        self.len_lorem_ipsum = len(snippets.LOREM_IPSUM)\n        self.text = Text.from_markup(snippets.MARKUP)\n\n    def time_wrapping(self):\n        self.text.wrap(self.console, 12, overflow=\"fold\")\n\n    def time_indent_guides(self):\n        Text(snippets.PYTHON_SNIPPET).with_indent_guides()\n\n    def time_fit(self):\n        Text(snippets.LOREM_IPSUM).fit(12)\n\n    def time_split(self):\n        self.text.split()\n\n    def time_divide(self):\n        Text(snippets.LOREM_IPSUM).divide(range(20, 100, 4))\n\n    def time_align_center(self):\n        Text(snippets.LOREM_IPSUM).align(\"center\", width=self.len_lorem_ipsum * 3)\n\n    def time_render(self):\n        list(self.text.render(self.console))\n\n    def time_wrapping_unicode_heavy(self):\n        Text(snippets.UNICODE_HEAVY_TEXT).wrap(self.console, 12, overflow=\"fold\")\n\n    def time_fit_unicode_heavy(self):\n        Text(snippets.UNICODE_HEAVY_TEXT).fit(12)\n\n    def time_split_unicode_heavy(self):\n        Text(snippets.UNICODE_HEAVY_TEXT).split()\n\n    def time_divide_unicode_heavy(self):\n        self.text.divide(range(20, 100, 4))\n\n    def time_align_center_unicode_heavy(self):\n        Text(snippets.UNICODE_HEAVY_TEXT).align(\n            \"center\", width=self.len_lorem_ipsum * 3\n        )\n\n    def time_render_unicode_heavy(self):\n        list(Text(snippets.UNICODE_HEAVY_TEXT).render(self.console))\n\n\nclass TextHotCacheSuite:\n    def setup(self):\n        self.console = Console(\n            file=StringIO(), color_system=\"truecolor\", legacy_windows=False\n        )\n\n    def time_wrapping_unicode_heavy_warm_cache(self):\n        for _ in range(20):\n            Text(snippets.UNICODE_HEAVY_TEXT).wrap(self.console, 12, overflow=\"fold\")\n\n\nclass SyntaxWrappingSuite:\n    def setup(self):\n        self.console = Console(\n            file=StringIO(), color_system=\"truecolor\", legacy_windows=False\n        )\n        self.syntax = Syntax(\n            code=snippets.PYTHON_SNIPPET, lexer=\"python\", word_wrap=True\n        )\n\n    def time_text_thin_terminal_heavy_wrapping(self):\n        self._print_with_width(20)\n\n    def time_text_thin_terminal_medium_wrapping(self):\n        self._print_with_width(60)\n\n    def time_text_wide_terminal_no_wrapping(self):\n        self._print_with_width(100)\n\n    def _print_with_width(self, width):\n        self.console.print(self.syntax, width)\n\n\nclass TableSuite:\n    def time_table_no_wrapping(self):\n        self._print_table(width=100)\n\n    def time_table_heavy_wrapping(self):\n        self._print_table(width=30)\n\n    def _print_table(self, width):\n        table = Table(title=\"Star Wars Movies\")\n        console = Console(\n            file=StringIO(), color_system=\"truecolor\", legacy_windows=False, width=width\n        )\n        table.add_column(\"Released\", justify=\"right\", style=\"cyan\", no_wrap=True)\n        table.add_column(\"Title\", style=\"magenta\")\n        table.add_column(\"Box Office\", justify=\"right\", style=\"green\")\n        table.add_row(\n            \"Dec 20, 2019\", \"[b]Star Wars[/]: The Rise of Skywalker\", \"$952,110,690\"\n        )\n        table.add_row(\n            \"May 25, 2018\", \"Solo: A [red][b]Star Wars[/] Story[/]\", \"$393,151,347\"\n        )\n        table.add_row(\n            \"Dec 15, 2017\",\n            \"[b red]Star Wars[/] Ep. V111: The Last Jedi\",\n            \"$1,332,539,889\",\n        )\n        table.add_row(\n            \"Dec 16, 2016\", \"Rogue One: A [blue]Star Wars[/] Story\", \"$1,332,439,889\"\n        )\n        console.print(table)\n\n\nclass PrettySuite:\n    def setup(self):\n        self.console = Console(\n            file=StringIO(), color_system=\"truecolor\", legacy_windows=False, width=100\n        )\n\n    def time_pretty(self):\n        pretty = Pretty(snippets.PYTHON_DICT)\n        self.console.print(pretty)\n\n    def time_pretty_indent_guides(self):\n        pretty = Pretty(snippets.PYTHON_DICT, indent_guides=True)\n        self.console.print(pretty)\n\n    def time_pretty_justify_center(self):\n        pretty = Pretty(snippets.PYTHON_DICT, justify=\"center\")\n        self.console.print(pretty)\n\n\nclass StyleSuite:\n    def setup(self):\n        self.console = Console(\n            file=StringIO(), color_system=\"truecolor\", legacy_windows=False, width=100\n        )\n        self.style1 = Style.parse(\"blue on red\")\n        self.style2 = Style.parse(\"green italic bold\")\n\n    def time_parse_ansi(self):\n        Style.parse(\"red on blue\")\n\n    def time_parse_hex(self):\n        Style.parse(\"#f0f0f0 on #e2e28a\")\n\n    def time_parse_mixed_complex_style(self):\n        Style.parse(\"dim bold reverse #00ee00 on rgb(123,12,50)\")\n\n    def time_style_add(self):\n        self.style1 + self.style2\n\n\nclass ColorSuite:\n    def setup(self):\n        self.console = Console(\n            file=StringIO(), color_system=\"truecolor\", legacy_windows=False, width=100\n        )\n        self.color = Color.parse(\"#0d1da0\")\n\n    def time_downgrade_to_eight_bit(self):\n        self.color.downgrade(ColorSystem.EIGHT_BIT)\n\n    def time_downgrade_to_standard(self):\n        self.color.downgrade(ColorSystem.STANDARD)\n\n    def time_downgrade_to_windows(self):\n        self.color.downgrade(ColorSystem.WINDOWS)\n\n\nclass ColorSuiteCached:\n    def setup(self):\n        self.console = Console(\n            file=StringIO(), color_system=\"truecolor\", legacy_windows=False, width=100\n        )\n        self.color = Color.parse(\"#0d1da0\")\n        # Warm cache\n        self.color.downgrade(ColorSystem.EIGHT_BIT)\n        self.color.downgrade(ColorSystem.STANDARD)\n        self.color.downgrade(ColorSystem.WINDOWS)\n\n    def time_downgrade_to_eight_bit(self):\n        self.color.downgrade(ColorSystem.EIGHT_BIT)\n\n    def time_downgrade_to_standard(self):\n        self.color.downgrade(ColorSystem.STANDARD)\n\n    def time_downgrade_to_windows(self):\n        self.color.downgrade(ColorSystem.WINDOWS)\n\n\nclass SegmentSuite:\n    def setup(self):\n        self.line = [\n            Segment(\"foo\"),\n            Segment(\"bar\"),\n            Segment(\"egg\"),\n            Segment(\"Where there is a Will\"),\n            Segment(\"There is a way\"),\n        ] * 2\n\n    def test_divide_complex(self):\n        list(Segment.divide(self.line, [5, 10, 20, 50, 108, 110, 118]))\n",
+  "route_labels": [
+    "code_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "code_compressor",
+    "allowed_outcomes": [
+      "code_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "code_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:Textualize/rich",
+    "license": "MIT",
+    "generated_by": null,
+    "external": {
+      "publisher": "Textualize/rich",
+      "source_url": "https://github.com/Textualize/rich/blob/9d8f9a372cc5916fd4781fec207ced7ddac2f08f/benchmarks/benchmarks.py",
+      "retrieved_at": "2026-08-09T10:50:35.933109Z",
+      "licence_basis": "SPDX MIT, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/Textualize/rich",
+      "licence_evidence_sha256": "4b594d6bab65718bd94af2d870649f7a645cdff71babfe9de4cc779d7923f49e",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": null
+    },
+    "generated_at": "2026-08-09T10:50:36.041612Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "code",
+    "python"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

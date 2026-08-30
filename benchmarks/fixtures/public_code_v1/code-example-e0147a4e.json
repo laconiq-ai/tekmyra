@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "code-example-e0147a4e",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "code",
+  "risk_tier": "low",
+  "content": "// Copyright 2024 The Go Authors. All rights reserved.\n// Use of this source code is governed by a BSD-style\n// license that can be found in the LICENSE file.\n\n// Command ragserver is an HTTP server that implements RAG (Retrieval\n// Augmented Generation) using the Gemini model and Weaviate, which\n// are accessed using LangChainGo. See the accompanying README file for\n// additional details.\npackage main\n\nimport (\n\t\"cmp\"\n\t\"context\"\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n\t\"strings\"\n\n\t\"github.com/tmc/langchaingo/embeddings\"\n\t\"github.com/tmc/langchaingo/llms\"\n\t\"github.com/tmc/langchaingo/llms/googleai\"\n\t\"github.com/tmc/langchaingo/schema\"\n\t\"github.com/tmc/langchaingo/vectorstores/weaviate\"\n)\n\nconst generativeModelName = \"gemini-1.5-flash\"\nconst embeddingModelName = \"text-embedding-004\"\n\n// This is a standard Go HTTP server. Server state is in the ragServer struct.\n// The `main` function connects to the required services (Weaviate and Google\n// AI), initializes the server state and registers HTTP handlers.\nfunc main() {\n\tctx := context.Background()\n\tapiKey := os.Getenv(\"GEMINI_API_KEY\")\n\tgeminiClient, err := googleai.New(ctx,\n\t\tgoogleai.WithAPIKey(apiKey),\n\t\tgoogleai.WithDefaultEmbeddingModel(embeddingModelName))\n\tif err != nil {\n\t\tlog.Fatal(err)\n\t}\n\n\temb, err := embeddings.NewEmbedder(geminiClient)\n\tif err != nil {\n\t\tlog.Fatal(err)\n\t}\n\n\twvStore, err := weaviate.New(\n\t\tweaviate.WithEmbedder(emb),\n\t\tweaviate.WithScheme(\"http\"),\n\t\tweaviate.WithHost(\"localhost:\"+cmp.Or(os.Getenv(\"WVPORT\"), \"9035\")),\n\t\tweaviate.WithIndexName(\"Document\"),\n\t)\n\n\tserver := &ragServer{\n\t\tctx:          ctx,\n\t\twvStore:      wvStore,\n\t\tgeminiClient: geminiClient,\n\t}\n\n\tmux := http.NewServeMux()\n\tmux.HandleFunc(\"POST /add/\", server.addDocumentsHandler)\n\tmux.HandleFunc(\"POST /query/\", server.queryHandler)\n\n\tport := cmp.Or(os.Getenv(\"SERVERPORT\"), \"9020\")\n\taddress := \"localhost:\" + port\n\tlog.Println(\"listening on\", address)\n\tlog.Fatal(http.ListenAndServe(address, mux))\n}\n\ntype ragServer struct {\n\tctx          context.Context\n\twvStore      weaviate.Store\n\tgeminiClient *googleai.GoogleAI\n}\n\nfunc (rs *ragServer) addDocumentsHandler(w http.ResponseWriter, req *http.Request) {\n\t// Parse HTTP request from JSON.\n\ttype document struct {\n\t\tText string\n\t}\n\ttype addRequest struct {\n\t\tDocuments []document\n\t}\n\tar := &addRequest{}\n\n\terr := readRequestJSON(req, ar)\n\tif err != nil {\n\t\thttp.Error(w, err.Error(), http.StatusBadRequest)\n\t\treturn\n\t}\n\n\t// Store documents and their embeddings in weaviate\n\tvar wvDocs []schema.Document\n\tfor _, doc := range ar.Documents {\n\t\twvDocs = append(wvDocs, schema.Document{PageContent: doc.Text})\n\t}\n\t_, err = rs.wvStore.AddDocuments(rs.ctx, wvDocs)\n\tif err != nil {\n\t\thttp.Error(w, err.Error(), http.StatusInternalServerError)\n\t\treturn\n\t}\n}\n\nfunc (rs *ragServer) queryHandler(w http.ResponseWriter, req *http.Request) {\n\t// Parse HTTP request from JSON.\n\ttype queryRequest struct {\n\t\tContent string\n\t}\n\tqr := &queryRequest{}\n\terr := readRequestJSON(req, qr)\n\tif err != nil {\n\t\thttp.Error(w, err.Error(), http.StatusBadRequest)\n\t\treturn\n\t}\n\n\t// Find the most similar documents.\n\tdocs, err := rs.wvStore.SimilaritySearch(rs.ctx, qr.Content, 3)\n\tif err != nil {\n\t\thttp.Error(w, fmt.Errorf(\"similarity search: %w\", err).Error(), http.StatusInternalServerError)\n\t\treturn\n\t}\n\tvar docsContents []string\n\tfor _, doc := range docs {\n\t\tdocsContents = append(docsContents, doc.PageContent)\n\t}\n\n\t// Create a RAG query for the LLM with the most relevant documents as\n\t// context.\n\tragQuery := fmt.Sprintf(ragTemplateStr, qr.Content, strings.Join(docsContents, \"\\n\"))\n\trespText, err := llms.GenerateFromSinglePrompt(rs.ctx, rs.geminiClient, ragQuery, llms.WithModel(generativeModelName))\n\tif err != nil {\n\t\tlog.Printf(\"calling generative model: %v\", err.Error())\n\t\thttp.Error(w, \"generative model error\", http.StatusInternalServerError)\n\t\treturn\n\t}\n\n\trenderJSON(w, respText)\n}\n\nconst ragTemplateStr = `\nI will ask you a question and will provide some additional context information.\nAssume this context information is factual and correct, as part of internal\ndocumentation.\nIf the question relates to the context, answer it using the context.\nIf the question does not relate to the context, answer it as normal.\n\nFor example, let's say the context has nothing in it about tropical flowers;\nthen if I ask you about tropical flowers, just answer what you know about them\nwithout referring to the context.\n\nFor example, if the context does mention minerology and I ask you about that,\nprovide information from the context along with general knowledge.\n\nQuestion:\n%s\n\nContext:\n%s\n`\n",
+  "route_labels": [
+    "code_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "code_compressor",
+    "allowed_outcomes": [
+      "code_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "code_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:golang/example",
+    "license": "BSD-3-Clause",
+    "generated_by": null,
+    "external": {
+      "publisher": "golang/example",
+      "source_url": "https://github.com/golang/example/blob/7f05d217867b2af52b0a28c6d1c91df97e1b5b39/ragserver/ragserver-langchaingo/main.go",
+      "retrieved_at": "2026-08-09T10:50:35.933109Z",
+      "licence_basis": "SPDX BSD-3-Clause, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/golang/example",
+      "licence_evidence_sha256": "cc24fa580dbb9c52b9793e3ca80d43d896195e34c953ecc30523e786c1c463dc",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": null
+    },
+    "generated_at": "2026-08-09T10:50:36.131236Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "code",
+    "go"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

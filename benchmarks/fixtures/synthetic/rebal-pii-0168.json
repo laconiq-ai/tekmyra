@@ -1,0 +1,177 @@
+{
+  "fixture_id": "rebal-pii-0168",
+  "content_type": "pii_message",
+  "risk_tier": "critical",
+  "content": "Customer Alex Gupta called from 555-1014. Account 1000000014. SSN: 114-13-8036. Email: alex.gupta@example.com. Requested address change to 114 Cedar St, Springfield.",
+  "route_labels": [
+    "pii_redaction_before_compression"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 32,
+      "end": 40,
+      "text": "555-1014",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 67,
+      "end": 78,
+      "text": "114-13-8036",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 87,
+      "end": 109,
+      "text": "alex.gupta@example.com",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "pii_redaction_before_compression",
+    "expected_risk": "critical",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "phone",
+        "start": 32,
+        "end": 40,
+        "text": "555-1014",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "ssn",
+        "start": 67,
+        "end": 78,
+        "text": "114-13-8036",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "email",
+        "start": 87,
+        "end": 109,
+        "text": "alex.gupta@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 32,
+        "end": 40,
+        "text": "555-1014",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 67,
+        "end": 78,
+        "text": "114-13-8036",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 87,
+        "end": 109,
+        "text": "alex.gupta@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 32,
+        "end": 40,
+        "text": "555-1014",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 67,
+        "end": 78,
+        "text": "114-13-8036",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 87,
+        "end": 109,
+        "text": "alex.gupta@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "pii_redaction_before_compression",
+    "allowed_outcomes": [
+      "pii_redaction_before_compression",
+      "pii_redaction_before_compression",
+      "reject_or_human_review"
+    ],
+    "compressible": false,
+    "redaction_only": true
+  },
+  "provenance": {
+    "source": "enterprise_mock",
+    "license": "proprietary_laconiq_mock",
+    "generated_by": "benchmarks/fixtures/generate_rebalance_fixtures.py",
+    "generated_at": "2026-07-18T01:23:06.865925Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "rebalance",
+    "pii_redaction_before_compression"
+  ],
+  "blocks": [
+    {
+      "type": "pii_message",
+      "content": "Customer Alex Gupta called from 555-1014. Account 1000000014. SSN: 114-13-8036. Email: alex.gupta@example.com. Requested address change to 114 Cedar St, Springfield.",
+      "start": 0,
+      "end": 165,
+      "route_label": "pii_redaction_before_compression",
+      "risk_tier": "critical",
+      "protected_spans": [
+        {
+          "start": 67,
+          "end": 78,
+          "label": "ssn",
+          "span_type": "locked",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 87,
+          "end": 109,
+          "label": "email",
+          "span_type": "locked",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:23:06.872566+00:00",
+  "schema_version": "2.0.0"
+}

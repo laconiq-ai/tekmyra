@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "diff-httpx-6c7af967",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "diff",
+  "risk_tier": "low",
+  "content": "Add httpx-retries to third party packages docs (#3552)\n\n\ndiff --git a/docs/third_party_packages.md b/docs/third_party_packages.md\nindex 22e0f1a..546607f 100644\n--- a/docs/third_party_packages.md\n+++ b/docs/third_party_packages.md\n@@ -2,96 +2,98 @@\n \n As HTTPX usage grows, there is an expanding community of developers building tools and libraries that integrate with HTTPX, or depend on HTTPX. Here are some of them.\n \n+<!-- NOTE: Entries are alphabetised. -->\n+\n ## Plugins\n \n-### httpx-ws\n+### Hishel\n \n-[GitHub](https://github.com/frankie567/httpx-ws) - [Documentation](https://frankie567.github.io/httpx-ws/)\n+[GitHub](https://github.com/karpetrosyan/hishel) - [Documentation](https://hishel.com/)\n \n-WebSocket support for HTTPX.\n+An elegant HTTP Cache implementation for HTTPX and HTTP Core.\n \n-### httpx-socks\n+### HTTPX-Auth\n \n-[GitHub](https://github.com/romis2012/httpx-socks)\n+[GitHub](https://github.com/Colin-b/httpx_auth) - [Documentation](https://colin-b.github.io/httpx_auth/)\n \n-Proxy (HTTP, SOCKS) transports for httpx.\n+Provides authentication classes to be used with HTTPX's [authentication parameter](advanced/authentication.md#customizing-authentication).\n \n-### httpdbg\n+### httpx-caching\n \n-[GitHub](https://github.com/cle-b/httpdbg) - [Documentation](https://httpdbg.readthedocs.io/)\n+[Github](https://github.com/johtso/httpx-caching)\n \n-A tool for Python developers to easily debug the HTTP(S) client requests in a Python program.\n+This package adds caching functionality to HTTPX\n \n-### Hishel\n+### httpx-socks\n \n-[GitHub](https://github.com/karpetrosyan/hishel) - [Documentation](https://hishel.com/)\n+[GitHub](https://github.com/romis2012/httpx-socks)\n \n-An elegant HTTP Cache implementation for HTTPX and HTTP Core.\n+Proxy (HTTP, SOCKS) transports for httpx.\n \n-### Authlib\n+### httpx-sse\n \n-[GitHub](https://github.com/lepture/authlib) - [Documentation](https://docs.authlib.org/en/latest/)\n+[GitHub](https://github.com/florimondmanca/httpx-sse)\n \n-The ultimate Python library in building OAuth and OpenID Connect clients and servers. Includes an [OAuth HTTPX client](https://docs.authlib.org/en/latest/client/httpx.html).\n+Allows consuming Server-Sent Events (SSE) with HTTPX.\n \n-### Gidgethub\n+### httpx-retries\n \n-[GitHub](https://github.com/brettcannon/gidgethub) - [Documentation](https://gidgethub.readthedocs.io/en/latest/index.html)\n+[GitHub](https://github.com/will-ockmore/httpx-retries) - [Documentation](https://will-ockmore.github.io/httpx-retries/)\n \n-An asynchronous GitHub API library. Includes [HTTPX support](https://gidgethub.readthedocs.io/en/latest/httpx.html).\n+A retry layer for HTTPX.\n \n-### HTTPX-Auth\n+### httpx-ws\n \n-[GitHub](https://github.com/Colin-b/httpx_auth) - [Documentation](https://colin-b.github.io/httpx_auth/)\n+[GitHub](https://github.com/frankie567/httpx-ws) - [Documentation](https://frankie567.github.io/httpx-ws/)\n \n-Provides authentication classes to be used with HTTPX [authentication parameter](advanced/authentication.md#customizing-authentication).\n+WebSocket support for HTTPX.\n \n ### pytest-HTTPX\n \n [GitHub](https://github.com/Colin-b/pytest_httpx) - [Documentation](https://colin-b.github.io/pytest_httpx/)\n \n-Provides `httpx_mock` [pytest](https://docs.pytest.org/en/latest/) fixture to mock HTTPX within test cases.\n+Provides a [pytest](https://docs.pytest.org/en/latest/) fixture to mock HTTPX within test cases.\n \n ### RESPX\n \n [GitHub](https://github.com/lundberg/respx) - [Documentation](https://lundberg.github.io/respx/)\n \n-A utility for mocking out the Python HTTPX library.\n+A utility for mocking out HTTPX.\n \n ### rpc.py\n \n [Github](https://github.com/abersheeran/rpc.py) - [Documentation](https://github.com/abersheeran/rpc.py#rpcpy)\n \n-An fast and powerful RPC framework based on ASGI/WSGI. Use HTTPX as the client of the RPC service.\n+A fast and powerful RPC framework based on ASGI/WSGI. Use HTTPX as the client of the RPC service.\n \n-### VCR.py\n+## Libraries with HTTPX support\n \n-[GitHub](https://github.com/kevin1024/vcrpy) - [Documentation](https://vcrpy.readthedocs.io/)\n+### Authlib\n \n-A utility for record and repeat an http request.\n+[GitHub](https://github.com/lepture/authlib) - [Documentation](https://docs.authlib.org/en/latest/)\n \n-### httpx-caching\n+A python library for building OAuth and OpenID Connect clients and servers. Includes an [OAuth HTTPX client](https://docs.authlib.org/en/latest/client/httpx.html).\n \n-[Github](https://github.com/johtso/httpx-caching)\n+### Gidgethub\n \n-This package adds caching functionality to HTTPX\n+[GitHub](https://github.com/brettcannon/gidgethub) - [Documentation](https://gidgethub.readthedocs.io/en/latest/index.html)\n \n-### httpx-sse\n+An asynchronous GitHub API library. Includes [HTTPX support](https://gidgethub.readthedocs.io/en/latest/httpx.html).\n \n-[GitHub](https://github.com/florimondmanca/httpx-sse)\n+### httpdbg\n \n-Allows consuming Server-Sent Events (SSE) with HTTPX.\n+[GitHub](https://github.com/cle-b/httpdbg) - [Documentation](https://httpdbg.readthedocs.io/)\n+\n+A tool for python developers to easily debug the HTTP(S) client requests in a python program.\n \n-### robox\n+### VCR.py\n \n-[Github](https://github.com/danclaudiupop/robox)\n+[GitHub](https://github.com/kevin1024/vcrpy) - [Documentation](https://vcrpy.readthedocs.io/)\n \n-A library for scraping the web built on top of HTTPX.\n+Record and repeat requests.\n \n ## Gists\n \n-<!-- NOTE: this list is in alphabetical order. -->\n-\n ### urllib3-transport\n \n [GitHub](https://gist.github.com/florimondmanca/d56764d78d748eb9f73165da388e546e)\n",
+  "route_labels": [
+    "diff_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "diff_compressor",
+    "allowed_outcomes": [
+      "diff_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "diff_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:encode/httpx",
+    "license": "BSD-3-Clause",
+    "generated_by": null,
+    "external": {
+      "publisher": "encode/httpx",
+      "source_url": "https://github.com/encode/httpx/commit/6c7af967734bafd011164f2a1653abc87905a62b",
+      "retrieved_at": "2026-08-09T12:18:29.629243Z",
+      "licence_basis": "SPDX BSD-3-Clause, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/encode/httpx",
+      "licence_evidence_sha256": "3f64e00043774d244e4df840ae2b20a673126e31204a97b7dff2fa0dff98e606",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": "git show, against a local clone \u2014 no foreign code executed"
+    },
+    "generated_at": "2026-08-09T12:18:29.954118Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "diff",
+    "httpx"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

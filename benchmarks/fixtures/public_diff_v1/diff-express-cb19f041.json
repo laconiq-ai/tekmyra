@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "diff-express-cb19f041",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "diff",
+  "risk_tier": "low",
+  "content": "Upgrade `content-type` (#7234)\n\n\ndiff --git a/History.md b/History.md\nindex 5edd589..9c22045 100644\n--- a/History.md\n+++ b/History.md\n@@ -10,6 +10,13 @@\n     app.render('index', null, callback); // now works as expected\n     ```\n \n+* Upgrade `content-type` to `^2.0.0`, bringing a faster parser (~1.5x quicker `Content-Type` parsing/formatting in `res.send()`) along with a behavior change: `res.send()` now keeps any existing parameters when adding the charset and no longer throws on a `Content-Type` that fails to parse - by [@blakeembrey](https://github.com/blakeembrey) in [#7234](https://github.com/expressjs/express/pull/7234)\n+\n+    ```js\n+    res.set('Content-Type', 'text/plain; foo=bar').send('hey');\n+    // -> Content-Type: text/plain; foo=bar; charset=utf-8\n+    ```\n+\n ## \u26a1 Performance\n \n * Avoid duplicate Content-Type header processing in `res.send()` when sending string responses without an explicit Content-Type header - by [@bjohansebas](https://github.com/bjohansebas) in [#6991](https://github.com/expressjs/express/pull/6991)\ndiff --git a/package.json b/package.json\nindex ec3ba3b..3c166a3 100644\n--- a/package.json\n+++ b/package.json\n@@ -35,7 +35,7 @@\n     \"accepts\": \"^2.0.0\",\n     \"body-parser\": \"^2.2.1\",\n     \"content-disposition\": \"^1.0.0\",\n-    \"content-type\": \"^1.0.5\",\n+    \"content-type\": \"^2.0.0\",\n     \"cookie\": \"^0.7.1\",\n     \"cookie-signature\": \"^1.2.1\",\n     \"debug\": \"^4.4.0\",\n@@ -58,7 +58,7 @@\n     \"send\": \"^1.1.0\",\n     \"serve-static\": \"^2.2.0\",\n     \"statuses\": \"^2.0.1\",\n-    \"type-is\": \"^2.0.1\",\n+    \"type-is\": \"^2.1.0\",\n     \"vary\": \"^1.1.2\"\n   },\n   \"devDependencies\": {\ndiff --git a/test/res.send.js b/test/res.send.js\nindex 8547b77..eb6e496 100644\n--- a/test/res.send.js\n+++ b/test/res.send.js\n@@ -122,6 +122,32 @@ describe('res', function(){\n       .expect(200, 'hey', done);\n     })\n \n+    it('should preserve existing parameters when adding charset', function(done){\n+      var app = express();\n+\n+      app.use(function(req, res){\n+        res.set('Content-Type', 'text/plain; foo=bar').send('hey');\n+      });\n+\n+      request(app)\n+      .get('/')\n+      .expect('Content-Type', 'text/plain; foo=bar; charset=utf-8')\n+      .expect(200, 'hey', done);\n+    })\n+\n+    it('should not throw on a Content-Type that fails to parse', function(done){\n+      var app = express();\n+\n+      app.use(function(req, res){\n+        res.set('Content-Type', 'text/plain; foo').send('hey');\n+      });\n+\n+      request(app)\n+      .get('/')\n+      .expect('Content-Type', 'text/plain; charset=utf-8')\n+      .expect(200, 'hey', done);\n+    })\n+\n     it('should keep charset in Content-Type for Buffers', function(done){\n       var app = express();\n \n",
+  "route_labels": [
+    "diff_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "diff_compressor",
+    "allowed_outcomes": [
+      "diff_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "diff_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:expressjs/express",
+    "license": "MIT",
+    "generated_by": null,
+    "external": {
+      "publisher": "expressjs/express",
+      "source_url": "https://github.com/expressjs/express/commit/cb19f04170fc815321d40dcd3bc620ae03c828cd",
+      "retrieved_at": "2026-08-09T12:18:29.629243Z",
+      "licence_basis": "SPDX MIT, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/expressjs/express",
+      "licence_evidence_sha256": "b43a1f8265068984bedfb796d8101f0f7769292cafb95f49d64c11bce5cd2769",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": "git show, against a local clone \u2014 no foreign code executed"
+    },
+    "generated_at": "2026-08-09T12:18:30.512587Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "diff",
+    "express"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

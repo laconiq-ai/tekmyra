@@ -1,0 +1,149 @@
+{
+  "fixture_id": "missing-extractive_keypoint_compressor-003",
+  "content_type": "bullet_notes",
+  "risk_tier": "medium",
+  "content": "Project Search \u2014 extractive keypoint draft\n- Decision: introduce a feature flag for the redesigned widget.\n- Action item: create a proof of concept for the caching layer (owner: Casey Kim).\n- Blocker: inconsistent staging data for validation.\n- Due date: 2026-09-14.\n- Ticket reference: TICKET-4803.",
+  "route_labels": [
+    "extractive_keypoint_compressor",
+    "prose_token_compressor"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 255,
+      "end": 265,
+      "text": "2026-09-14",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 287,
+      "end": 298,
+      "text": "TICKET-4803",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 178,
+      "end": 187,
+      "text": "Casey Kim",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "extractive_keypoint_compressor",
+    "expected_risk": "medium",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "date",
+        "start": 255,
+        "end": 265,
+        "text": "2026-09-14",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "ticket_id",
+        "start": 287,
+        "end": 298,
+        "text": "TICKET-4803",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "owner",
+        "start": 178,
+        "end": 187,
+        "text": "Casey Kim",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 255,
+        "end": 265,
+        "text": "2026-09-14",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 287,
+        "end": 298,
+        "text": "TICKET-4803",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 178,
+        "end": 187,
+        "text": "Casey Kim",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "extractive_keypoint_compressor",
+    "allowed_outcomes": [
+      "extractive_keypoint_compressor"
+    ],
+    "compressible": true
+  },
+  "blocks": [
+    {
+      "type": "prose",
+      "content": "Project Search \u2014 extractive keypoint draft\n- Decision: introduce a feature flag for the redesigned widget.\n- Action item: create a proof of concept for the caching layer (owner: Casey Kim).\n- Blocker: inconsistent staging data for validation.\n- Due date: 2026-09-14.\n- Ticket reference: TICKET-4803.",
+      "start": 0,
+      "end": 299,
+      "route_label": "prose_token_compressor",
+      "risk_tier": "medium",
+      "protected_spans": [
+        {
+          "start": 255,
+          "end": 265,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 287,
+          "end": 299,
+          "label": "retrieval_key",
+          "span_type": "anchor",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "public_sample",
+    "license": "MIT",
+    "generated_by": "benchmarks/fixtures/generate_missing_routes.py",
+    "generated_at": "2026-07-15T06:43:09.103012Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "missing",
+    "extractive_keypoint_compressor",
+    "meeting_notes"
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:10:03.522670+00:00",
+  "schema_version": "2.0.0"
+}

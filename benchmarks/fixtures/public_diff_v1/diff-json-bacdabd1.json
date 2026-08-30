@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "diff-json-bacdabd1",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "diff",
+  "risk_tier": "low",
+  "content": "Fix start_pos() for strings containing escape sequences (#5361)\n\n\ndiff --git a/include/nlohmann/detail/input/json_sax.hpp b/include/nlohmann/detail/input/json_sax.hpp\nindex 4c5f24a..8a98ee7 100644\n--- a/include/nlohmann/detail/input/json_sax.hpp\n+++ b/include/nlohmann/detail/input/json_sax.hpp\n@@ -370,8 +370,10 @@ class json_sax_dom_parser\n \n                 case value_t::string:\n                 {\n-                    // include the length of the quotes, which is 2\n-                    v.start_position = v.end_position - v.m_data.m_value.string->size() - 2;\n+                    // escape sequences make the token longer than the value it\n+                    // parses to, so the start position cannot be derived from\n+                    // the value; use the offset the lexer recorded instead\n+                    v.start_position = m_lexer_ref->get_token_start_position();\n                     break;\n                 }\n \n@@ -769,8 +771,10 @@ class json_sax_dom_callback_parser\n \n                 case value_t::string:\n                 {\n-                    // include the length of the quotes, which is 2\n-                    v.start_position = v.end_position - v.m_data.m_value.string->size() - 2;\n+                    // escape sequences make the token longer than the value it\n+                    // parses to, so the start position cannot be derived from\n+                    // the value; use the offset the lexer recorded instead\n+                    v.start_position = m_lexer_ref->get_token_start_position();\n                     break;\n                 }\n \ndiff --git a/include/nlohmann/detail/input/lexer.hpp b/include/nlohmann/detail/input/lexer.hpp\nindex 6318994..641d93f 100644\n--- a/include/nlohmann/detail/input/lexer.hpp\n+++ b/include/nlohmann/detail/input/lexer.hpp\n@@ -1357,6 +1357,11 @@ scan_number_done:\n         token_buffer.clear();\n         decimal_point_position = std::string::npos;\n \n+#if JSON_DIAGNOSTIC_POSITIONS\n+        // the first character of the token has already been read, hence the -1\n+        token_start_position = position.chars_read_total - 1;\n+#endif\n+\n         note_token_start(std::integral_constant<bool, lazy_token_string> {});\n     }\n \n@@ -1519,6 +1524,15 @@ scan_number_done:\n         return position;\n     }\n \n+#if JSON_DIAGNOSTIC_POSITIONS\n+    /// return the offset of the first character of the last read token; unlike\n+    /// the token's parsed value, this accounts for escape sequences\n+    constexpr std::size_t get_token_start_position() const noexcept\n+    {\n+        return token_start_position;\n+    }\n+#endif\n+\n     /// seekable adapter: rebuild the last read token from the input on demand\n     const std::vector<char_type>& collect_token_chars(std::vector<char_type>& out, std::true_type /*lazy*/) const\n     {\n@@ -1719,6 +1733,12 @@ scan_number_done:\n     /// the last read token on error for seekable adapters (see collect_token_chars)\n     std::size_t token_string_start = 0;\n \n+#if JSON_DIAGNOSTIC_POSITIONS\n+    /// start offset of the current token within the input, used to report\n+    /// diagnostic positions (see reset())\n+    std::size_t token_start_position = 0;\n+#endif\n+\n     /// buffer for variable-length tokens (numbers, strings)\n     string_t token_buffer {};\n \ndiff --git a/single_include/nlohmann/json.hpp b/single_include/nlohmann/json.hpp\nindex c1b1780..fa6199d 100644\n--- a/single_include/nlohmann/json.hpp\n+++ b/single_include/nlohmann/json.hpp\n@@ -9075,6 +9075,11 @@ scan_number_done:\n         token_buffer.clear();\n         decimal_point_position = std::string::npos;\n \n+#if JSON_DIAGNOSTIC_POSITIONS\n+        // the first character of the token has already been read, hence the -1\n+        token_start_position = position.chars_read_total - 1;\n+#endif\n+\n         note_token_start(std::integral_constant<bool, lazy_token_string> {});\n     }\n \n@@ -9237,6 +9242,15 @@ scan_number_done:\n         return position;\n     }\n \n+#if JSON_DIAGNOSTIC_POSITIONS\n+    /// return the offset of the first character of the last read token; unlike\n+    /// the token's parsed value, this accounts for escape sequences\n+    constexpr std::size_t get_token_start_position() const noexcept\n+    {\n+        return token_start_position;\n+    }\n+#endif\n+\n     /// seekable adapter: rebuild the last read token from the input on demand\n     const std::vector<char_type>& collect_token_chars(std::vector<char_type>& out, std::true_type /*lazy*/) const\n     {\n@@ -9437,6 +9451,12 @@ scan_number_done:\n     /// the last read token on error for seekable adapters (see collect_token_chars)\n     std::size_t token_string_start = 0;\n \n+#if JSON_DIAGNOSTIC_POSITIONS\n+    /// start offset of the current token within the input, used to report\n+    /// diagnostic positions (see reset())\n+    std::size_t token_start_position = 0;\n+#endif\n+\n     /// buffer for variable-length tokens (numbers, strings)\n     string_t token_buffer {};\n \n@@ -9813,8 +9833,10 @@ class json_sax_dom_parser\n \n                 case value_t::string:\n                 {\n-                    // include the length of the quotes, which is 2\n-                    v.start_position = v.end_position - v.m_data.m_value.string->size() - 2;\n+                    // escape sequences make the token longer than the value it\n+                    // parses to, so the start position cannot be derived from\n+                    // the value; use the offset the lexer recorded instead\n+                    v.start_position = m_lexer_ref->get_token_start_position();\n                     break;\n                 }\n \n@@ -10212,8 +10234,10 @@ class json_sax_dom_callback_parser\n \n                 case value_t::string:\n                 {\n-                    // include the length of the quotes, which is 2\n-                    v.start_position = v.end_position - v.m_data.m_value.string->size() - 2;\n+                    // escape sequences make the token longer than the value it\n+                    // parses to, so the start position cannot be derived from\n+                    // the value; use the offset the lexer recorded instead\n+                    v.start_position = m_lexer_ref->get_token_start_position();\n                     break;\n                 }\n \ndiff --git a/tests/src/unit-diagnostic-positions.cpp b/tests/src/unit-diagnostic-positions.cpp\nindex 59c21dc..ad95275 100644\n--- a/tests/src/unit-diagnostic-positions.cpp\n+++ b/tests/src/unit-diagnostic-positions.cpp\n@@ -38,6 +38,36 @@ TEST_CASE(\"Better diagnostics with positions\")\n                              \"[json.exception.type_error.302] type must be number, but is string\", json::type_error);\n     }\n \n+    SECTION(\"positions of strings containing escape sequences\")\n+    {\n+        // escape sequences make the token longer than the string it parses to,\n+        // so the positions must not be derived from the parsed value's length\n+        const auto check = [](const std::string & text, const std::string & token)\n+        {\n+            CAPTURE(text)\n+            CAPTURE(token)\n+            const json j = json::parse(text);\n+            const json& v = j.at(\"a\");\n+            CHECK(text.substr(v.start_pos(), v.end_pos() - v.start_pos()) == token);\n+        };\n+\n+        check(R\"({\"a\":\"plain\"})\", R\"(\"plain\")\");\n+        check(R\"({\"a\":\"tab\\there\"})\", R\"(\"tab\\there\")\");\n+        check(R\"({\"a\":\"\\n\\n\\n\\n\\n\\n\"})\", R\"(\"\\n\\n\\n\\n\\n\\n\")\");\n+        check(R\"({\"a\":\"\\\"\"})\", R\"(\"\\\"\")\");\n+        check(R\"({\"a\":\"\\\\\"})\", R\"(\"\\\\\")\");\n+        check(R\"({\"a\":\"\u00e9\"})\", R\"(\"\u00e9\")\");\n+        check(R\"({\"a\":\"\ud83c\udf1e\"})\", R\"(\"\ud83c\udf1e\")\");\n+        check(\"{\\\"a\\\":\\\"\\xc3\\xa9\\\"}\", \"\\\"\\xc3\\xa9\\\"\");  // multi-byte UTF-8, no escapes\n+\n+        // a string at the root, where an escape would otherwise push the\n+        // reported start position past the opening quote\n+        const std::string root = R\"(\"a\\tb\")\";\n+        const json j = json::parse(root);\n+        CHECK(j.start_pos() == 0);\n+        CHECK(j.end_pos() == root.size());\n+    }\n+\n     SECTION(\"JSON patch add to primitive parent (#4292)\")\n     {\n         // the JSON Patch \"add\" target /foo/bar/baz has a string parent\n",
+  "route_labels": [
+    "diff_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "diff_compressor",
+    "allowed_outcomes": [
+      "diff_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "diff_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:nlohmann/json",
+    "license": "MIT",
+    "generated_by": null,
+    "external": {
+      "publisher": "nlohmann/json",
+      "source_url": "https://github.com/nlohmann/json/commit/bacdabd176955be6b5157b7e26075ba9965584b2",
+      "retrieved_at": "2026-08-09T12:18:29.629243Z",
+      "licence_basis": "SPDX MIT, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/nlohmann/json",
+      "licence_evidence_sha256": "25cfc0a8d012917eb6eb57b4cbae2916dc744e04a13bd56db51f9af401ef8f42",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": "git show, against a local clone \u2014 no foreign code executed"
+    },
+    "generated_at": "2026-08-09T12:18:30.399053Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "diff",
+    "json"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

@@ -1,0 +1,18 @@
+[
+  "passthrough",
+  "deterministic_json_compressor",
+  "code_compressor",
+  "log_compressor",
+  "diff_compressor",
+  "prose_token_compressor",
+  "summarizer",
+  "extractive_keypoint_compressor",
+  "ocr_first",
+  "image_optimizer",
+  "chart_table_extraction",
+  "pii_redaction_before_compression",
+  "governance_safe_compression",
+  "legal_security_safe_mode",
+  "reversible_retrieval_mode",
+  "reject_or_human_review"
+]

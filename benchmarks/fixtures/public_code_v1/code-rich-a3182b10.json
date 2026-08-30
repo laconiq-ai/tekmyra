@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "code-rich-a3182b10",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "code",
+  "risk_tier": "low",
+  "content": "\"\"\"\n\nDemonstrates how to create a dynamic group of progress bars,\nshowing multi-level progress for multiple tasks (installing apps in the example),\neach of which consisting of multiple steps.\n\n\"\"\"\n\nimport time\n\nfrom rich.console import Group\nfrom rich.panel import Panel\nfrom rich.live import Live\nfrom rich.progress import (\n    BarColumn,\n    Progress,\n    SpinnerColumn,\n    TextColumn,\n    TimeElapsedColumn,\n)\n\n\ndef run_steps(name, step_times, app_steps_task_id):\n    \"\"\"Run steps for a single app, and update corresponding progress bars.\"\"\"\n\n    for idx, step_time in enumerate(step_times):\n        # add progress bar for this step (time elapsed + spinner)\n        action = step_actions[idx]\n        step_task_id = step_progress.add_task(\"\", action=action, name=name)\n\n        # run steps, update progress\n        for _ in range(step_time):\n            time.sleep(0.5)\n            step_progress.update(step_task_id, advance=1)\n\n        # stop and hide progress bar for this step when done\n        step_progress.stop_task(step_task_id)\n        step_progress.update(step_task_id, visible=False)\n\n        # also update progress bar for current app when step is done\n        app_steps_progress.update(app_steps_task_id, advance=1)\n\n\n# progress bar for current app showing only elapsed time,\n# which will stay visible when app is installed\ncurrent_app_progress = Progress(\n    TimeElapsedColumn(),\n    TextColumn(\"{task.description}\"),\n)\n\n# progress bars for single app steps (will be hidden when step is done)\nstep_progress = Progress(\n    TextColumn(\"  \"),\n    TimeElapsedColumn(),\n    TextColumn(\"[bold purple]{task.fields[action]}\"),\n    SpinnerColumn(\"simpleDots\"),\n)\n# progress bar for current app (progress in steps)\napp_steps_progress = Progress(\n    TextColumn(\n        \"[bold blue]Progress for app {task.fields[name]}: {task.percentage:.0f}%\"\n    ),\n    BarColumn(),\n    TextColumn(\"({task.completed} of {task.total} steps done)\"),\n)\n# overall progress bar\noverall_progress = Progress(\n    TimeElapsedColumn(), BarColumn(), TextColumn(\"{task.description}\")\n)\n# group of progress bars;\n# some are always visible, others will disappear when progress is complete\nprogress_group = Group(\n    Panel(Group(current_app_progress, step_progress, app_steps_progress)),\n    overall_progress,\n)\n\n# tuple specifies how long each step takes for that app\nstep_actions = (\"downloading\", \"configuring\", \"building\", \"installing\")\napps = [\n    (\"one\", (2, 1, 4, 2)),\n    (\"two\", (1, 3, 8, 4)),\n    (\"three\", (2, 1, 3, 2)),\n]\n\n# create overall progress bar\noverall_task_id = overall_progress.add_task(\"\", total=len(apps))\n\n# use own live instance as context manager with group of progress bars,\n# which allows for running multiple different progress bars in parallel,\n# and dynamically showing/hiding them\nwith Live(progress_group):\n    for idx, (name, step_times) in enumerate(apps):\n        # update message on overall progress bar\n        top_descr = \"[bold #AAAAAA](%d out of %d apps installed)\" % (idx, len(apps))\n        overall_progress.update(overall_task_id, description=top_descr)\n\n        # add progress bar for steps of this app, and run the steps\n        current_task_id = current_app_progress.add_task(\"Installing app %s\" % name)\n        app_steps_task_id = app_steps_progress.add_task(\n            \"\", total=len(step_times), name=name\n        )\n        run_steps(name, step_times, app_steps_task_id)\n\n        # stop and hide steps progress bar for this specific app\n        app_steps_progress.update(app_steps_task_id, visible=False)\n        current_app_progress.stop_task(current_task_id)\n        current_app_progress.update(\n            current_task_id, description=\"[bold green]App %s installed!\" % name\n        )\n\n        # increase overall progress now this task is done\n        overall_progress.update(overall_task_id, advance=1)\n\n    # final update for message on overall progress bar\n    overall_progress.update(\n        overall_task_id, description=\"[bold green]%s apps installed, done!\" % len(apps)\n    )\n",
+  "route_labels": [
+    "code_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "code_compressor",
+    "allowed_outcomes": [
+      "code_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "code_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:Textualize/rich",
+    "license": "MIT",
+    "generated_by": null,
+    "external": {
+      "publisher": "Textualize/rich",
+      "source_url": "https://github.com/Textualize/rich/blob/9d8f9a372cc5916fd4781fec207ced7ddac2f08f/examples/dynamic_progress.py",
+      "retrieved_at": "2026-08-09T10:50:35.933109Z",
+      "licence_basis": "SPDX MIT, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/Textualize/rich",
+      "licence_evidence_sha256": "4b594d6bab65718bd94af2d870649f7a645cdff71babfe9de4cc779d7923f49e",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": null
+    },
+    "generated_at": "2026-08-09T10:50:36.042127Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "code",
+    "python"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

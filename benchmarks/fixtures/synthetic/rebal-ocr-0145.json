@@ -1,0 +1,148 @@
+{
+  "fixture_id": "rebal-ocr-0145",
+  "content_type": "ocr_text",
+  "risk_tier": "low",
+  "content": "[OCR: 0.96] Scanned memorandum \u2014 reference SCAN-2026-4406, dated 2026-03-28.\nSubject: Employee badge renewal\nBody: Please verify the attached totals before end of week.\n[OCR artifact: stamped approval box]",
+  "route_labels": [
+    "ocr_first",
+    "prose_token_compressor"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 43,
+      "end": 57,
+      "text": "SCAN-2026-4406",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 65,
+      "end": 75,
+      "text": "2026-03-28",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 86,
+      "end": 108,
+      "text": "Employee badge renewal",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "ocr_first",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "scan_reference",
+        "start": 43,
+        "end": 57,
+        "text": "SCAN-2026-4406",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "date",
+        "start": 65,
+        "end": 75,
+        "text": "2026-03-28",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "subject",
+        "start": 86,
+        "end": 108,
+        "text": "Employee badge renewal",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 43,
+        "end": 57,
+        "text": "SCAN-2026-4406",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 65,
+        "end": 75,
+        "text": "2026-03-28",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 86,
+        "end": 108,
+        "text": "Employee badge renewal",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "ocr_first",
+    "allowed_outcomes": [
+      "ocr_first"
+    ],
+    "compressible": true
+  },
+  "provenance": {
+    "source": "public_sample",
+    "license": "MIT",
+    "generated_by": "benchmarks/fixtures/generate_rebalance_fixtures.py",
+    "generated_at": "2026-07-18T01:23:06.856162Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "rebalance",
+    "ocr_first"
+  ],
+  "blocks": [
+    {
+      "type": "prose",
+      "content": "[OCR: 0.96] Scanned memorandum \u2014 reference SCAN-2026-4406, dated 2026-03-28.\nSubject: Employee badge renewal\nBody: Please verify the attached totals before end of week.\n[OCR artifact: stamped approval box]",
+      "start": 0,
+      "end": 205,
+      "route_label": "prose_token_compressor",
+      "risk_tier": "low",
+      "protected_spans": [
+        {
+          "start": 43,
+          "end": 58,
+          "label": "retrieval_key",
+          "span_type": "anchor",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 65,
+          "end": 75,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:23:06.860495+00:00",
+  "schema_version": "2.0.0"
+}

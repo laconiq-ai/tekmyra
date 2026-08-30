@@ -1,0 +1,103 @@
+{
+  "fixture_id": "rebal-image-0109",
+  "content_type": "image_metadata",
+  "risk_tier": "low",
+  "content": "Image payload metadata \u2014 format=PNG, width=1280, height=720, dimensions=1280x720, base64_length=31000 bytes, filename=diagram_15.png, color_space=YCbCr, codec=png. Optimization hint: quality=89, target_display=watch.",
+  "route_labels": [
+    "image_optimizer"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 118,
+      "end": 132,
+      "text": "diagram_15.png",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 72,
+      "end": 80,
+      "text": "1280x720",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "image_optimizer",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "filename",
+        "start": 118,
+        "end": 132,
+        "text": "diagram_15.png",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "dimensions",
+        "start": 72,
+        "end": 80,
+        "text": "1280x720",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 118,
+        "end": 132,
+        "text": "diagram_15.png",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 72,
+        "end": 80,
+        "text": "1280x720",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "image_optimizer",
+    "allowed_outcomes": [
+      "image_optimizer"
+    ],
+    "compressible": true
+  },
+  "provenance": {
+    "source": "public_sample",
+    "license": "MIT",
+    "generated_by": "benchmarks/fixtures/generate_rebalance_fixtures.py",
+    "generated_at": "2026-07-18T01:23:06.830598Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "rebalance",
+    "image_optimizer"
+  ],
+  "blocks": [
+    {
+      "type": "image_metadata",
+      "content": "Image payload metadata \u2014 format=PNG, width=1280, height=720, dimensions=1280x720, base64_length=31000 bytes, filename=diagram_15.png, color_space=YCbCr, codec=png. Optimization hint: quality=89, target_display=watch.",
+      "start": 0,
+      "end": 216,
+      "route_label": "image_optimizer",
+      "risk_tier": "low",
+      "protected_spans": []
+    }
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:23:06.837927+00:00",
+  "schema_version": "2.0.0"
+}

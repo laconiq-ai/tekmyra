@@ -1,0 +1,42 @@
+# The exact versions the published figures were measured against.
+#
+# WHY THIS FILE EXISTS. This project declares its dependencies as RANGES,
+# deliberately: a library that hard-pins is unusable inside anyone else's
+# application. But a range FLOATS. Without this file, a figure that verifies
+# today becomes unverifiable next month with no commit in between and nobody
+# at fault: the resolution moved, and nothing recorded what it had been.
+#
+# So: install normally to USE TekMyra, and install against this file to
+# REPRODUCE the numbers in the README.
+#
+#     pip install -c constraints-reproduce.txt -e .
+#
+# HOW MUCH THIS ACTUALLY MATTERS, measured rather than asserted: against the
+# published reference bundle, on 2026-08-30. On scikit-learn 1.8.0 and 1.9.0
+# the `long_context_v1` headline is 0.2929 both times, identical to four
+# decimal places. The figures are not fragile within the declared range, and
+# this file is a durability guarantee rather than the only thing holding them
+# up.
+#
+# BELOW THE FLOOR THE ARTIFACT DOES NOT WORK AT ALL. The published bundle's
+# router was exported under scikit-learn >= 1.8, whose LogisticRegression no
+# longer carries the removed `multi_class` attribute, so scikit-learn 1.5.2,
+# 1.6.1 and 1.7.2 all crash at model load with `AttributeError:
+# 'LogisticRegression' object has no attribute 'multi_class'` (numpy/scipy
+# confounds controlled by re-running with period-appropriate versions). That
+# is why the declared floor is 1.8 and not something older and
+# friendlier-looking: an earlier export of this model did run on 1.5.2, and
+# the floor moved when the artifact did.
+#
+# Measured on Linux (arm64 and x86_64) and macOS. The reference bundle digest
+# reproduces byte-identically across all three.
+
+numpy==2.5.2
+scikit-learn==1.9.0
+joblib==1.5.3
+scipy==1.18.0
+pydantic==2.13.4
+
+# Only needed if you use the ONNX execution path; the joblib/scikit-learn path
+# is what the README's figures were measured on.
+onnxruntime==1.28.0

@@ -1,0 +1,213 @@
+{
+  "fixture_id": "rebal-governance-0090",
+  "content_type": "governance",
+  "risk_tier": "high",
+  "content": "Control ID: ISO-27001-A.9.2 | Owner: dave@example.com | Status: In Progress | Finding: Log retention policy does not meet the 7-year requirement. Remediation owner: dave@example.com | Due date: 2026-11-20",
+  "route_labels": [
+    "governance_safe_compression",
+    "prose_token_compressor"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 12,
+      "end": 27,
+      "text": "ISO-27001-A.9.2",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 37,
+      "end": 53,
+      "text": "dave@example.com",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 194,
+      "end": 204,
+      "text": "2026-11-20",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "governance_safe_compression",
+    "expected_risk": "high",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "control_id",
+        "start": 12,
+        "end": 27,
+        "text": "ISO-27001-A.9.2",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "email",
+        "start": 37,
+        "end": 53,
+        "text": "dave@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "date",
+        "start": 194,
+        "end": 204,
+        "text": "2026-11-20",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 12,
+        "end": 27,
+        "text": "ISO-27001-A.9.2",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 37,
+        "end": 53,
+        "text": "dave@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 194,
+        "end": 204,
+        "text": "2026-11-20",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 12,
+        "end": 27,
+        "text": "ISO-27001-A.9.2",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 37,
+        "end": 53,
+        "text": "dave@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 194,
+        "end": 204,
+        "text": "2026-11-20",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 12,
+        "end": 27,
+        "text": "ISO-27001-A.9.2",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 37,
+        "end": 53,
+        "text": "dave@example.com",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 194,
+        "end": 204,
+        "text": "2026-11-20",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "governance_safe_compression",
+    "allowed_outcomes": [
+      "governance_safe_compression",
+      "pii_redaction_before_compression",
+      "reject_or_human_review"
+    ],
+    "compressible": false,
+    "redaction_only": true
+  },
+  "provenance": {
+    "source": "enterprise_mock",
+    "license": "proprietary_laconiq_mock",
+    "generated_by": "benchmarks/fixtures/generate_rebalance_fixtures.py",
+    "generated_at": "2026-07-18T01:23:06.811270Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "rebalance",
+    "governance_safe_compression"
+  ],
+  "blocks": [
+    {
+      "type": "prose",
+      "content": "Control ID: ISO-27001-A.9.2 | Owner: dave@example.com | Status: In Progress | Finding: Log retention policy does not meet the 7-year requirement. Remediation owner: dave@example.com | Due date: 2026-11-20",
+      "start": 0,
+      "end": 204,
+      "route_label": "prose_token_compressor",
+      "risk_tier": "low",
+      "protected_spans": [
+        {
+          "start": 37,
+          "end": 53,
+          "label": "email",
+          "span_type": "locked",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 165,
+          "end": 181,
+          "label": "email",
+          "span_type": "locked",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 194,
+          "end": 204,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:23:06.826739+00:00",
+  "schema_version": "2.0.0"
+}

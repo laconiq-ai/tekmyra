@@ -1,0 +1,273 @@
+{
+  "$defs": {
+    "PolicyTier": {
+      "enum": [
+        "standard",
+        "regulated",
+        "critical"
+      ],
+      "title": "PolicyTier",
+      "type": "string"
+    },
+    "SourceChannel": {
+      "enum": [
+        "api",
+        "chat",
+        "email",
+        "ticket",
+        "upload",
+        "agent",
+        "batch"
+      ],
+      "title": "SourceChannel",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "feature_schema_version": {
+      "const": "1.0.0",
+      "default": "1.0.0",
+      "title": "Feature Schema Version",
+      "type": "string"
+    },
+    "token_len": {
+      "minimum": 0,
+      "title": "Token Len",
+      "type": "integer"
+    },
+    "char_len": {
+      "minimum": 0,
+      "title": "Char Len",
+      "type": "integer"
+    },
+    "line_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Line Count",
+      "type": "integer"
+    },
+    "byte_len": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Byte Len",
+      "type": "integer"
+    },
+    "char_entropy": {
+      "minimum": 0,
+      "title": "Char Entropy",
+      "type": "number"
+    },
+    "json_parse_success": {
+      "title": "Json Parse Success",
+      "type": "boolean"
+    },
+    "json_depth": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Json Depth",
+      "type": "integer"
+    },
+    "markdown_density": {
+      "default": 0.0,
+      "minimum": 0,
+      "title": "Markdown Density",
+      "type": "number"
+    },
+    "code_language": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Code Language"
+    },
+    "ast_parse_success": {
+      "default": false,
+      "title": "Ast Parse Success",
+      "type": "boolean"
+    },
+    "diff_markers": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Diff Markers",
+      "type": "integer"
+    },
+    "log_timestamp_density": {
+      "default": 0.0,
+      "minimum": 0,
+      "title": "Log Timestamp Density",
+      "type": "number"
+    },
+    "log_repetition_ratio": {
+      "default": 0.0,
+      "minimum": 0,
+      "title": "Log Repetition Ratio",
+      "type": "number"
+    },
+    "stacktrace_hits": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Stacktrace Hits",
+      "type": "integer"
+    },
+    "table_density": {
+      "default": 0.0,
+      "minimum": 0,
+      "title": "Table Density",
+      "type": "number"
+    },
+    "bullet_line_ratio": {
+      "default": 0.0,
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Bullet Line Ratio",
+      "type": "number"
+    },
+    "image_keyword_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Image Keyword Count",
+      "type": "integer"
+    },
+    "ocr_keyword_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Ocr Keyword Count",
+      "type": "integer"
+    },
+    "summarizer_keyword_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Summarizer Keyword Count",
+      "type": "integer"
+    },
+    "prose_sentence_density": {
+      "default": 0.0,
+      "minimum": 0,
+      "title": "Prose Sentence Density",
+      "type": "number"
+    },
+    "url_density": {
+      "default": 0.0,
+      "minimum": 0,
+      "title": "Url Density",
+      "type": "number"
+    },
+    "pii_entity_count": {
+      "minimum": 0,
+      "title": "Pii Entity Count",
+      "type": "integer"
+    },
+    "pii_entity_types": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Pii Entity Types",
+      "type": "array"
+    },
+    "pii_max_confidence": {
+      "default": 0.0,
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Pii Max Confidence",
+      "type": "number"
+    },
+    "legal_keyword_count": {
+      "minimum": 0,
+      "title": "Legal Keyword Count",
+      "type": "integer"
+    },
+    "security_keyword_count": {
+      "minimum": 0,
+      "title": "Security Keyword Count",
+      "type": "integer"
+    },
+    "governance_keyword_count": {
+      "minimum": 0,
+      "title": "Governance Keyword Count",
+      "type": "integer"
+    },
+    "financial_amount_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Financial Amount Count",
+      "type": "integer"
+    },
+    "deadline_date_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Deadline Date Count",
+      "type": "integer"
+    },
+    "embedded_text_ratio": {
+      "default": 0.0,
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Embedded Text Ratio",
+      "type": "number"
+    },
+    "ocr_confidence": {
+      "default": 0.0,
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Ocr Confidence",
+      "type": "number"
+    },
+    "image_hint": {
+      "default": "none",
+      "enum": [
+        "none",
+        "photo",
+        "screenshot",
+        "chart",
+        "table",
+        "document_scan",
+        "unknown"
+      ],
+      "title": "Image Hint",
+      "type": "string"
+    },
+    "source_channel": {
+      "$ref": "#/$defs/SourceChannel"
+    },
+    "policy_tier": {
+      "$ref": "#/$defs/PolicyTier"
+    },
+    "content_type": {
+      "default": "unknown",
+      "title": "Content Type",
+      "type": "string"
+    },
+    "text": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Text"
+    }
+  },
+  "required": [
+    "token_len",
+    "char_len",
+    "char_entropy",
+    "json_parse_success",
+    "pii_entity_count",
+    "legal_keyword_count",
+    "security_keyword_count",
+    "governance_keyword_count",
+    "source_channel",
+    "policy_tier"
+  ],
+  "title": "FeatureVector",
+  "type": "object"
+}

@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "code-httpx-a57405d5",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "code",
+  "risk_tier": "low",
+  "content": "\"\"\"\nOur exception hierarchy:\n\n* HTTPError\n  x RequestError\n    + TransportError\n      - TimeoutException\n        \u00b7 ConnectTimeout\n        \u00b7 ReadTimeout\n        \u00b7 WriteTimeout\n        \u00b7 PoolTimeout\n      - NetworkError\n        \u00b7 ConnectError\n        \u00b7 ReadError\n        \u00b7 WriteError\n        \u00b7 CloseError\n      - ProtocolError\n        \u00b7 LocalProtocolError\n        \u00b7 RemoteProtocolError\n      - ProxyError\n      - UnsupportedProtocol\n    + DecodingError\n    + TooManyRedirects\n  x HTTPStatusError\n* InvalidURL\n* CookieConflict\n* StreamError\n  x StreamConsumed\n  x StreamClosed\n  x ResponseNotRead\n  x RequestNotRead\n\"\"\"\n\nfrom __future__ import annotations\n\nimport contextlib\nimport typing\n\nif typing.TYPE_CHECKING:\n    from ._models import Request, Response  # pragma: no cover\n\n__all__ = [\n    \"CloseError\",\n    \"ConnectError\",\n    \"ConnectTimeout\",\n    \"CookieConflict\",\n    \"DecodingError\",\n    \"HTTPError\",\n    \"HTTPStatusError\",\n    \"InvalidURL\",\n    \"LocalProtocolError\",\n    \"NetworkError\",\n    \"PoolTimeout\",\n    \"ProtocolError\",\n    \"ProxyError\",\n    \"ReadError\",\n    \"ReadTimeout\",\n    \"RemoteProtocolError\",\n    \"RequestError\",\n    \"RequestNotRead\",\n    \"ResponseNotRead\",\n    \"StreamClosed\",\n    \"StreamConsumed\",\n    \"StreamError\",\n    \"TimeoutException\",\n    \"TooManyRedirects\",\n    \"TransportError\",\n    \"UnsupportedProtocol\",\n    \"WriteError\",\n    \"WriteTimeout\",\n]\n\n\nclass HTTPError(Exception):\n    \"\"\"\n    Base class for `RequestError` and `HTTPStatusError`.\n\n    Useful for `try...except` blocks when issuing a request,\n    and then calling `.raise_for_status()`.\n\n    For example:\n\n    ```\n    try:\n        response = httpx.get(\"https://www.example.com\")\n        response.raise_for_status()\n    except httpx.HTTPError as exc:\n        print(f\"HTTP Exception for {exc.request.url} - {exc}\")\n    ```\n    \"\"\"\n\n    def __init__(self, message: str) -> None:\n        super().__init__(message)\n        self._request: Request | None = None\n\n    @property\n    def request(self) -> Request:\n        if self._request is None:\n            raise RuntimeError(\"The .request property has not been set.\")\n        return self._request\n\n    @request.setter\n    def request(self, request: Request) -> None:\n        self._request = request\n\n\nclass RequestError(HTTPError):\n    \"\"\"\n    Base class for all exceptions that may occur when issuing a `.request()`.\n    \"\"\"\n\n    def __init__(self, message: str, *, request: Request | None = None) -> None:\n        super().__init__(message)\n        # At the point an exception is raised we won't typically have a request\n        # instance to associate it with.\n        #\n        # The 'request_context' context manager is used within the Client and\n        # Response methods in order to ensure that any raised exceptions\n        # have a `.request` property set on them.\n        self._request = request\n\n\nclass TransportError(RequestError):\n    \"\"\"\n    Base class for all exceptions that occur at the level of the Transport API.\n    \"\"\"\n\n\n# Timeout exceptions...\n\n\nclass TimeoutException(TransportError):\n    \"\"\"\n    The base class for timeout errors.\n\n    An operation has timed out.\n    \"\"\"\n\n\nclass ConnectTimeout(TimeoutException):\n    \"\"\"\n    Timed out while connecting to the host.\n    \"\"\"\n\n\nclass ReadTimeout(TimeoutException):\n    \"\"\"\n    Timed out while receiving data from the host.\n    \"\"\"\n\n\nclass WriteTimeout(TimeoutException):\n    \"\"\"\n    Timed out while sending data to the host.\n    \"\"\"\n\n\nclass PoolTimeout(TimeoutException):\n    \"\"\"\n    Timed out waiting to acquire a connection from the pool.\n    \"\"\"\n\n\n# Core networking exceptions...\n\n\nclass NetworkError(TransportError):\n    \"\"\"\n    The base class for network-related errors.\n\n    An error occurred while interacting with the network.\n    \"\"\"\n\n\nclass ReadError(NetworkError):\n    \"\"\"\n    Failed to receive data from the network.\n    \"\"\"\n\n\nclass WriteError(NetworkError):\n    \"\"\"\n    Failed to send data through the network.\n    \"\"\"\n\n\nclass ConnectError(NetworkError):\n    \"\"\"\n    Failed to establish a connection.\n    \"\"\"\n\n\nclass CloseError(NetworkError):\n    \"\"\"\n    Failed to close a connection.\n    \"\"\"\n\n\n# Other transport exceptions...\n\n\nclass ProxyError(TransportError):\n    \"\"\"\n    An error occurred while establishing a proxy connection.\n    \"\"\"\n\n\nclass UnsupportedProtocol(TransportError):\n    \"\"\"\n    Attempted to make a request to an unsupported protocol.\n\n    For example issuing a request to `ftp://www.example.com`.\n    \"\"\"\n\n\nclass ProtocolError(TransportError):\n    \"\"\"\n    The protocol was violated.\n    \"\"\"\n\n\nclass LocalProtocolError(ProtocolError):\n    \"\"\"\n    A protocol was violated by the client.\n\n    For example if the user instantiated a `Request` instance explicitly,\n    failed to include the mandatory `Host:` header, and then issued it directly\n    using `client.send()`.\n    \"\"\"\n\n\nclass RemoteProtocolError(ProtocolError):\n    \"\"\"\n    The protocol was violated by the server.\n\n    For example, returning malformed HTTP.\n    \"\"\"\n\n\n# Other request exceptions...\n\n\nclass DecodingError(RequestError):\n    \"\"\"\n    Decoding of the response failed, due to a malformed encoding.\n    \"\"\"\n\n\nclass TooManyRedirects(RequestError):\n    \"\"\"\n    Too many redirects.\n    \"\"\"\n\n\n# Client errors\n\n\nclass HTTPStatusError(HTTPError):\n    \"\"\"\n    The response had an error HTTP status of 4xx or 5xx.\n\n    May be raised when calling `response.raise_for_status()`\n    \"\"\"\n\n    def __init__(self, message: str, *, request: Request, response: Response) -> None:\n        super().__init__(message)\n        self.request = request\n        self.response = response\n\n\nclass InvalidURL(Exception):\n    \"\"\"\n    URL is improperly formed or cannot be parsed.\n    \"\"\"\n\n    def __init__(self, message: str) -> None:\n        super().__init__(message)\n\n\nclass CookieConflict(Exception):\n    \"\"\"\n    Attempted to lookup a cookie by name, but multiple cookies existed.\n\n    Can occur when calling `response.cookies.get(...)`.\n    \"\"\"\n\n    def __init__(self, message: str) -> None:\n        super().__init__(message)\n\n\n# Stream exceptions...\n\n# These may occur as the result of a programming error, by accessing\n# the request/response stream in an invalid manner.\n\n\nclass StreamError(RuntimeError):\n    \"\"\"\n    The base class for stream exceptions.\n\n    The developer made an error in accessing the request stream in\n    an invalid way.\n    \"\"\"\n\n    def __init__(self, message: str) -> None:\n        super().__init__(message)\n\n\nclass StreamConsumed(StreamError):\n    \"\"\"\n    Attempted to read or stream content, but the content has already\n    been streamed.\n    \"\"\"\n\n    def __init__(self) -> None:\n        message = (\n            \"Attempted to read or stream some content, but the content has \"\n            \"already been streamed. For requests, this could be due to passing \"\n            \"a generator as request content, and then receiving a redirect \"\n            \"response or a secondary request as part of an authentication flow.\"\n            \"For responses, this could be due to attempting to stream the response \"\n            \"content more than once.\"\n        )\n        super().__init__(message)\n\n\nclass StreamClosed(StreamError):\n    \"\"\"\n    Attempted to read or stream response content, but the request has been\n    closed.\n    \"\"\"\n\n    def __init__(self) -> None:\n        message = \"Attempted to read or stream content, but the stream has been closed.\"\n        super().__init__(message)\n\n\nclass ResponseNotRead(StreamError):\n    \"\"\"\n    Attempted to access streaming response content, without having called `read()`.\n    \"\"\"\n\n    def __init__(self) -> None:\n        message = (\n            \"Attempted to access streaming response content,\"\n            \" without having called `read()`.\"\n        )\n        super().__init__(message)\n\n\nclass RequestNotRead(StreamError):\n    \"\"\"\n    Attempted to access streaming request content, without having called `read()`.\n    \"\"\"\n\n    def __init__(self) -> None:\n        message = (\n            \"Attempted to access streaming request content,\"\n            \" without having called `read()`.\"\n        )\n        super().__init__(message)\n\n\n@contextlib.contextmanager\ndef request_context(\n    request: Request | None = None,\n) -> typing.Iterator[None]:\n    \"\"\"\n    A context manager that can be used to attach the given request context\n    to any `RequestError` exceptions that are raised within the block.\n    \"\"\"\n    try:\n        yield\n    except RequestError as exc:\n        if request is not None:\n            exc.request = request\n        raise exc\n",
+  "route_labels": [
+    "code_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "code_compressor",
+    "allowed_outcomes": [
+      "code_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "code_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:encode/httpx",
+    "license": "BSD-3-Clause",
+    "generated_by": null,
+    "external": {
+      "publisher": "encode/httpx",
+      "source_url": "https://github.com/encode/httpx/blob/b5addb64f0161ff6bfe94c124ef76f6a1fba5254/httpx/_exceptions.py",
+      "retrieved_at": "2026-08-09T10:50:35.933109Z",
+      "licence_basis": "SPDX BSD-3-Clause, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/encode/httpx",
+      "licence_evidence_sha256": "5ed6d55a881846e6924c391624875889bae6782ad1a93227bb4c846b2d527d0b",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": null
+    },
+    "generated_at": "2026-08-09T10:50:36.005237Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "code",
+    "python"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

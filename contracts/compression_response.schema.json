@@ -1,0 +1,632 @@
+{
+  "$defs": {
+    "AnchorSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor_id": {
+          "title": "Anchor Id",
+          "type": "string"
+        },
+        "segment_id": {
+          "title": "Segment Id",
+          "type": "string"
+        },
+        "offset_start": {
+          "minimum": 0,
+          "title": "Offset Start",
+          "type": "integer"
+        },
+        "offset_end": {
+          "minimum": 0,
+          "title": "Offset End",
+          "type": "integer"
+        },
+        "recovery_ref": {
+          "title": "Recovery Ref",
+          "type": "string"
+        },
+        "content_hash": {
+          "title": "Content Hash",
+          "type": "string"
+        },
+        "content_type": {
+          "title": "Content Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "anchor_id",
+        "segment_id",
+        "offset_start",
+        "offset_end",
+        "recovery_ref",
+        "content_hash",
+        "content_type"
+      ],
+      "title": "AnchorSummary",
+      "type": "object"
+    },
+    "CompressionEconomics": {
+      "additionalProperties": false,
+      "properties": {
+        "predicted_request_tokens": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Predicted Request Tokens"
+        },
+        "predicted_request_cost": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Predicted Request Cost"
+        },
+        "predicted_compressor_cost": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Predicted Compressor Cost"
+        },
+        "predicted_compressor_latency_ms": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Predicted Compressor Latency Ms"
+        },
+        "predicted_savings": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Predicted Savings"
+        },
+        "predicted_safety_margin": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Predicted Safety Margin"
+        },
+        "observed_raw_context_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed Raw Context Tokens"
+        },
+        "observed_compressed_context_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed Compressed Context Tokens"
+        },
+        "observed_raw_request_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed Raw Request Tokens"
+        },
+        "observed_compressed_request_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed Compressed Request Tokens"
+        },
+        "observed_raw_output_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed Raw Output Tokens"
+        },
+        "observed_compressed_output_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed Compressed Output Tokens"
+        },
+        "observed_raw_cost_usd": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed Raw Cost Usd"
+        },
+        "observed_compressed_cost_usd": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed Compressed Cost Usd"
+        },
+        "observed_compressor_cpu_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed Compressor Cpu Ms"
+        },
+        "observed_model_raw_latency_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed Model Raw Latency Ms"
+        },
+        "observed_model_compressed_latency_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed Model Compressed Latency Ms"
+        }
+      },
+      "title": "CompressionEconomics",
+      "type": "object"
+    },
+    "CompressionMetrics": {
+      "additionalProperties": false,
+      "properties": {
+        "input_tokens": {
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "compression_ratio": {
+          "minimum": 0,
+          "title": "Compression Ratio",
+          "type": "number"
+        },
+        "latency_ms": {
+          "$ref": "#/$defs/LatencyBreakdown"
+        },
+        "verifier_pass": {
+          "default": false,
+          "title": "Verifier Pass",
+          "type": "boolean"
+        },
+        "fail_safe_triggered": {
+          "default": false,
+          "title": "Fail Safe Triggered",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "input_tokens",
+        "output_tokens",
+        "compression_ratio",
+        "latency_ms"
+      ],
+      "title": "CompressionMetrics",
+      "type": "object"
+    },
+    "CompressionSegment": {
+      "additionalProperties": false,
+      "properties": {
+        "segment_id": {
+          "title": "Segment Id",
+          "type": "string"
+        },
+        "original_content": {
+          "title": "Original Content",
+          "type": "string"
+        },
+        "compressed_content": {
+          "title": "Compressed Content",
+          "type": "string"
+        },
+        "content_type": {
+          "title": "Content Type",
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "passthrough",
+            "deterministic",
+            "learned",
+            "hybrid",
+            "reversible",
+            "human_review"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "fallback_level": {
+          "$ref": "#/$defs/FallbackLevel"
+        },
+        "locked_span_count": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Locked Span Count",
+          "type": "integer"
+        },
+        "anchor_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Anchor Ids",
+          "type": "array"
+        },
+        "compression_ratio": {
+          "minimum": 0,
+          "title": "Compression Ratio",
+          "type": "number"
+        }
+      },
+      "required": [
+        "segment_id",
+        "original_content",
+        "compressed_content",
+        "content_type",
+        "mode",
+        "fallback_level",
+        "compression_ratio"
+      ],
+      "title": "CompressionSegment",
+      "type": "object"
+    },
+    "EligibilityReason": {
+      "enum": [
+        "too_short",
+        "calibration_band",
+        "high_risk",
+        "pii",
+        "structure_gate_fail",
+        "safety_margin_fail",
+        "protected_span_conflict",
+        "eligible",
+        "primary_population"
+      ],
+      "title": "EligibilityReason",
+      "type": "string"
+    },
+    "FallbackLevel": {
+      "enum": [
+        "normal_compression",
+        "relax_budget",
+        "block_only_compression",
+        "deterministic_only_compression",
+        "bypass_original",
+        "reject_or_human_review"
+      ],
+      "title": "FallbackLevel",
+      "type": "string"
+    },
+    "LatencyBreakdown": {
+      "additionalProperties": false,
+      "properties": {
+        "detect": {
+          "default": 0.0,
+          "title": "Detect",
+          "type": "number"
+        },
+        "route": {
+          "default": 0.0,
+          "title": "Route",
+          "type": "number"
+        },
+        "model": {
+          "default": 0.0,
+          "title": "Model",
+          "type": "number"
+        },
+        "verify": {
+          "default": 0.0,
+          "title": "Verify",
+          "type": "number"
+        },
+        "anchor": {
+          "default": 0.0,
+          "title": "Anchor",
+          "type": "number"
+        },
+        "total": {
+          "default": 0.0,
+          "title": "Total",
+          "type": "number"
+        }
+      },
+      "title": "LatencyBreakdown",
+      "type": "object"
+    },
+    "ObservedCompressionResult": {
+      "additionalProperties": false,
+      "properties": {
+        "observed_eligibility_decision": {
+          "title": "Observed Eligibility Decision",
+          "type": "boolean"
+        },
+        "observed_bypass_reason": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EligibilityReason"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "selected_route": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RouteClass"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "selected_codec": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Selected Codec"
+        },
+        "learned_compressor_invoked": {
+          "default": false,
+          "title": "Learned Compressor Invoked",
+          "type": "boolean"
+        },
+        "economics": {
+          "$ref": "#/$defs/CompressionEconomics"
+        },
+        "protected_disposition_valid": {
+          "default": false,
+          "title": "Protected Disposition Valid",
+          "type": "boolean"
+        },
+        "introduced_duplicate_count": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Introduced Duplicate Count",
+          "type": "integer"
+        },
+        "required_answer_fact_recall": {
+          "default": 0.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Required Answer Fact Recall",
+          "type": "number"
+        }
+      },
+      "required": [
+        "observed_eligibility_decision"
+      ],
+      "title": "ObservedCompressionResult",
+      "type": "object"
+    },
+    "PreservationReport": {
+      "additionalProperties": false,
+      "properties": {
+        "locked_spans_detected": {
+          "minimum": 0,
+          "title": "Locked Spans Detected",
+          "type": "integer"
+        },
+        "locked_spans_preserved": {
+          "minimum": 0,
+          "title": "Locked Spans Preserved",
+          "type": "integer"
+        },
+        "citations_preserved": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Citations Preserved",
+          "type": "integer"
+        },
+        "numeric_mutations": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Numeric Mutations",
+          "type": "integer"
+        },
+        "policy_control_id_losses": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Policy Control Id Losses",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "locked_spans_detected",
+        "locked_spans_preserved"
+      ],
+      "title": "PreservationReport",
+      "type": "object"
+    },
+    "RouteClass": {
+      "enum": [
+        "passthrough",
+        "deterministic_json_compressor",
+        "code_compressor",
+        "log_compressor",
+        "diff_compressor",
+        "prose_token_compressor",
+        "summarizer",
+        "extractive_keypoint_compressor",
+        "ocr_first",
+        "image_optimizer",
+        "chart_table_extraction",
+        "pii_redaction_before_compression",
+        "governance_safe_compression",
+        "legal_security_safe_mode",
+        "reversible_retrieval_mode",
+        "reject_or_human_review"
+      ],
+      "title": "RouteClass",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "request_id": {
+      "title": "Request Id",
+      "type": "string"
+    },
+    "compressed_segments": {
+      "items": {
+        "$ref": "#/$defs/CompressionSegment"
+      },
+      "title": "Compressed Segments",
+      "type": "array"
+    },
+    "global_metrics": {
+      "$ref": "#/$defs/CompressionMetrics"
+    },
+    "preservation_report": {
+      "$ref": "#/$defs/PreservationReport"
+    },
+    "anchor_map": {
+      "items": {
+        "$ref": "#/$defs/AnchorSummary"
+      },
+      "title": "Anchor Map",
+      "type": "array"
+    },
+    "observed_result": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ObservedCompressionResult"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "explanations": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Explanations",
+      "type": "array"
+    }
+  },
+  "required": [
+    "request_id",
+    "compressed_segments",
+    "global_metrics",
+    "preservation_report",
+    "anchor_map"
+  ],
+  "title": "CompressionResponse",
+  "type": "object"
+}

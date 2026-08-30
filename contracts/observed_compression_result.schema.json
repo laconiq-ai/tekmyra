@@ -1,0 +1,335 @@
+{
+  "$defs": {
+    "CompressionEconomics": {
+      "additionalProperties": false,
+      "properties": {
+        "predicted_request_tokens": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Predicted Request Tokens"
+        },
+        "predicted_request_cost": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Predicted Request Cost"
+        },
+        "predicted_compressor_cost": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Predicted Compressor Cost"
+        },
+        "predicted_compressor_latency_ms": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Predicted Compressor Latency Ms"
+        },
+        "predicted_savings": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Predicted Savings"
+        },
+        "predicted_safety_margin": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Predicted Safety Margin"
+        },
+        "observed_raw_context_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed Raw Context Tokens"
+        },
+        "observed_compressed_context_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed Compressed Context Tokens"
+        },
+        "observed_raw_request_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed Raw Request Tokens"
+        },
+        "observed_compressed_request_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed Compressed Request Tokens"
+        },
+        "observed_raw_output_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed Raw Output Tokens"
+        },
+        "observed_compressed_output_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed Compressed Output Tokens"
+        },
+        "observed_raw_cost_usd": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed Raw Cost Usd"
+        },
+        "observed_compressed_cost_usd": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed Compressed Cost Usd"
+        },
+        "observed_compressor_cpu_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed Compressor Cpu Ms"
+        },
+        "observed_model_raw_latency_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed Model Raw Latency Ms"
+        },
+        "observed_model_compressed_latency_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed Model Compressed Latency Ms"
+        }
+      },
+      "title": "CompressionEconomics",
+      "type": "object"
+    },
+    "EligibilityReason": {
+      "enum": [
+        "too_short",
+        "calibration_band",
+        "high_risk",
+        "pii",
+        "structure_gate_fail",
+        "safety_margin_fail",
+        "protected_span_conflict",
+        "eligible",
+        "primary_population"
+      ],
+      "title": "EligibilityReason",
+      "type": "string"
+    },
+    "RouteClass": {
+      "enum": [
+        "passthrough",
+        "deterministic_json_compressor",
+        "code_compressor",
+        "log_compressor",
+        "diff_compressor",
+        "prose_token_compressor",
+        "summarizer",
+        "extractive_keypoint_compressor",
+        "ocr_first",
+        "image_optimizer",
+        "chart_table_extraction",
+        "pii_redaction_before_compression",
+        "governance_safe_compression",
+        "legal_security_safe_mode",
+        "reversible_retrieval_mode",
+        "reject_or_human_review"
+      ],
+      "title": "RouteClass",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "observed_eligibility_decision": {
+      "title": "Observed Eligibility Decision",
+      "type": "boolean"
+    },
+    "observed_bypass_reason": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/EligibilityReason"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "selected_route": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RouteClass"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "selected_codec": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Selected Codec"
+    },
+    "learned_compressor_invoked": {
+      "default": false,
+      "title": "Learned Compressor Invoked",
+      "type": "boolean"
+    },
+    "economics": {
+      "$ref": "#/$defs/CompressionEconomics"
+    },
+    "protected_disposition_valid": {
+      "default": false,
+      "title": "Protected Disposition Valid",
+      "type": "boolean"
+    },
+    "introduced_duplicate_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Introduced Duplicate Count",
+      "type": "integer"
+    },
+    "required_answer_fact_recall": {
+      "default": 0.0,
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Required Answer Fact Recall",
+      "type": "number"
+    }
+  },
+  "required": [
+    "observed_eligibility_decision"
+  ],
+  "title": "ObservedCompressionResult",
+  "type": "object"
+}

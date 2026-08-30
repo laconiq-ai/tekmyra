@@ -1,0 +1,148 @@
+{
+  "fixture_id": "rebal-extractive-0057",
+  "content_type": "bullet_notes",
+  "risk_tier": "medium",
+  "content": "Project Identity \u2014 extractive keypoint draft\n- Decision: replace the batch processor with a streaming pipeline.\n- Action item: create a proof of concept (owner: Alex Rivera).\n- Blocker: unclear ownership of the shared library.\n- Due date: 2026-10-28.\n- Ticket reference: TICKET-4803.",
+  "route_labels": [
+    "extractive_keypoint_compressor",
+    "prose_token_compressor"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 239,
+      "end": 249,
+      "text": "2026-10-28",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 271,
+      "end": 282,
+      "text": "TICKET-4803",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 161,
+      "end": 172,
+      "text": "Alex Rivera",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "extractive_keypoint_compressor",
+    "expected_risk": "medium",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "date",
+        "start": 239,
+        "end": 249,
+        "text": "2026-10-28",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "ticket_id",
+        "start": 271,
+        "end": 282,
+        "text": "TICKET-4803",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "owner",
+        "start": 161,
+        "end": 172,
+        "text": "Alex Rivera",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 239,
+        "end": 249,
+        "text": "2026-10-28",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 271,
+        "end": 282,
+        "text": "TICKET-4803",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 161,
+        "end": 172,
+        "text": "Alex Rivera",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "extractive_keypoint_compressor",
+    "allowed_outcomes": [
+      "extractive_keypoint_compressor"
+    ],
+    "compressible": true
+  },
+  "provenance": {
+    "source": "public_sample",
+    "license": "MIT",
+    "generated_by": "benchmarks/fixtures/generate_rebalance_fixtures.py",
+    "generated_at": "2026-07-18T01:23:06.797677Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "rebalance",
+    "extractive_keypoint_compressor"
+  ],
+  "blocks": [
+    {
+      "type": "prose",
+      "content": "Project Identity \u2014 extractive keypoint draft\n- Decision: replace the batch processor with a streaming pipeline.\n- Action item: create a proof of concept (owner: Alex Rivera).\n- Blocker: unclear ownership of the shared library.\n- Due date: 2026-10-28.\n- Ticket reference: TICKET-4803.",
+      "start": 0,
+      "end": 283,
+      "route_label": "prose_token_compressor",
+      "risk_tier": "low",
+      "protected_spans": [
+        {
+          "start": 239,
+          "end": 249,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 271,
+          "end": 283,
+          "label": "retrieval_key",
+          "span_type": "anchor",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:23:06.800302+00:00",
+  "schema_version": "2.0.0"
+}

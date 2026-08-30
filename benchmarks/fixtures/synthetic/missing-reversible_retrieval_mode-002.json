@@ -1,0 +1,199 @@
+{
+  "fixture_id": "missing-reversible_retrieval_mode-002",
+  "content_type": "retrieval_context",
+  "risk_tier": "medium",
+  "content": "Retrieval context [CTX_REF:doc-4402] \u2014 source document SRC-2026-8802.\nTopic: feature rollout timeline. The timeline maps milestone dates across three deployment stages.\nKey figure: mean time to resolution $14,650.00.\nDeadline: payment due by 2026-08-17.\n[CTX_REF:doc-4402] end of chunk.",
+  "route_labels": [
+    "reversible_retrieval_mode"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 55,
+      "end": 68,
+      "text": "SRC-2026-8802",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 206,
+      "end": 215,
+      "text": "14,650.00",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 242,
+      "end": 252,
+      "text": "2026-08-17",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 18,
+      "end": 36,
+      "text": "[CTX_REF:doc-4402]",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "reversible_retrieval_mode",
+    "expected_risk": "medium",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "source_id",
+        "start": 55,
+        "end": 68,
+        "text": "SRC-2026-8802",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "financial_amount",
+        "start": 206,
+        "end": 215,
+        "text": "14,650.00",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "date",
+        "start": 242,
+        "end": 252,
+        "text": "2026-08-17",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "citation_anchor",
+        "start": 18,
+        "end": 36,
+        "text": "[CTX_REF:doc-4402]",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 55,
+        "end": 68,
+        "text": "SRC-2026-8802",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 206,
+        "end": 215,
+        "text": "14,650.00",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 242,
+        "end": 252,
+        "text": "2026-08-17",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 18,
+        "end": 36,
+        "text": "[CTX_REF:doc-4402]",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "reversible_retrieval_mode",
+    "allowed_outcomes": [
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true
+  },
+  "blocks": [
+    {
+      "type": "retrieval_context",
+      "content": "Retrieval context [CTX_REF:doc-4402] \u2014 source document SRC-2026-8802.\nTopic: feature rollout timeline. The timeline maps milestone dates across three deployment stages.\nKey figure: mean time to resolution $14,650.00.\nDeadline: payment due by 2026-08-17.\n[CTX_REF:doc-4402] end of chunk.",
+      "start": 0,
+      "end": 286,
+      "route_label": "reversible_retrieval_mode",
+      "risk_tier": "medium",
+      "protected_spans": [
+        {
+          "start": 18,
+          "end": 36,
+          "label": "retrieval_key",
+          "span_type": "anchor",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 55,
+          "end": 69,
+          "label": "retrieval_key",
+          "span_type": "anchor",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 205,
+          "end": 215,
+          "label": "amount",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 242,
+          "end": 252,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 254,
+          "end": 272,
+          "label": "retrieval_key",
+          "span_type": "anchor",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "synthetic",
+    "license": "CC0-1.0",
+    "generated_by": "benchmarks/fixtures/generate_missing_routes.py",
+    "generated_at": "2026-07-15T06:43:09.106531Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "missing",
+    "reversible_retrieval_mode",
+    "rag_context"
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:10:03.533739+00:00",
+  "schema_version": "2.0.0"
+}

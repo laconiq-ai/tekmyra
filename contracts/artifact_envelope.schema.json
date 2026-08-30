@@ -1,0 +1,139 @@
+{
+  "$defs": {
+    "ArtifactMetadata": {
+      "additionalProperties": true,
+      "properties": {
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "user_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "User Id"
+        },
+        "trust_tier": {
+          "$ref": "#/$defs/TrustTier"
+        },
+        "policy_tier": {
+          "$ref": "#/$defs/PolicyTier"
+        }
+      },
+      "required": [
+        "created_at",
+        "trust_tier",
+        "policy_tier"
+      ],
+      "title": "ArtifactMetadata",
+      "type": "object"
+    },
+    "PolicyTier": {
+      "enum": [
+        "standard",
+        "regulated",
+        "critical"
+      ],
+      "title": "PolicyTier",
+      "type": "string"
+    },
+    "SourceChannel": {
+      "enum": [
+        "api",
+        "chat",
+        "email",
+        "ticket",
+        "upload",
+        "agent",
+        "batch"
+      ],
+      "title": "SourceChannel",
+      "type": "string"
+    },
+    "TrustTier": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "TrustTier",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_id": {
+      "minLength": 1,
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "tenant_id": {
+      "minLength": 1,
+      "title": "Tenant Id",
+      "type": "string"
+    },
+    "source_channel": {
+      "$ref": "#/$defs/SourceChannel"
+    },
+    "mime_type": {
+      "minLength": 1,
+      "title": "Mime Type",
+      "type": "string"
+    },
+    "filename": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Filename"
+    },
+    "bytes": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Bytes"
+    },
+    "text_content": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Text Content"
+    },
+    "metadata": {
+      "$ref": "#/$defs/ArtifactMetadata"
+    }
+  },
+  "required": [
+    "artifact_id",
+    "tenant_id",
+    "source_channel",
+    "mime_type",
+    "metadata"
+  ],
+  "title": "ArtifactEnvelope",
+  "type": "object"
+}

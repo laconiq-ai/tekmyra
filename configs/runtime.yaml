@@ -1,0 +1,19 @@
+# Runtime configuration for the TekMyra + Context Compression prototype.
+# All latency/memory budgets are provisional until measured on pinned reference hardware.
+
+version: "0.1.0"
+
+# Benchmark execution defaults.
+benchmark:
+  default_suite: synthetic
+  fixture_paths:
+    - benchmarks/fixtures/synthetic
+
+# Report output destinations.
+reporting:
+  output_dir: benchmarks/results
+
+# Target hardware profile used to normalize latency/memory claims.
+reference_hardware:
+  cpu: x86_64_reference
+  note: "Provisional until measured on a pinned machine."

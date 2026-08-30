@@ -1,0 +1,153 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "lc-agent_handoffs-calibration-001",
+  "content_type": "agent_handoffs",
+  "risk_tier": "low",
+  "content": "tool:escalate(severity='SEV-2', owner='Platform Reliability Team') tool:runbook_lookup(incident_id='INC-2026-07-23-001') action: notify Platform Reliability Team via pager.\n\naction: throttle ingress by 12 percent. tool:runbook_lookup(incident_id='INC-2026-07-23-001'); this detail must remain available. observation: three replica lag spikes detected.\n\nhandoff: agent-lc-7 -> agent-lc-8 with context checksum. observation: database connection pool at 94 percent. observation: database connection pool at 94 percent.\n\nobservation: three replica lag spikes detected. observation: database connection pool at 94 percent. action: notify Platform Reliability Team via pager.\n\nhandoff: agent-lc-7 -> agent-lc-8 with context checksum; this detail must remain available. state: pending approval from on-call engineer; this detail must remain available. observation: database connection pool at 94 percent; this detail must remain available.\n\ntool:runbook_lookup(incident_id='INC-2026-07-23-001') tool:search_kb(query='rollback procedure', top_k=3) handoff: agent-lc-7 -> agent-lc-8 with context checksum.\n\ntool:search_kb(query='rollback procedure', top_k=3) agent-lc-7 received state marker RUNNING; this detail must remain available. tool:search_kb(query='rollback procedure', top_k=3)\n\nhandoff: agent-lc-7 -> agent-lc-8 with context checksum. tool:escalate(severity='SEV-2', owner='Platform Reliability Team') observation: database connection pool at 94 percent.\n\nobservation: three replica lag spikes detected. action: throttle ingress by 12 percent. state: pending approval from on-call engineer.\n\nobservation: three replica lag spikes detected. observation: database connection pool at 94 percent; this detail must remain available. action: throttle ingress by 12 percent.\n\nstate: pending approval from on-call engineer. handoff: agent-lc-7 -> agent-lc-8 with context checksum. tool:escalate(severity='SEV-2', owner='Platform Reliability Team')\n\nobservation: three replica lag spikes detected. handoff: agent-lc-7 -> agent-lc-8 with context checksum. action: notify Platform Reliability Team via pager.\n\naction: throttle ingress by 12 percent. tool:search_kb(query='rollback procedure', top_k=3) handoff: agent-lc-7 -> agent-lc-8 with context checksum.\n\ntool:search_kb(query='rollback procedure', top_k=3); this detail must remain available. agent-lc-7 received state marker RUNNING. tool:search_kb(query='rollback procedure', top_k=3)\n\naction: notify Platform Reliability Team via pager; this detail must remain available. tool:escalate(severity='SEV-2', owner='Platform Reliability Team'); this detail must remain available. handoff: agent-lc-7 -> agent-lc-8 with context checksum.\n\nobservation: database connection pool at 94 percent. handoff: agent-lc-7 -> agent-lc-8 with context checksum. tool:escalate(severity='SEV-2', owner='Platform Reliability Team')\n\nstate: pending approval from on-call engineer. observation: three replica lag spikes detected. tool:runbook_lookup(incident_id='INC-2026-07-23-001')\n\nstate: pending approval from on-call engineer. tool:runbook_lookup(incident_id='INC-2026-07-23-001') handoff: agent-lc-7 -> agent-lc-8 with context checksum.\n\nobservation: three replica lag spikes detected; this detail must remain available. handoff: agent-lc-7 -> agent-lc-8 with context checksum. action: throttle ingress by 12 percent.\n\ntool:escalate(severity='SEV-2', owner='Platform Reliability Team'); this detail must remain available. tool:escalate(severity='SEV-2', owner='Platform Reliability Team') tool:escalate(severity='SEV-2', owner='Platform Reliability Team')\n\ntool:runbook_lookup(incident_id='INC-2026-07-23-001') tool:search_kb(query='rollback procedure', top_k=3) action: throttle ingress by 12 percent.\n\naction: notify Platform Reliability Team via pager. tool:escalate(severity='SEV-2', owner='Platform Reliability Team') action: notify Platform Reliability Team via pager.\n\nhandoff: agent-lc-7 -> agent-lc-8 with context checksum. action: throttle ingress by 12 percent. tool:escalate(severity='SEV-2', owner='Platform Reliability Team')\n\naction: notify Platform Reliability Team via pager. observation: database connection pool at 94 percent; this detail must remain available. tool:escalate(severity='SEV-2', owner='Platform Reliability Team'); this detail must remain available.\n\nstate: pending approval from on-call engineer; this detail must remain available. agent-lc-7 received state marker RUNNING; this detail must remain available. action: notify Platform Reliability Team via pager.\n\naction: notify Platform Reliability Team via pager; this detail must remain available. action: notify Platform Reliability Team via pager. observation: three replica lag spikes detected; this detail must remain available.\n\ntool:runbook_lookup(incident_id='INC-2026-07-23-001'); this detail must remain available. observation: three replica lag spikes detected. agent-lc-7 received state marker RUNNING.\n\nobservation: three replica lag spikes detected. action: notify Platform Reliability Team via pager. observation: three replica lag spikes detected.\n\nagent-lc-7 received state marker RUNNING. handoff: agent-lc-7 -> agent-lc-8 with context checksum; this detail must remain available. action: throttle ingress by 12 percent.\n\nstate: pending approval from on-call engineer. tool:search_kb(query='rollback procedure', top_k=3) agent-lc-7 received state marker RUNNING.\n\naction: notify Platform Reliability Team via pager. observation: database connection pool at 94 percent. observation: database connection pool at 94 percent; this detail must remain available.\n\ntool:search_kb(query='rollback procedure', top_k=3) action: notify Platform Reliability Team via pager. agent-lc-7 received state marker RUNNING.\n\naction: throttle ingress by 12 percent; this detail must remain available. agent-lc-7 received state marker RUNNING. tool:escalate(severity='SEV-2', owner='Platform Reliability Team')\n\ntool:search_kb(query='rollback procedure', top_k=3) action: notify Platform Reliability Team via pager. state: pending approval from on-call engineer.\n\ntool:runbook_lookup(incident_id='INC-2026-07-23-001') agent-lc-7 received state marker RUNNING. handoff: agent-lc-7 -> agent-lc-8 with context checksum.\n\ntool:runbook_lookup(incident_id='INC-2026-07-23-001') observation: database connection pool at 94 percent. state: pending approval from on-call engineer.\n\ntool:search_kb(query='rollback procedure', top_k=3); this detail must remain available. action: throttle ingress by 12 percent. action: throttle ingress by 12 percent.\n\ntool:runbook_lookup(incident_id='INC-2026-07-23-001') action: throttle ingress by 12 percent. tool:escalate(severity='SEV-2', owner='Platform Reliability Team')\n\nhandoff: agent-lc-7 -> agent-lc-8 with context checksum. handoff: agent-lc-7 -> agent-lc-8 with context checksum. agent-lc-7 received state marker RUNNING.\n\nhandoff: agent-lc-7 -> agent-lc-8 with context checksum; this detail must remain available. action: throttle ingress by 12 percent. observation: database connection pool at 94 percent.\n\ntool:escalate(severity='SEV-2', owner='Platform Reliability Team') state: pending approval from on-call engineer. handoff: agent-lc-7 -> agent-lc-8 with context checksum; this detail must remain available.\n\naction: notify Platform Reliability Team via pager. tool:runbook_lookup(incident_id='INC-2026-07-23-001') agent-lc-7 received state marker RUNNING.\n\nobservation: database connection pool at 94 percent. tool:escalate(severity='SEV-2', owner='Platform Reliability Team') handoff: agent-lc-7 -> agent-lc-8 with context checksum.\n\ntool:escalate(severity='SEV-2', owner='Platform Reliability Team') tool:search_kb(query='rollback procedure', top_k=3)\n\nVerified fact: Codex Meridian [f-artifact]. Verified fact: SEV-2 [f-severity]. Verified fact: seventeen [f-quantity]. Verified fact: Customer Seven [f-customer-alias].",
+  "route_labels": [
+    "extractive_keypoint_compressor",
+    "passthrough"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "fact",
+      "start": 7728,
+      "end": 7742,
+      "text": "Codex Meridian",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0,
+      "span_id": "span-age-000",
+      "fact_id": "f-artifact"
+    },
+    {
+      "span_type": "fact",
+      "start": 24,
+      "end": 29,
+      "text": "SEV-2",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0,
+      "span_id": "span-age-001",
+      "fact_id": "f-severity"
+    },
+    {
+      "span_type": "fact",
+      "start": 7807,
+      "end": 7816,
+      "text": "seventeen",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0,
+      "span_id": "span-age-002",
+      "fact_id": "f-quantity"
+    },
+    {
+      "span_type": "fact",
+      "start": 7846,
+      "end": 7860,
+      "text": "Customer Seven",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0,
+      "span_id": "span-age-003",
+      "fact_id": "f-customer-alias"
+    }
+  ],
+  "gold_output": {
+    "route_intent": "extractive_keypoint_compressor",
+    "allowed_outcomes": [
+      "extractive_keypoint_compressor",
+      "passthrough"
+    ],
+    "compressible": false,
+    "passthrough": true,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "extractive_keypoint_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "fact",
+        "start": 7728,
+        "end": 7742,
+        "text": "Codex Meridian",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0,
+        "span_id": "span-age-000",
+        "fact_id": "f-artifact"
+      },
+      {
+        "span_type": "fact",
+        "start": 24,
+        "end": 29,
+        "text": "SEV-2",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0,
+        "span_id": "span-age-001",
+        "fact_id": "f-severity"
+      },
+      {
+        "span_type": "fact",
+        "start": 7807,
+        "end": 7816,
+        "text": "seventeen",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0,
+        "span_id": "span-age-002",
+        "fact_id": "f-quantity"
+      },
+      {
+        "span_type": "fact",
+        "start": 7846,
+        "end": 7860,
+        "text": "Customer Seven",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0,
+        "span_id": "span-age-003",
+        "fact_id": "f-customer-alias"
+      }
+    ],
+    "expected_compression_eligibility": false,
+    "expected_allowed_bypass_reasons": [
+      "too_short"
+    ],
+    "query_task": "What is the current agent state and next action?",
+    "answer_required_fact_ids": [
+      "f-artifact",
+      "f-severity",
+      "f-quantity",
+      "f-customer-alias"
+    ],
+    "allowed_safety_overrides": [
+      "allow_passthrough_short"
+    ]
+  },
+  "provenance": {
+    "source": "synthetic",
+    "license": "CC0-1.0",
+    "generated_by": "benchmarks/fixtures/long_context_v1/generate_long_context_fixtures.py",
+    "generated_at": "2026-07-23T00:00:00Z",
+    "adjudicated_by": null
+  },
+  "tags": [
+    "long_context",
+    "agent_handoffs",
+    "calibration"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {
+    "f-artifact": "Codex Meridian",
+    "f-severity": "SEV-2",
+    "f-quantity": "seventeen",
+    "f-customer-alias": "Customer Seven"
+  }
+}

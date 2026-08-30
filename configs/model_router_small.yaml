@@ -1,0 +1,39 @@
+name: router_small
+version: "1.0.0"
+max_router_tokens: 512
+head_tail_ratio: 0.5
+metadata_prefix_template: "[MIME={mime}] [CHANNEL={channel}] [POLICY={policy}]"
+route_classes:
+  - passthrough
+  - prose_token_compressor
+  - reversible_retrieval_mode
+  - reject_or_human_review
+risk_classes:
+  - low
+  - medium
+  - high
+  - critical
+modalities:
+  - prose
+  - rag
+  - agent_trace
+  - governance
+  - mixed
+  - unknown
+confidence_threshold_low: 0.70
+confidence_threshold_medium: 0.75
+confidence_threshold_high: 0.85
+confidence_threshold_critical: 0.95
+min_margin_for_abstention: 0.10
+# Calibration is DERIVED FROM THE ARTIFACT at load time (see
+# ModelManager.resolve_config) because temperature is a fitted property of the
+# trained model, not a runtime policy knob. The value below is only the
+# uncalibrated default used when no artifact is present; it is not a value
+# anyone has to keep in sync with training, and it must not become one.
+temperature: 1.0
+calibration_method: temperature
+model_artifact_dir: .cache/router
+onnx_file_name: router.onnx
+sklearn_file_name: router.joblib
+fallback_on_error: abstain
+use_onnx_if_available: false

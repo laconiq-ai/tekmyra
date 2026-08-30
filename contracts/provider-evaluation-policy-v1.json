@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://laconiq.com/contracts/tekmyra/provider-evaluation-policy-v1.json",
+  "title": "TekMyra governed provider evaluation policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "policy_id",
+    "policy_revision",
+    "source_revision",
+    "image_reference",
+    "checkpoint_bundle_sha256",
+    "fixture_corpus_sha256",
+    "paid_campaign_authorization_id",
+    "valid_from",
+    "valid_until",
+    "lanes"
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "headers": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9][a-z0-9-]*$"
+      }
+    },
+    "trusted_rates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "cache_hit_input_usd_per_million",
+        "cache_miss_input_usd_per_million",
+        "output_usd_per_million",
+        "source"
+      ],
+      "properties": {
+        "mode": {"const": "trusted_rates"},
+        "cache_hit_input_usd_per_million": {"const": 0.0028},
+        "cache_miss_input_usd_per_million": {"const": 0.14},
+        "output_usd_per_million": {"const": 0.28},
+        "source": {"const": "https://api-docs.deepseek.com/quick_start/pricing/"}
+      }
+    },
+    "live_zero_catalog": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "catalog_origin", "catalog_path", "catalog_rule"],
+      "properties": {
+        "mode": {"const": "live_zero_catalog"},
+        "catalog_origin": {"type": "string", "format": "uri", "pattern": "^https://"},
+        "catalog_path": {"type": "string", "pattern": "^/"},
+        "catalog_rule": {"const": "all_advertised_billable_fields_zero"}
+      }
+    },
+    "lane": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provider",
+        "route",
+        "evaluation_method",
+        "approved_models",
+        "api_origin",
+        "api_path",
+        "max_output_tokens",
+        "max_retries",
+        "authorized_cap_usd",
+        "request_header_allowlist",
+        "response_header_allowlist",
+        "pricing"
+      ],
+      "properties": {
+        "provider": {"type": "string", "minLength": 1},
+        "route": {"type": "string", "minLength": 1},
+        "evaluation_method": {"type": "string", "minLength": 1},
+        "approved_models": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "api_origin": {"type": "string", "format": "uri", "pattern": "^https://"},
+        "api_path": {"type": "string", "pattern": "^/"},
+        "max_output_tokens": {"type": "integer", "minimum": 1, "maximum": 4096},
+        "max_retries": {"type": "integer", "minimum": 0, "maximum": 1},
+        "authorized_cap_usd": {"type": "number", "minimum": 0},
+        "request_header_allowlist": {"$ref": "#/$defs/headers"},
+        "response_header_allowlist": {"$ref": "#/$defs/headers"},
+        "pricing": {
+          "oneOf": [
+            {"$ref": "#/$defs/trusted_rates"},
+            {"$ref": "#/$defs/live_zero_catalog"}
+          ]
+        }
+      }
+    }
+  },
+  "properties": {
+    "schema_version": {"const": "tekmyra-provider-evaluation-policy/v1"},
+    "policy_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,63}$"},
+    "policy_revision": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,63}$"},
+    "source_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "image_reference": {"type": "string", "pattern": "^[^\\s@:]+(?:/[^\\s@:]+)+@sha256:[0-9a-f]{64}$"},
+    "checkpoint_bundle_sha256": {"$ref": "#/$defs/sha256"},
+    "fixture_corpus_sha256": {"$ref": "#/$defs/sha256"},
+    "paid_campaign_authorization_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{0,63}$"
+    },
+    "valid_from": {"type": "string", "format": "date-time"},
+    "valid_until": {"type": "string", "format": "date-time"},
+    "lanes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["downstream_quality", "openrouter_free", "deepseek_direct"],
+      "properties": {
+        "downstream_quality": {"$ref": "#/$defs/lane"},
+        "openrouter_free": {"$ref": "#/$defs/lane"},
+        "deepseek_direct": {"$ref": "#/$defs/lane"}
+      }
+    }
+  }
+}

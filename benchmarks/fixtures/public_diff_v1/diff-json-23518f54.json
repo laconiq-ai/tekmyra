@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "diff-json-23518f54",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "diff",
+  "risk_tier": "low",
+  "content": "Add an Ecosystem page for third-party projects built on nlohmann::json (#5369)\n\n\ndiff --git a/README.md b/README.md\nindex d4d2394..4b4236b 100644\n--- a/README.md\n+++ b/README.md\n@@ -42,6 +42,7 @@\n   - [Specializing enum conversion](#specializing-enum-conversion)\n   - [Binary formats (BSON, CBOR, MessagePack, UBJSON, and BJData)](#binary-formats-bson-cbor-messagepack-ubjson-and-bjdata)\n - [Customers](#customers)\n+- [Ecosystem](#ecosystem)\n - [Supported compilers](#supported-compilers)\n - [Integration](#integration)\n   - [CMake](#cmake)\n@@ -1186,6 +1187,11 @@ The library is used in multiple projects, applications, operating systems, etc.\n \n [![logos of customers using the library](docs/mkdocs/docs/images/customers.png)](https://json.nlohmann.me/home/customers/)\n \n+## Ecosystem\n+\n+Beyond projects that use the library, there are third-party projects that build on top of it - schema validators,\n+language bindings, format converters, and the like. See the curated [Ecosystem](https://json.nlohmann.me/community/ecosystem/) page.\n+\n ## Supported compilers\n \n Though it's 2026 already, the support for C++11 is still a bit sparse. Currently, the following compilers are known to work:\ndiff --git a/docs/mkdocs/docs/community/ecosystem.md b/docs/mkdocs/docs/community/ecosystem.md\nnew file mode 100644\nindex 0000000..801111e\n--- /dev/null\n+++ b/docs/mkdocs/docs/community/ecosystem.md\n@@ -0,0 +1,40 @@\n+# Ecosystem\n+\n+The projects below build on top of `nlohmann::json` rather than merely using it - schema validators, language\n+bindings, format converters, and similar building blocks. The list is not exhaustive, and is curated rather than\n+automatically generated. If you maintain or know of a project that belongs here,\n+[please let me know](mailto:mail@nlohmann.me).\n+\n+For products, applications, and organizations that use the library, see [Customers](../home/customers.md) instead.\n+\n+## Schema validation\n+\n+- [**json-schema-validator**](https://github.com/pboettch/json-schema-validator), a JSON Schema (draft 7) validator\n+  with human-readable error messages\n+\n+## Serialization and reflection\n+\n+- [**nlohmann_json_reflect**](https://github.com/1261385937/nlohmann_json_reflect), a reflection extension for\n+  (de)serializing nested containers-in-structs-in-containers\n+\n+## Encodings\n+\n+- [**base-encode-decode**](https://github.com/saxonnicholls/base-encode-decode), a header-only Base64/32/16/8/4/2\n+  (and DNA/RNA) encoding library, with an adapter that serializes binary data through `nlohmann::json`\n+\n+## Language bindings and interop\n+\n+- [**pybind11_json**](https://github.com/pybind/pybind11_json), a bidirectional type caster between\n+  `nlohmann::json` and Python objects for [pybind11](https://github.com/pybind/pybind11) bindings\n+- [**nanobind_json**](https://github.com/ianhbell/nanobind_json), the same idea for\n+  [nanobind](https://github.com/wjakob/nanobind) bindings\n+- [**nlohmann_json_qt**](https://github.com/dpurgin/nlohmann_json_qt), deserialization helpers for Qt types\n+  (`QString`, `QUrl`, `QDateTime`, `QVector`, ...) from `nlohmann::json`\n+- [**vulkan2json**](https://github.com/Fadis/vulkan2json), serialization and deserialization of Vulkan API structs\n+\n+## Format converters\n+\n+- [**tojson**](https://github.com/mircodz/tojson), a header-only converter between YAML/XML documents and\n+  `nlohmann::json`\n+- [**json2xml**](https://github.com/testillano/json2xml), a header-only converter from `nlohmann::json` to XML for\n+  simple configuration documents\ndiff --git a/docs/mkdocs/docs/community/index.md b/docs/mkdocs/docs/community/index.md\nindex caef17b..50baeab 100644\n--- a/docs/mkdocs/docs/community/index.md\n+++ b/docs/mkdocs/docs/community/index.md\n@@ -1,5 +1,6 @@\n # Community\n \n+- [Ecosystem](ecosystem.md) - third-party projects built on top of this library\n - [Code of Conduct](code_of_conduct.md) - the rules and norms of this project\n - [Contribution Guidelines](contribution_guidelines.md) - guidelines how to contribute to this project\n - [Governance](governance.md) - the governance model of this project\ndiff --git a/docs/mkdocs/mkdocs.yml b/docs/mkdocs/mkdocs.yml\nindex fe786f7..2e1337f 100644\n--- a/docs/mkdocs/mkdocs.yml\n+++ b/docs/mkdocs/mkdocs.yml\n@@ -308,6 +308,7 @@ nav:\n           - 'NLOHMANN_JSON_VERSION_MAJOR, NLOHMANN_JSON_VERSION_MINOR, NLOHMANN_JSON_VERSION_PATCH': api/macros/nlohmann_json_version_major.md\n   - Community:\n       - community/index.md\n+      - community/ecosystem.md\n       - \"Code of Conduct\": community/code_of_conduct.md\n       - community/contribution_guidelines.md\n       - community/quality_assurance.md\n",
+  "route_labels": [
+    "diff_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "diff_compressor",
+    "allowed_outcomes": [
+      "diff_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "diff_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:nlohmann/json",
+    "license": "MIT",
+    "generated_by": null,
+    "external": {
+      "publisher": "nlohmann/json",
+      "source_url": "https://github.com/nlohmann/json/commit/23518f54fec80cdc8ab603a24b14a65232bdfcda",
+      "retrieved_at": "2026-08-09T12:18:29.629243Z",
+      "licence_basis": "SPDX MIT, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/nlohmann/json",
+      "licence_evidence_sha256": "25cfc0a8d012917eb6eb57b4cbae2916dc744e04a13bd56db51f9af401ef8f42",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": "git show, against a local clone \u2014 no foreign code executed"
+    },
+    "generated_at": "2026-08-09T12:18:30.366360Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "diff",
+    "json"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

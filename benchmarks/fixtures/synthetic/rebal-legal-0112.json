@@ -1,0 +1,168 @@
+{
+  "fixture_id": "rebal-legal-0112",
+  "content_type": "legal_clause",
+  "risk_tier": "high",
+  "content": "Legal Contract Clause 12.4 \u2014 Gamma Inc and Partner Sigma agree that Gamma Inc will indemnify Partner Sigma against liability arising from unauthorized disclosure of confidential information. Partner Sigma must notify Gamma Inc of any claim within 90 days. Regulatory compliance audit scheduled 2026-09-25. This clause is binding.",
+  "route_labels": [
+    "legal_security_safe_mode"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 15,
+      "end": 26,
+      "text": "Clause 12.4",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 29,
+      "end": 38,
+      "text": "Gamma Inc",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 294,
+      "end": 304,
+      "text": "2026-09-25",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "legal_security_safe_mode",
+    "expected_risk": "high",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "clause_ref",
+        "start": 15,
+        "end": 26,
+        "text": "Clause 12.4",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "party",
+        "start": 29,
+        "end": 38,
+        "text": "Gamma Inc",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "date",
+        "start": 294,
+        "end": 304,
+        "text": "2026-09-25",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 15,
+        "end": 26,
+        "text": "Clause 12.4",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 29,
+        "end": 38,
+        "text": "Gamma Inc",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 294,
+        "end": 304,
+        "text": "2026-09-25",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 15,
+        "end": 26,
+        "text": "Clause 12.4",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 29,
+        "end": 38,
+        "text": "Gamma Inc",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 294,
+        "end": 304,
+        "text": "2026-09-25",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "legal_security_safe_mode",
+    "allowed_outcomes": [
+      "legal_security_safe_mode",
+      "reject_or_human_review"
+    ],
+    "compressible": false,
+    "human_review": true
+  },
+  "provenance": {
+    "source": "enterprise_mock",
+    "license": "proprietary_laconiq_mock",
+    "generated_by": "benchmarks/fixtures/generate_rebalance_fixtures.py",
+    "generated_at": "2026-07-18T01:23:06.838262Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "rebalance",
+    "legal_security_safe_mode"
+  ],
+  "blocks": [
+    {
+      "type": "legal_clause",
+      "content": "Legal Contract Clause 12.4 \u2014 Gamma Inc and Partner Sigma agree that Gamma Inc will indemnify Partner Sigma against liability arising from unauthorized disclosure of confidential information. Partner Sigma must notify Gamma Inc of any claim within 90 days. Regulatory compliance audit scheduled 2026-09-25. This clause is binding.",
+      "start": 0,
+      "end": 329,
+      "route_label": "legal_security_safe_mode",
+      "risk_tier": "high",
+      "protected_spans": [
+        {
+          "start": 294,
+          "end": 304,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:23:06.840364+00:00",
+  "schema_version": "2.0.0"
+}

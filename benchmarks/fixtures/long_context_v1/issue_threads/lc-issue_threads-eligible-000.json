@@ -1,0 +1,153 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "lc-issue_threads-eligible-000",
+  "content_type": "issue_threads",
+  "risk_tier": "low",
+  "content": "bob-ops noted us-east-1 is showing elevated 5xx; this detail must remain available. alice-dev updated status: mitigated. dave-lead assigned owner: Platform Reliability Team.\n\nalice-dev attached req-20260723-42 as evidence. alice-dev updated status: mitigated. carol-qa requested a rollback to commit a1b2c3d4.\n\nalice-dev attached req-20260723-42 as evidence. carol-qa confirmed the regression started at 2026-07-23T14:32:11Z. alice-dev commented: I can reproduce on v2.1.0.\n\nalice-dev updated status: mitigated; this detail must remain available. alice-dev attached req-20260723-42 as evidence; this detail must remain available. dave-lead set priority to SEV-2.\n\nalice-dev attached req-20260723-42 as evidence. dave-lead assigned owner: Platform Reliability Team. bob-ops noted us-east-1 is showing elevated 5xx.\n\nalice-dev attached req-20260723-42 as evidence. alice-dev updated status: mitigated. bob-ops noted us-east-1 is showing elevated 5xx.\n\nalice-dev attached req-20260723-42 as evidence. dave-lead assigned owner: Platform Reliability Team. alice-dev attached req-20260723-42 as evidence.\n\ndave-lead assigned owner: Platform Reliability Team. alice-dev attached req-20260723-42 as evidence. bob-ops asked: which region is impacted?\n\nalice-dev updated status: mitigated; this detail must remain available. dave-lead set priority to SEV-2. dave-lead set priority to SEV-2; this detail must remain available.\n\ncarol-qa requested a rollback to commit a1b2c3d4. carol-qa confirmed the regression started at 2026-07-23T14:32:11Z. dave-lead assigned owner: Platform Reliability Team.\n\ncarol-qa confirmed the regression started at 2026-07-23T14:32:11Z; this detail must remain available. alice-dev attached req-20260723-42 as evidence. alice-dev commented: I can reproduce on v2.1.0.\n\ndave-lead assigned owner: Platform Reliability Team. carol-qa requested a rollback to commit a1b2c3d4. dave-lead set priority to SEV-2.\n\ncarol-qa requested a rollback to commit a1b2c3d4. alice-dev updated status: mitigated; this detail must remain available. alice-dev commented: I can reproduce on v2.1.0.\n\nbob-ops noted us-east-1 is showing elevated 5xx. dave-lead assigned owner: Platform Reliability Team; this detail must remain available. bob-ops closed TICKET-48291 after verification.\n\ncarol-qa requested a rollback to commit a1b2c3d4. bob-ops asked: which region is impacted? alice-dev attached req-20260723-42 as evidence.\n\ncarol-qa requested a rollback to commit a1b2c3d4. alice-dev commented: I can reproduce on v2.1.0; this detail must remain available. alice-dev attached req-20260723-42 as evidence.\n\ndave-lead set priority to SEV-2. dave-lead assigned owner: Platform Reliability Team. alice-dev attached req-20260723-42 as evidence; this detail must remain available.\n\ncarol-qa confirmed the regression started at 2026-07-23T14:32:11Z; this detail must remain available. bob-ops asked: which region is impacted? bob-ops closed TICKET-48291 after verification.\n\nbob-ops noted us-east-1 is showing elevated 5xx. bob-ops noted us-east-1 is showing elevated 5xx. alice-dev attached req-20260723-42 as evidence.\n\nbob-ops noted us-east-1 is showing elevated 5xx. dave-lead assigned owner: Platform Reliability Team. alice-dev commented: I can reproduce on v2.1.0; this detail must remain available.\n\nbob-ops closed TICKET-48291 after verification; this detail must remain available. carol-qa requested a rollback to commit a1b2c3d4. bob-ops asked: which region is impacted?\n\nalice-dev updated status: mitigated. dave-lead assigned owner: Platform Reliability Team. bob-ops noted us-east-1 is showing elevated 5xx; this detail must remain available.\n\nalice-dev attached req-20260723-42 as evidence. dave-lead set priority to SEV-2. alice-dev attached req-20260723-42 as evidence.\n\ndave-lead set priority to SEV-2. dave-lead set priority to SEV-2. alice-dev updated status: mitigated.\n\nbob-ops noted us-east-1 is showing elevated 5xx. bob-ops closed TICKET-48291 after verification. bob-ops noted us-east-1 is showing elevated 5xx.\n\nalice-dev commented: I can reproduce on v2.1.0. dave-lead assigned owner: Platform Reliability Team. carol-qa confirmed the regression started at 2026-07-23T14:32:11Z.\n\ndave-lead set priority to SEV-2. alice-dev commented: I can reproduce on v2.1.0. alice-dev updated status: mitigated.\n\nalice-dev updated status: mitigated; this detail must remain available. carol-qa confirmed the regression started at 2026-07-23T14:32:11Z. bob-ops closed TICKET-48291 after verification.\n\nbob-ops asked: which region is impacted? carol-qa confirmed the regression started at 2026-07-23T14:32:11Z. alice-dev updated status: mitigated.\n\nbob-ops closed TICKET-48291 after verification. alice-dev attached req-20260723-42 as evidence. carol-qa confirmed the regression started at 2026-07-23T14:32:11Z.\n\nbob-ops asked: which region is impacted? alice-dev commented: I can reproduce on v2.1.0. alice-dev commented: I can reproduce on v2.1.0.\n\ncarol-qa requested a rollback to commit a1b2c3d4; this detail must remain available. carol-qa requested a rollback to commit a1b2c3d4. bob-ops closed TICKET-48291 after verification.\n\nalice-dev commented: I can reproduce on v2.1.0. carol-qa confirmed the regression started at 2026-07-23T14:32:11Z. dave-lead assigned owner: Platform Reliability Team.\n\nalice-dev commented: I can reproduce on v2.1.0. dave-lead set priority to SEV-2. bob-ops asked: which region is impacted?; this detail must remain available.\n\ndave-lead assigned owner: Platform Reliability Team. alice-dev updated status: mitigated. carol-qa confirmed the regression started at 2026-07-23T14:32:11Z.\n\ncarol-qa confirmed the regression started at 2026-07-23T14:32:11Z; this detail must remain available. alice-dev attached req-20260723-42 as evidence. dave-lead set priority to SEV-2.\n\nbob-ops noted us-east-1 is showing elevated 5xx. alice-dev commented: I can reproduce on v2.1.0. bob-ops asked: which region is impacted?\n\nbob-ops asked: which region is impacted? alice-dev updated status: mitigated. carol-qa requested a rollback to commit a1b2c3d4.\n\nalice-dev attached req-20260723-42 as evidence. bob-ops asked: which region is impacted? alice-dev attached req-20260723-42 as evidence.\n\ncarol-qa requested a rollback to commit a1b2c3d4. dave-lead set priority to SEV-2. carol-qa requested a rollback to commit a1b2c3d4; this detail must remain available.\n\nbob-ops noted us-east-1 is showing elevated 5xx. alice-dev commented: I can reproduce on v2.1.0. dave-lead assigned owner: Platform Reliability Team.\n\nalice-dev commented: I can reproduce on v2.1.0. carol-qa requested a rollback to commit a1b2c3d4; this detail must remain available. dave-lead assigned owner: Platform Reliability Team.\n\nalice-dev updated status: mitigated. dave-lead set priority to SEV-2. bob-ops closed TICKET-48291 after verification.\n\nalice-dev commented: I can reproduce on v2.1.0. bob-ops asked: which region is impacted? bob-ops noted us-east-1 is showing elevated 5xx.\n\nalice-dev commented: I can reproduce on v2.1.0. carol-qa requested a rollback to commit a1b2c3d4. carol-qa requested a rollback to commit a1b2c3d4.\n\nalice-dev commented: I can reproduce on v2.1.0. bob-ops noted us-east-1 is showing elevated 5xx. bob-ops closed TICKET-48291 after verification.\n\ndave-lead set priority to SEV-2; this detail must remain available. bob-ops closed TICKET-48291 after verification. alice-dev commented: I can reproduce on v2.1.0.\n\nbob-ops closed TICKET-48291 after verification. alice-dev updated status: mitigated; this detail must remain available. alice-dev commented: I can reproduce on v2.1.0.\n\ncarol-qa requested a rollback to commit a1b2c3d4. dave-lead set priority to SEV-2. bob-ops noted us-east-1 is showing elevated 5xx.\n\nbob-ops closed TICKET-48291 after verification. alice-dev updated status: mitigated. dave-lead assigned owner: Platform Reliability Team.\n\nbob-ops noted us-east-1 is showing elevated 5xx. carol-qa requested a rollback to commit a1b2c3d4. alice-dev updated status: mitigated.\n\ndave-lead assigned owner: Platform Reliability Team. carol-qa confirmed the regression started at 2026-07-23T14:32:11Z. bob-ops closed TICKET-48291 after verification.\n\nbob-ops closed TICKET-48291 after verification. bob-ops asked: which region is impacted? bob-ops noted us-east-1 is showing elevated 5xx.\n\ndave-lead set priority to SEV-2. alice-dev attached req-20260723-42 as evidence. bob-ops closed TICKET-48291 after verification.\n\nalice-dev commented: I can reproduce on v2.1.0. bob-ops asked: which region is impacted? carol-qa requested a rollback to commit a1b2c3d4.\n\nbob-ops closed TICKET-48291 after verification; this detail must remain available. alice-dev commented: I can reproduce on v2.1.0. alice-dev commented: I can reproduce on v2.1.0.\n\nbob-ops noted us-east-1 is showing elevated 5xx. bob-ops closed TICKET-48291 after verification; this detail must remain available. alice-dev commented: I can reproduce on v2.1.0; this detail must remain available.\n\nalice-dev commented: I can reproduce on v2.1.0. alice-dev commented: I can reproduce on v2.1.0. alice-dev attached req-20260723-42 as evidence.\n\nalice-dev updated status: mitigated. alice-dev attached req-20260723-42 as evidence. alice-dev commented: I can reproduce on v2.1.0.\n\ncarol-qa requested a rollback to commit a1b2c3d4; this detail must remain available. alice-dev attached req-20260723-42 as evidence. alice-dev commented: I can reproduce on v2.1.0.\n\nalice-dev attached req-20260723-42 as evidence. bob-ops asked: which region is impacted? bob-ops asked: which region is impacted?\n\ncarol-qa confirmed the regression started at 2026-07-23T14:32:11Z. bob-ops noted us-east-1 is showing elevated 5xx; this detail must remain available. bob-ops asked: which region is impacted?\n\ndave-lead set priority to SEV-2. alice-dev commented: I can reproduce on v2.1.0. carol-qa requested a rollback to commit a1b2c3d4.\n\nalice-dev updated status: mitigated. alice-dev updated status: mitigated. bob-ops asked: which region is impacted?\n\ndave-lead set priority to SEV-2. bob-ops noted us-east-1 is showing elevated 5xx; this detail must remain available. alice-dev commented: I can reproduce on v2.1.0.\n\nalice-dev commented: I can reproduce on v2.1.0. carol-qa confirmed the regression started at 2026-07-23T14:32:11Z; this detail must remain available. alice-dev updated status: mitigated; this detail must remain available.\n\nalice-dev updated status: mitigated. dave-lead set priority to SEV-2; this detail must remain available. dave-lead set priority to SEV-2.\n\ncarol-qa confirmed the regression started at 2026-07-23T14:32:11Z. carol-qa confirmed the regression started at 2026-07-23T14:32:11Z; this detail must remain available. alice-dev attached req-20260723-42 as evidence.\n\ncarol-qa confirmed the regression started at 2026-07-23T14:32:11Z. bob-ops asked: which region is impacted? alice-dev updated status: mitigated.\n\ncarol-qa confirmed the regression started at 2026-07-23T14:32:11Z; this detail must remain available. bob-ops closed TICKET-48291 after verification. alice-dev attached req-20260723-42 as evidence.\n\nbob-ops asked: which region is impacted? bob-ops noted us-east-1 is showing elevated 5xx. bob-ops noted us-east-1 is showing elevated 5xx; this detail must remain available.\n\ndave-lead set priority to SEV-2; this detail must remain available. alice-dev attached req-20260723-42 as evidence. alice-dev updated status: mitigated; this detail must remain available.\n\nbob-ops noted us-east-1 is showing elevated 5xx. alice-dev updated status: mitigated; this detail must remain available.\n\nVerified fact: TICKET-48291 [f-ticket-id]. Verified fact: v2.1.0 [f-version]. Verified fact: req-20260723-42 [f-request-id]. Verified fact: mitigated [f-status].",
+  "route_labels": [
+    "prose_token_compressor",
+    "passthrough"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "fact",
+      "start": 2247,
+      "end": 2259,
+      "text": "TICKET-48291",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0,
+      "span_id": "span-iss-000",
+      "fact_id": "f-ticket-id"
+    },
+    {
+      "span_type": "fact",
+      "start": 466,
+      "end": 472,
+      "text": "v2.1.0",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0,
+      "span_id": "span-iss-001",
+      "fact_id": "f-version"
+    },
+    {
+      "span_type": "fact",
+      "start": 194,
+      "end": 209,
+      "text": "req-20260723-42",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0,
+      "span_id": "span-iss-002",
+      "fact_id": "f-request-id"
+    },
+    {
+      "span_type": "fact",
+      "start": 110,
+      "end": 119,
+      "text": "mitigated",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0,
+      "span_id": "span-iss-003",
+      "fact_id": "f-status"
+    }
+  ],
+  "gold_output": {
+    "route_intent": "prose_token_compressor",
+    "allowed_outcomes": [
+      "prose_token_compressor",
+      "passthrough"
+    ],
+    "compressible": false,
+    "passthrough": true,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "prose_token_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "fact",
+        "start": 2247,
+        "end": 2259,
+        "text": "TICKET-48291",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0,
+        "span_id": "span-iss-000",
+        "fact_id": "f-ticket-id"
+      },
+      {
+        "span_type": "fact",
+        "start": 466,
+        "end": 472,
+        "text": "v2.1.0",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0,
+        "span_id": "span-iss-001",
+        "fact_id": "f-version"
+      },
+      {
+        "span_type": "fact",
+        "start": 194,
+        "end": 209,
+        "text": "req-20260723-42",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0,
+        "span_id": "span-iss-002",
+        "fact_id": "f-request-id"
+      },
+      {
+        "span_type": "fact",
+        "start": 110,
+        "end": 119,
+        "text": "mitigated",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0,
+        "span_id": "span-iss-003",
+        "fact_id": "f-status"
+      }
+    ],
+    "expected_compression_eligibility": false,
+    "expected_allowed_bypass_reasons": [
+      "too_short"
+    ],
+    "query_task": "Summarize the issue timeline and final resolution.",
+    "answer_required_fact_ids": [
+      "f-ticket-id",
+      "f-version",
+      "f-request-id",
+      "f-status"
+    ],
+    "allowed_safety_overrides": [
+      "allow_passthrough_short"
+    ]
+  },
+  "provenance": {
+    "source": "synthetic",
+    "license": "CC0-1.0",
+    "generated_by": "benchmarks/fixtures/long_context_v1/generate_long_context_fixtures.py",
+    "generated_at": "2026-07-23T00:00:00Z",
+    "adjudicated_by": null
+  },
+  "tags": [
+    "long_context",
+    "issue_threads",
+    "eligible"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {
+    "f-ticket-id": "TICKET-48291",
+    "f-version": "v2.1.0",
+    "f-request-id": "req-20260723-42",
+    "f-status": "mitigated"
+  }
+}

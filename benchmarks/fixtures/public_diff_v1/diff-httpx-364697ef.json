@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "diff-httpx-364697ef",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "diff",
+  "risk_tier": "low",
+  "content": "Upgrade Python formatter ruff (#3651)\n\n\ndiff --git a/httpx/_exceptions.py b/httpx/_exceptions.py\nindex 77f45a6..dd7fb6c 100644\n--- a/httpx/_exceptions.py\n+++ b/httpx/_exceptions.py\n@@ -331,9 +331,7 @@ class StreamClosed(StreamError):\n     \"\"\"\n \n     def __init__(self) -> None:\n-        message = (\n-            \"Attempted to read or stream content, but the stream has \" \"been closed.\"\n-        )\n+        message = \"Attempted to read or stream content, but the stream has been closed.\"\n         super().__init__(message)\n \n \ndiff --git a/httpx/_urls.py b/httpx/_urls.py\nindex 147a8fa..301d087 100644\n--- a/httpx/_urls.py\n+++ b/httpx/_urls.py\n@@ -379,7 +379,7 @@ class URL:\n \n         if \":\" in userinfo:\n             # Mask any password component.\n-            userinfo = f'{userinfo.split(\":\")[0]}:[secure]'\n+            userinfo = f\"{userinfo.split(':')[0]}:[secure]\"\n \n         authority = \"\".join(\n             [\ndiff --git a/requirements.txt b/requirements.txt\nindex 646cb81..8b5a111 100644\n--- a/requirements.txt\n+++ b/requirements.txt\n@@ -22,7 +22,7 @@ coverage[toml]==7.6.1\n cryptography==44.0.1\n mypy==1.13.0\n pytest==8.3.4\n-ruff==0.8.1\n+ruff==0.12.11\n trio==0.27.0\n trio-typing==0.10.0\n trustme==1.2.0\ndiff --git a/tests/test_content.py b/tests/test_content.py\nindex f63ec18..9bfe983 100644\n--- a/tests/test_content.py\n+++ b/tests/test_content.py\n@@ -489,18 +489,18 @@ def test_response_invalid_argument():\n def test_ensure_ascii_false_with_french_characters():\n     data = {\"greeting\": \"Bonjour, \u00e7a va ?\"}\n     response = httpx.Response(200, json=data)\n-    assert (\n-        \"\u00e7a va\" in response.text\n-    ), \"ensure_ascii=False should preserve French accented characters\"\n+    assert \"\u00e7a va\" in response.text, (\n+        \"ensure_ascii=False should preserve French accented characters\"\n+    )\n     assert response.headers[\"Content-Type\"] == \"application/json\"\n \n \n def test_separators_for_compact_json():\n     data = {\"cl\u00e9\": \"valeur\", \"liste\": [1, 2, 3]}\n     response = httpx.Response(200, json=data)\n-    assert (\n-        response.text == '{\"cl\u00e9\":\"valeur\",\"liste\":[1,2,3]}'\n-    ), \"separators=(',', ':') should produce a compact representation\"\n+    assert response.text == '{\"cl\u00e9\":\"valeur\",\"liste\":[1,2,3]}', (\n+        \"separators=(',', ':') should produce a compact representation\"\n+    )\n     assert response.headers[\"Content-Type\"] == \"application/json\"\n \n \n",
+  "route_labels": [
+    "diff_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "diff_compressor",
+    "allowed_outcomes": [
+      "diff_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "diff_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:encode/httpx",
+    "license": "BSD-3-Clause",
+    "generated_by": null,
+    "external": {
+      "publisher": "encode/httpx",
+      "source_url": "https://github.com/encode/httpx/commit/364697efcafe39290358745da8be451a40a3eab2",
+      "retrieved_at": "2026-08-09T12:18:29.629243Z",
+      "licence_basis": "SPDX BSD-3-Clause, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/encode/httpx",
+      "licence_evidence_sha256": "3f64e00043774d244e4df840ae2b20a673126e31204a97b7dff2fa0dff98e606",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": "git show, against a local clone \u2014 no foreign code executed"
+    },
+    "generated_at": "2026-08-09T12:18:29.914162Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "diff",
+    "httpx"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

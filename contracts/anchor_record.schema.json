@@ -1,0 +1,90 @@
+{
+  "$defs": {
+    "RiskClass": {
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ],
+      "title": "RiskClass",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "anchor_id": {
+      "title": "Anchor Id",
+      "type": "string"
+    },
+    "tenant_id": {
+      "title": "Tenant Id",
+      "type": "string"
+    },
+    "source_id": {
+      "title": "Source Id",
+      "type": "string"
+    },
+    "doc_id": {
+      "title": "Doc Id",
+      "type": "string"
+    },
+    "chunk_id": {
+      "title": "Chunk Id",
+      "type": "string"
+    },
+    "content_hash": {
+      "title": "Content Hash",
+      "type": "string"
+    },
+    "original_text": {
+      "title": "Original Text",
+      "type": "string"
+    },
+    "offset_start": {
+      "minimum": 0,
+      "title": "Offset Start",
+      "type": "integer"
+    },
+    "offset_end": {
+      "minimum": 0,
+      "title": "Offset End",
+      "type": "integer"
+    },
+    "sensitivity": {
+      "$ref": "#/$defs/RiskClass"
+    },
+    "expiry": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Expiry"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "anchor_id",
+    "tenant_id",
+    "source_id",
+    "doc_id",
+    "chunk_id",
+    "content_hash",
+    "original_text",
+    "offset_start",
+    "offset_end",
+    "sensitivity"
+  ],
+  "title": "AnchorRecord",
+  "type": "object"
+}

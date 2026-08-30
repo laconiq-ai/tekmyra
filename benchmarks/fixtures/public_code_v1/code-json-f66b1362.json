@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "code-json-f66b1362",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "code",
+  "risk_tier": "low",
+  "content": "//     __ _____ _____ _____\n//  __|  |   __|     |   | |  JSON for Modern C++\n// |  |  |__   |  |  | | | |  version 3.12.0\n// |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n//\n// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n// SPDX-License-Identifier: MIT\n\n#pragma once\n\n// This file contains all macro definitions affecting or depending on the ABI\n\n#ifndef JSON_SKIP_LIBRARY_VERSION_CHECK\n    #if defined(NLOHMANN_JSON_VERSION_MAJOR) && defined(NLOHMANN_JSON_VERSION_MINOR) && defined(NLOHMANN_JSON_VERSION_PATCH)\n        #if NLOHMANN_JSON_VERSION_MAJOR != 3 || NLOHMANN_JSON_VERSION_MINOR != 12 || NLOHMANN_JSON_VERSION_PATCH != 0\n            #warning \"Already included a different version of the library!\"\n        #endif\n    #endif\n#endif\n\n#define NLOHMANN_JSON_VERSION_MAJOR 3   // NOLINT(modernize-macro-to-enum)\n#define NLOHMANN_JSON_VERSION_MINOR 12  // NOLINT(modernize-macro-to-enum)\n#define NLOHMANN_JSON_VERSION_PATCH 0   // NOLINT(modernize-macro-to-enum)\n\n#ifndef JSON_DIAGNOSTICS\n    #define JSON_DIAGNOSTICS 0\n#endif\n\n#ifndef JSON_DIAGNOSTIC_POSITIONS\n    #define JSON_DIAGNOSTIC_POSITIONS 0\n#endif\n\n#ifndef JSON_USE_LEGACY_DISCARDED_VALUE_COMPARISON\n    #define JSON_USE_LEGACY_DISCARDED_VALUE_COMPARISON 0\n#endif\n\n#if JSON_DIAGNOSTICS\n    #define NLOHMANN_JSON_ABI_TAG_DIAGNOSTICS _diag\n#else\n    #define NLOHMANN_JSON_ABI_TAG_DIAGNOSTICS\n#endif\n\n#if JSON_DIAGNOSTIC_POSITIONS\n    #define NLOHMANN_JSON_ABI_TAG_DIAGNOSTIC_POSITIONS _dp\n#else\n    #define NLOHMANN_JSON_ABI_TAG_DIAGNOSTIC_POSITIONS\n#endif\n\n#if JSON_USE_LEGACY_DISCARDED_VALUE_COMPARISON\n    #define NLOHMANN_JSON_ABI_TAG_LEGACY_DISCARDED_VALUE_COMPARISON _ldvcmp\n#else\n    #define NLOHMANN_JSON_ABI_TAG_LEGACY_DISCARDED_VALUE_COMPARISON\n#endif\n\n#ifndef NLOHMANN_JSON_NAMESPACE_NO_VERSION\n    #define NLOHMANN_JSON_NAMESPACE_NO_VERSION 0\n#endif\n\n// Construct the namespace ABI tags component\n#define NLOHMANN_JSON_ABI_TAGS_CONCAT_EX(a, b, c) json_abi ## a ## b ## c\n#define NLOHMANN_JSON_ABI_TAGS_CONCAT(a, b, c) \\\n    NLOHMANN_JSON_ABI_TAGS_CONCAT_EX(a, b, c)\n\n#define NLOHMANN_JSON_ABI_TAGS                                       \\\n    NLOHMANN_JSON_ABI_TAGS_CONCAT(                                   \\\n            NLOHMANN_JSON_ABI_TAG_DIAGNOSTICS,                       \\\n            NLOHMANN_JSON_ABI_TAG_LEGACY_DISCARDED_VALUE_COMPARISON, \\\n            NLOHMANN_JSON_ABI_TAG_DIAGNOSTIC_POSITIONS)\n\n// Construct the namespace version component\n#define NLOHMANN_JSON_NAMESPACE_VERSION_CONCAT_EX(major, minor, patch) \\\n    _v ## major ## _ ## minor ## _ ## patch\n#define NLOHMANN_JSON_NAMESPACE_VERSION_CONCAT(major, minor, patch) \\\n    NLOHMANN_JSON_NAMESPACE_VERSION_CONCAT_EX(major, minor, patch)\n\n#if NLOHMANN_JSON_NAMESPACE_NO_VERSION\n#define NLOHMANN_JSON_NAMESPACE_VERSION\n#else\n#define NLOHMANN_JSON_NAMESPACE_VERSION                                 \\\n    NLOHMANN_JSON_NAMESPACE_VERSION_CONCAT(NLOHMANN_JSON_VERSION_MAJOR, \\\n                                           NLOHMANN_JSON_VERSION_MINOR, \\\n                                           NLOHMANN_JSON_VERSION_PATCH)\n#endif\n\n// Combine namespace components\n#define NLOHMANN_JSON_NAMESPACE_CONCAT_EX(a, b) a ## b\n#define NLOHMANN_JSON_NAMESPACE_CONCAT(a, b) \\\n    NLOHMANN_JSON_NAMESPACE_CONCAT_EX(a, b)\n\n#ifndef NLOHMANN_JSON_NAMESPACE\n#define NLOHMANN_JSON_NAMESPACE               \\\n    nlohmann::NLOHMANN_JSON_NAMESPACE_CONCAT( \\\n            NLOHMANN_JSON_ABI_TAGS,           \\\n            NLOHMANN_JSON_NAMESPACE_VERSION)\n#endif\n\n#ifndef NLOHMANN_JSON_NAMESPACE_BEGIN\n#define NLOHMANN_JSON_NAMESPACE_BEGIN                \\\n    namespace nlohmann                               \\\n    {                                                \\\n    inline namespace NLOHMANN_JSON_NAMESPACE_CONCAT( \\\n                NLOHMANN_JSON_ABI_TAGS,              \\\n                NLOHMANN_JSON_NAMESPACE_VERSION)     \\\n    {\n#endif\n\n#ifndef NLOHMANN_JSON_NAMESPACE_END\n#define NLOHMANN_JSON_NAMESPACE_END                                     \\\n    }  /* namespace (inline namespace) NOLINT(readability/namespace) */ \\\n    }  // namespace nlohmann\n#endif\n",
+  "route_labels": [
+    "code_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "code_compressor",
+    "allowed_outcomes": [
+      "code_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "code_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:nlohmann/json",
+    "license": "MIT",
+    "generated_by": null,
+    "external": {
+      "publisher": "nlohmann/json",
+      "source_url": "https://github.com/nlohmann/json/blob/21af527e756435701f23e01aa8ea8dab6e050c90/include/nlohmann/detail/abi_macros.hpp",
+      "retrieved_at": "2026-08-09T10:50:35.933109Z",
+      "licence_basis": "SPDX MIT, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/nlohmann/json",
+      "licence_evidence_sha256": "78d6cf2ad65fb58a6b47bd8bc549710f70b16989fdcce54555bb4fff00563f5d",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": null
+    },
+    "generated_at": "2026-08-09T10:50:36.079304Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "code",
+    "cpp"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

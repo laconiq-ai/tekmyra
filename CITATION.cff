@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use TekMyra in your work, please cite it as below."
+title: "TekMyra"
+type: software
+authors:
+  - name: "LaconIQ"
+    email: "hello@tekmyra.ai"
+license: Apache-2.0
+version: 0.1.0
+date-released: 2026-08-30
+url: "https://tekmyra.ai"
+repository-code: "https://github.com/laconiq-ai/tekmyra"
+abstract: >-
+  Deterministic and learned context compression for language models, with
+  locked-span preservation, refusal as a first-class outcome, and
+  verification before emission. The accompanying technical paper is at
+  https://tekmyra.ai/tekmyra-paper.html

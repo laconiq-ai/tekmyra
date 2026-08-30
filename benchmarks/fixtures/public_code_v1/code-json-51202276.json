@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "code-json-51202276",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "code",
+  "risk_tier": "low",
+  "content": "//     __ _____ _____ _____\n//  __|  |   __|     |   | |  JSON for Modern C++\n// |  |  |__   |  |  | | | |  version 3.12.0\n// |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n//\n// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n// SPDX-License-Identifier: MIT\n\n#pragma once\n\n#include <cstddef> // nullptr_t\n#include <exception> // exception\n#if JSON_DIAGNOSTICS\n    #include <numeric> // accumulate\n#endif\n#include <stdexcept> // runtime_error\n#include <string> // to_string\n#include <vector> // vector\n\n#include <nlohmann/detail/value_t.hpp>\n#include <nlohmann/detail/string_escape.hpp>\n#include <nlohmann/detail/input/position_t.hpp>\n#include <nlohmann/detail/macro_scope.hpp>\n#include <nlohmann/detail/meta/cpp_future.hpp>\n#include <nlohmann/detail/meta/type_traits.hpp>\n#include <nlohmann/detail/string_concat.hpp>\n\n// With -Wweak-vtables, Clang will complain about the exception classes as they\n// have no out-of-line virtual method definitions and their vtable will be\n// emitted in every translation unit. This issue cannot be fixed with a\n// header-only library as there is no implementation file to move these\n// functions to. As a result, we suppress this warning here to avoid client\n// code stumbling over this. See https://github.com/nlohmann/json/issues/4087\n// for a discussion.\n#if defined(__clang__)\n    #pragma clang diagnostic push\n    #pragma clang diagnostic ignored \"-Wweak-vtables\"\n#endif\n\nNLOHMANN_JSON_NAMESPACE_BEGIN\nnamespace detail\n{\n\n////////////////\n// exceptions //\n////////////////\n\n/// @brief general exception of the @ref basic_json class\n/// @sa https://json.nlohmann.me/api/basic_json/exception/\nclass exception : public std::exception\n{\n  public:\n    /// returns the explanatory string\n    const char* what() const noexcept override\n    {\n        return m.what();\n    }\n\n    /// the id of the exception\n    const int id; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)\n\n  protected:\n    JSON_HEDLEY_NON_NULL(3)\n    exception(int id_, const char* what_arg) : id(id_), m(what_arg) {} // NOLINT(bugprone-throw-keyword-missing)\n\n    static std::string name(const std::string& ename, int id_)\n    {\n        return concat(\"[json.exception.\", ename, '.', std::to_string(id_), \"] \");\n    }\n\n    static std::string diagnostics(std::nullptr_t /*leaf_element*/)\n    {\n        return \"\";\n    }\n\n    template<typename BasicJsonType>\n    static std::string diagnostics(const BasicJsonType* leaf_element)\n    {\n#if JSON_DIAGNOSTICS\n        std::vector<std::string> tokens;\n        for (const auto* current = leaf_element; current != nullptr && current->m_parent != nullptr; current = current->m_parent)\n        {\n            switch (current->m_parent->type())\n            {\n                case value_t::array:\n                {\n                    for (std::size_t i = 0; i < current->m_parent->m_data.m_value.array->size(); ++i)\n                    {\n                        if (&current->m_parent->m_data.m_value.array->operator[](i) == current)\n                        {\n                            tokens.emplace_back(std::to_string(i));\n                            break;\n                        }\n                    }\n                    break;\n                }\n\n                case value_t::object:\n                {\n                    for (const auto& element : *current->m_parent->m_data.m_value.object)\n                    {\n                        if (&element.second == current)\n                        {\n                            tokens.emplace_back(element.first.c_str());\n                            break;\n                        }\n                    }\n                    break;\n                }\n\n                case value_t::null: // LCOV_EXCL_LINE\n                case value_t::string: // LCOV_EXCL_LINE\n                case value_t::boolean: // LCOV_EXCL_LINE\n                case value_t::number_integer: // LCOV_EXCL_LINE\n                case value_t::number_unsigned: // LCOV_EXCL_LINE\n                case value_t::number_float: // LCOV_EXCL_LINE\n                case value_t::binary: // LCOV_EXCL_LINE\n                case value_t::discarded: // LCOV_EXCL_LINE\n                default:   // LCOV_EXCL_LINE\n                    break; // LCOV_EXCL_LINE\n            }\n        }\n\n        if (tokens.empty())\n        {\n            return \"\";\n        }\n\n        auto str = std::accumulate(tokens.rbegin(), tokens.rend(), std::string{},\n                                   [](const std::string & a, const std::string & b)\n        {\n            return concat(a, '/', detail::escape(b));\n        });\n\n        return concat('(', str, \") \", get_byte_positions(leaf_element));\n#else\n        return get_byte_positions(leaf_element);\n#endif\n    }\n\n  private:\n    /// an exception object as storage for error messages\n    std::runtime_error m;\n#if JSON_DIAGNOSTIC_POSITIONS\n    template<typename BasicJsonType>\n    static std::string get_byte_positions(const BasicJsonType* leaf_element)\n    {\n        if ((leaf_element->start_pos() != std::string::npos) && (leaf_element->end_pos() != std::string::npos))\n        {\n            return concat(\"(bytes \", std::to_string(leaf_element->start_pos()), \"-\", std::to_string(leaf_element->end_pos()), \") \");\n        }\n        return \"\";\n    }\n#else\n    template<typename BasicJsonType>\n    static std::string get_byte_positions(const BasicJsonType* leaf_element)\n    {\n        static_cast<void>(leaf_element);\n        return \"\";\n    }\n#endif\n};\n\n/// @brief exception indicating a parse error\n/// @sa https://json.nlohmann.me/api/basic_json/parse_error/\nclass parse_error : public exception\n{\n  public:\n    /*!\n    @brief create a parse error exception\n    @param[in] id_       the id of the exception\n    @param[in] pos       the position where the error occurred (or with\n                         chars_read_total=0 if the position cannot be\n                         determined)\n    @param[in] what_arg  the explanatory string\n    @return parse_error object\n    */\n    template<typename BasicJsonContext, enable_if_t<is_basic_json_context<BasicJsonContext>::value, int> = 0>\n    static parse_error create(int id_, const position_t& pos, const std::string& what_arg, BasicJsonContext context)\n    {\n        const std::string w = concat(exception::name(\"parse_error\", id_), \"parse error\",\n                                     position_string(pos), \": \", exception::diagnostics(context), what_arg);\n        return {id_, pos.chars_read_total, w.c_str()};\n    }\n\n    template<typename BasicJsonContext, enable_if_t<is_basic_json_context<BasicJsonContext>::value, int> = 0>\n    static parse_error create(int id_, std::size_t byte_, const std::string& what_arg, BasicJsonContext context)\n    {\n        const std::string w = concat(exception::name(\"parse_error\", id_), \"parse error\",\n                                     (byte_ != 0 ? (concat(\" at byte \", std::to_string(byte_))) : \"\"),\n                                     \": \", exception::diagnostics(context), what_arg);\n        return {id_, byte_, w.c_str()};\n    }\n\n    /*!\n    @brief byte index of the parse error\n\n    The byte index of the last read character in the input file.\n\n    @note For an input with n bytes, 1 is the index of the first character and\n          n+1 is the index of the terminating null byte or the end of file.\n          This also holds true when reading a byte vector (CBOR or MessagePack).\n    */\n    const std::size_t byte;\n\n  private:\n    parse_error(int id_, std::size_t byte_, const char* what_arg)\n        : exception(id_, what_arg), byte(byte_) {}\n\n    static std::string position_string(const position_t& pos)\n    {\n        return concat(\" at line \", std::to_string(pos.lines_read + 1),\n                      \", column \", std::to_string(pos.chars_read_current_line));\n    }\n};\n\n/// @brief exception indicating errors with iterators\n/// @sa https://json.nlohmann.me/api/basic_json/invalid_iterator/\nclass invalid_iterator : public exception\n{\n  public:\n    template<typename BasicJsonContext, enable_if_t<is_basic_json_context<BasicJsonContext>::value, int> = 0>\n    static invalid_iterator create(int id_, const std::string& what_arg, BasicJsonContext context)\n    {\n        const std::string w = concat(exception::name(\"invalid_iterator\", id_), exception::diagnostics(context), what_arg);\n        return {id_, w.c_str()};\n    }\n\n  private:\n    JSON_HEDLEY_NON_NULL(3)\n    invalid_iterator(int id_, const char* what_arg)\n        : exception(id_, what_arg) {}\n};\n\n/// @brief exception indicating executing a member function with a wrong type\n/// @sa https://json.nlohmann.me/api/basic_json/type_error/\nclass type_error : public exception\n{\n  public:\n    template<typename BasicJsonContext, enable_if_t<is_basic_json_context<BasicJsonContext>::value, int> = 0>\n    static type_error create(int id_, const std::string& what_arg, BasicJsonContext context)\n    {\n        const std::string w = concat(exception::name(\"type_error\", id_), exception::diagnostics(context), what_arg);\n        return {id_, w.c_str()};\n    }\n\n  private:\n    JSON_HEDLEY_NON_NULL(3)\n    type_error(int id_, const char* what_arg) : exception(id_, what_arg) {}\n};\n\n/// @brief exception indicating access out of the defined range\n/// @sa https://json.nlohmann.me/api/basic_json/out_of_range/\nclass out_of_range : public exception\n{\n  public:\n    template<typename BasicJsonContext, enable_if_t<is_basic_json_context<BasicJsonContext>::value, int> = 0>\n    static out_of_range create(int id_, const std::string& what_arg, BasicJsonContext context)\n    {\n        const std::string w = concat(exception::name(\"out_of_range\", id_), exception::diagnostics(context), what_arg);\n        return {id_, w.c_str()};\n    }\n\n  private:\n    JSON_HEDLEY_NON_NULL(3)\n    out_of_range(int id_, const char* what_arg) : exception(id_, what_arg) {}\n};\n\n/// @brief exception indicating other library errors\n/// @sa https://json.nlohmann.me/api/basic_json/other_error/\nclass other_error : public exception\n{\n  public:\n    template<typename BasicJsonContext, enable_if_t<is_basic_json_context<BasicJsonContext>::value, int> = 0>\n    static other_error create(int id_, const std::string& what_arg, BasicJsonContext context)\n    {\n        const std::string w = concat(exception::name(\"other_error\", id_), exception::diagnostics(context), what_arg);\n        return {id_, w.c_str()};\n    }\n\n  private:\n    JSON_HEDLEY_NON_NULL(3)\n    other_error(int id_, const char* what_arg) : exception(id_, what_arg) {}\n};\n\n}  // namespace detail\nNLOHMANN_JSON_NAMESPACE_END\n\n#if defined(__clang__)\n    #pragma clang diagnostic pop\n#endif\n",
+  "route_labels": [
+    "code_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "code_compressor",
+    "allowed_outcomes": [
+      "code_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "code_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:nlohmann/json",
+    "license": "MIT",
+    "generated_by": null,
+    "external": {
+      "publisher": "nlohmann/json",
+      "source_url": "https://github.com/nlohmann/json/blob/21af527e756435701f23e01aa8ea8dab6e050c90/include/nlohmann/detail/exceptions.hpp",
+      "retrieved_at": "2026-08-09T10:50:35.933109Z",
+      "licence_basis": "SPDX MIT, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/nlohmann/json",
+      "licence_evidence_sha256": "78d6cf2ad65fb58a6b47bd8bc549710f70b16989fdcce54555bb4fff00563f5d",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": null
+    },
+    "generated_at": "2026-08-09T10:50:36.080205Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "code",
+    "cpp"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

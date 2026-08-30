@@ -1,0 +1,211 @@
+{
+  "$defs": {
+    "ArtifactEnvelope": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "minLength": 1,
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "tenant_id": {
+          "minLength": 1,
+          "title": "Tenant Id",
+          "type": "string"
+        },
+        "source_channel": {
+          "$ref": "#/$defs/SourceChannel"
+        },
+        "mime_type": {
+          "minLength": 1,
+          "title": "Mime Type",
+          "type": "string"
+        },
+        "filename": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Filename"
+        },
+        "bytes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Bytes"
+        },
+        "text_content": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Text Content"
+        },
+        "metadata": {
+          "$ref": "#/$defs/ArtifactMetadata"
+        }
+      },
+      "required": [
+        "artifact_id",
+        "tenant_id",
+        "source_channel",
+        "mime_type",
+        "metadata"
+      ],
+      "title": "ArtifactEnvelope",
+      "type": "object"
+    },
+    "ArtifactMetadata": {
+      "additionalProperties": true,
+      "properties": {
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "user_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "User Id"
+        },
+        "trust_tier": {
+          "$ref": "#/$defs/TrustTier"
+        },
+        "policy_tier": {
+          "$ref": "#/$defs/PolicyTier"
+        }
+      },
+      "required": [
+        "created_at",
+        "trust_tier",
+        "policy_tier"
+      ],
+      "title": "ArtifactMetadata",
+      "type": "object"
+    },
+    "PolicyTier": {
+      "enum": [
+        "standard",
+        "regulated",
+        "critical"
+      ],
+      "title": "PolicyTier",
+      "type": "string"
+    },
+    "SourceChannel": {
+      "enum": [
+        "api",
+        "chat",
+        "email",
+        "ticket",
+        "upload",
+        "agent",
+        "batch"
+      ],
+      "title": "SourceChannel",
+      "type": "string"
+    },
+    "TrustTier": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "TrustTier",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "request_id": {
+      "title": "Request Id",
+      "type": "string"
+    },
+    "task_type": {
+      "title": "Task Type",
+      "type": "string"
+    },
+    "query": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Query"
+    },
+    "max_output_tokens": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Max Output Tokens"
+    },
+    "safety_mode": {
+      "default": "standard",
+      "enum": [
+        "standard",
+        "strict",
+        "audit"
+      ],
+      "title": "Safety Mode",
+      "type": "string"
+    },
+    "segments": {
+      "items": {
+        "$ref": "#/$defs/ArtifactEnvelope"
+      },
+      "title": "Segments",
+      "type": "array"
+    },
+    "recovery_options": {
+      "additionalProperties": true,
+      "title": "Recovery Options",
+      "type": "object"
+    },
+    "explanation_options": {
+      "additionalProperties": true,
+      "title": "Explanation Options",
+      "type": "object"
+    }
+  },
+  "required": [
+    "request_id",
+    "task_type",
+    "segments"
+  ],
+  "title": "CompressionRequest",
+  "type": "object"
+}

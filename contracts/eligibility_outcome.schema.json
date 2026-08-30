@@ -1,0 +1,118 @@
+{
+  "$defs": {
+    "EligibilityReason": {
+      "enum": [
+        "too_short",
+        "calibration_band",
+        "high_risk",
+        "pii",
+        "structure_gate_fail",
+        "safety_margin_fail",
+        "protected_span_conflict",
+        "eligible",
+        "primary_population"
+      ],
+      "title": "EligibilityReason",
+      "type": "string"
+    },
+    "RouteClass": {
+      "enum": [
+        "passthrough",
+        "deterministic_json_compressor",
+        "code_compressor",
+        "log_compressor",
+        "diff_compressor",
+        "prose_token_compressor",
+        "summarizer",
+        "extractive_keypoint_compressor",
+        "ocr_first",
+        "image_optimizer",
+        "chart_table_extraction",
+        "pii_redaction_before_compression",
+        "governance_safe_compression",
+        "legal_security_safe_mode",
+        "reversible_retrieval_mode",
+        "reject_or_human_review"
+      ],
+      "title": "RouteClass",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "eligible": {
+      "title": "Eligible",
+      "type": "boolean"
+    },
+    "selected_route": {
+      "$ref": "#/$defs/RouteClass"
+    },
+    "selected_codec": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Selected Codec"
+    },
+    "reason": {
+      "$ref": "#/$defs/EligibilityReason"
+    },
+    "predicted_request_tokens": {
+      "minimum": 0,
+      "title": "Predicted Request Tokens",
+      "type": "integer"
+    },
+    "predicted_request_cost": {
+      "minimum": 0,
+      "title": "Predicted Request Cost",
+      "type": "number"
+    },
+    "predicted_compressor_cost": {
+      "minimum": 0,
+      "title": "Predicted Compressor Cost",
+      "type": "number"
+    },
+    "predicted_compressor_latency_ms": {
+      "minimum": 0,
+      "title": "Predicted Compressor Latency Ms",
+      "type": "number"
+    },
+    "predicted_savings": {
+      "title": "Predicted Savings",
+      "type": "number"
+    },
+    "safety_margin": {
+      "minimum": 0,
+      "title": "Safety Margin",
+      "type": "number"
+    },
+    "expected_net_value": {
+      "title": "Expected Net Value",
+      "type": "number"
+    },
+    "passthrough_default": {
+      "default": false,
+      "title": "Passthrough Default",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "eligible",
+    "selected_route",
+    "reason",
+    "predicted_request_tokens",
+    "predicted_request_cost",
+    "predicted_compressor_cost",
+    "predicted_compressor_latency_ms",
+    "predicted_savings",
+    "safety_margin",
+    "expected_net_value"
+  ],
+  "title": "EligibilityOutcome",
+  "type": "object"
+}

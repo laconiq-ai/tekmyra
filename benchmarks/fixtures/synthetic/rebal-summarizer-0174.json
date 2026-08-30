@@ -1,0 +1,148 @@
+{
+  "fixture_id": "rebal-summarizer-0174",
+  "content_type": "prose",
+  "risk_tier": "low",
+  "content": "Quarterly planning memo \u2014 The product team reviewed the delivery plan for the Nebula initiative during the week of 2026-01-05. Engineering identified three blockers: database migration latency, memory pressure in staging, and CI pipeline latency. The leadership team requested a revised spending proposal by 2026-07-11 and asked the program manager to communicate priorities to all regional leads. No final decisions were recorded.",
+  "route_labels": [
+    "prose_token_compressor",
+    "summarizer"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 115,
+      "end": 125,
+      "text": "2026-01-05",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 308,
+      "end": 318,
+      "text": "2026-07-11",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 78,
+      "end": 84,
+      "text": "Nebula",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "summarizer",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "date",
+        "start": 115,
+        "end": 125,
+        "text": "2026-01-05",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "date",
+        "start": 308,
+        "end": 318,
+        "text": "2026-07-11",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "project_name",
+        "start": 78,
+        "end": 84,
+        "text": "Nebula",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 115,
+        "end": 125,
+        "text": "2026-01-05",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 308,
+        "end": 318,
+        "text": "2026-07-11",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 78,
+        "end": 84,
+        "text": "Nebula",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "summarizer",
+    "allowed_outcomes": [
+      "summarizer"
+    ],
+    "compressible": true
+  },
+  "provenance": {
+    "source": "public_sample",
+    "license": "MIT",
+    "generated_by": "benchmarks/fixtures/generate_rebalance_fixtures.py",
+    "generated_at": "2026-07-18T01:23:06.875611Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "rebalance",
+    "summarizer"
+  ],
+  "blocks": [
+    {
+      "type": "prose",
+      "content": "Quarterly planning memo \u2014 The product team reviewed the delivery plan for the Nebula initiative during the week of 2026-01-05. Engineering identified three blockers: database migration latency, memory pressure in staging, and CI pipeline latency. The leadership team requested a revised spending proposal by 2026-07-11 and asked the program manager to communicate priorities to all regional leads. No final decisions were recorded.",
+      "start": 0,
+      "end": 431,
+      "route_label": "prose_token_compressor",
+      "risk_tier": "low",
+      "protected_spans": [
+        {
+          "start": 115,
+          "end": 125,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 308,
+          "end": 318,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:23:06.876456+00:00",
+  "schema_version": "2.0.0"
+}

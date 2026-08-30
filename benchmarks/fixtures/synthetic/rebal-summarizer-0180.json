@@ -1,0 +1,148 @@
+{
+  "fixture_id": "rebal-summarizer-0180",
+  "content_type": "prose",
+  "risk_tier": "low",
+  "content": "Quarterly planning memo \u2014 The security team reviewed the delivery plan for the Vertex initiative during the week of 2026-09-03. Engineering identified three blockers: third-party API rate limits, stale dependency versions, and CI pipeline latency. The leadership team requested a revised spending proposal by 2026-04-01 and asked the program manager to communicate priorities to all regional leads. No final decisions were recorded.",
+  "route_labels": [
+    "prose_token_compressor",
+    "summarizer"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 116,
+      "end": 126,
+      "text": "2026-09-03",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 309,
+      "end": 319,
+      "text": "2026-04-01",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 79,
+      "end": 85,
+      "text": "Vertex",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "summarizer",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "date",
+        "start": 116,
+        "end": 126,
+        "text": "2026-09-03",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "date",
+        "start": 309,
+        "end": 319,
+        "text": "2026-04-01",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "project_name",
+        "start": 79,
+        "end": 85,
+        "text": "Vertex",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 116,
+        "end": 126,
+        "text": "2026-09-03",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 309,
+        "end": 319,
+        "text": "2026-04-01",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 79,
+        "end": 85,
+        "text": "Vertex",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "summarizer",
+    "allowed_outcomes": [
+      "summarizer"
+    ],
+    "compressible": true
+  },
+  "provenance": {
+    "source": "public_sample",
+    "license": "MIT",
+    "generated_by": "benchmarks/fixtures/generate_rebalance_fixtures.py",
+    "generated_at": "2026-07-18T01:23:06.875887Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "rebalance",
+    "summarizer"
+  ],
+  "blocks": [
+    {
+      "type": "prose",
+      "content": "Quarterly planning memo \u2014 The security team reviewed the delivery plan for the Vertex initiative during the week of 2026-09-03. Engineering identified three blockers: third-party API rate limits, stale dependency versions, and CI pipeline latency. The leadership team requested a revised spending proposal by 2026-04-01 and asked the program manager to communicate priorities to all regional leads. No final decisions were recorded.",
+      "start": 0,
+      "end": 432,
+      "route_label": "prose_token_compressor",
+      "risk_tier": "low",
+      "protected_spans": [
+        {
+          "start": 116,
+          "end": 126,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 309,
+          "end": 319,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:23:06.879989+00:00",
+  "schema_version": "2.0.0"
+}

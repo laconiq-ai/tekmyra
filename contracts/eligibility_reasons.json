@@ -1,0 +1,11 @@
+[
+  "too_short",
+  "calibration_band",
+  "high_risk",
+  "pii",
+  "structure_gate_fail",
+  "safety_margin_fail",
+  "protected_span_conflict",
+  "eligible",
+  "primary_population"
+]

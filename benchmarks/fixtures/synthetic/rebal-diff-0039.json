@@ -1,0 +1,109 @@
+{
+  "fixture_id": "rebal-diff-0039",
+  "content_type": "diff",
+  "risk_tier": "low",
+  "content": "diff --git a/lib/config.yaml b/lib/config.yaml\nindex 1234..5678 100644\n--- a/src/routes.yaml\n+++ b/lib/models.yaml\n@@ -10,3 +10,4 @@\n   timeout: 30\n   retries: 3\n+  enable_cache: true\n",
+  "route_labels": [
+    "diff_compressor"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 13,
+      "end": 28,
+      "text": "lib/config.yaml",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "diff_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "file_path",
+        "start": 13,
+        "end": 28,
+        "text": "lib/config.yaml",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 13,
+        "end": 28,
+        "text": "lib/config.yaml",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "diff_compressor",
+    "allowed_outcomes": [
+      "diff_compressor"
+    ],
+    "compressible": true
+  },
+  "provenance": {
+    "source": "synthetic",
+    "license": "CC0-1.0",
+    "generated_by": "benchmarks/fixtures/generate_rebalance_fixtures.py",
+    "generated_at": "2026-07-18T01:23:06.790237Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "rebalance",
+    "diff_compressor"
+  ],
+  "blocks": [
+    {
+      "type": "diff",
+      "content": "diff --git a/lib/config.yaml b/lib/config.yaml\nindex 1234..5678 100644\n--- a/src/routes.yaml\n+++ b/lib/models.yaml\n@@ -10,3 +10,4 @@\n   timeout: 30\n   retries: 3\n+  enable_cache: true\n",
+      "start": 0,
+      "end": 184,
+      "route_label": "diff_compressor",
+      "risk_tier": "low",
+      "protected_spans": [
+        {
+          "start": 12,
+          "end": 28,
+          "label": "file_path",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 30,
+          "end": 46,
+          "label": "file_path",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 76,
+          "end": 92,
+          "label": "file_path",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 98,
+          "end": 114,
+          "label": "file_path",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:23:06.790624+00:00",
+  "schema_version": "2.0.0"
+}

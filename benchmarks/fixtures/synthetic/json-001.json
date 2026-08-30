@@ -1,0 +1,101 @@
+{
+  "fixture_id": "json-001",
+  "content_type": "json",
+  "risk_tier": "low",
+  "content": "{\n  \"request_id\": \"req-1\",\n  \"user_id\": \"user-1\",\n  \"timestamp\": \"2026-07-06T00:00:00Z\",\n  \"items\": [\n    {\n      \"id\": 0,\n      \"value\": 0\n    },\n    {\n      \"id\": 1,\n      \"value\": 10\n    },\n    {\n      \"id\": 2,\n      \"value\": 20\n    },\n    {\n      \"id\": 3,\n      \"value\": 30\n    },\n    {\n      \"id\": 4,\n      \"value\": 40\n    }\n  ]\n}",
+  "route_labels": [
+    "deterministic_json_compressor"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "anchor",
+      "start": 5,
+      "end": 27,
+      "text": "request_id",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "deterministic_json_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "request_id",
+        "start": 5,
+        "end": 27,
+        "text": "request_id",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "anchor",
+        "start": 5,
+        "end": 27,
+        "text": "request_id",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "deterministic_json_compressor",
+    "allowed_outcomes": [
+      "deterministic_json_compressor"
+    ],
+    "compressible": true
+  },
+  "blocks": [
+    {
+      "type": "json",
+      "content": "{\n  \"request_id\": \"req-1\",\n  \"user_id\": \"user-1\",\n  \"timestamp\": \"2026-07-06T00:00:00Z\",\n  \"items\": [\n    {\n      \"id\": 0,\n      \"value\": 0\n    },\n    {\n      \"id\": 1,\n      \"value\": 10\n    },\n    {\n      \"id\": 2,\n      \"value\": 20\n    },\n    {\n      \"id\": 3,\n      \"value\": 30\n    },\n    {\n      \"id\": 4,\n      \"value\": 40\n    }\n  ]\n}",
+      "start": 0,
+      "end": 335,
+      "route_label": "deterministic_json_compressor",
+      "risk_tier": "low",
+      "protected_spans": [
+        {
+          "start": 5,
+          "end": 17,
+          "label": "retrieval_key",
+          "span_type": "anchor",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 19,
+          "end": 26,
+          "label": "retrieval_key",
+          "span_type": "anchor",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 66,
+          "end": 86,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "synthetic",
+    "license": "CC0-1.0",
+    "generated_by": "benchmarks/fixtures/generate_fixtures.py",
+    "generated_at": "2026-07-15T06:43:08.687613Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "json",
+    "structured"
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:10:03.509452+00:00",
+  "schema_version": "2.0.0"
+}

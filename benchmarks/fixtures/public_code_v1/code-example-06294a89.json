@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "code-example-06294a89",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "code",
+  "risk_tier": "low",
+  "content": "//go:build go1.21\n\npackage indenthandler\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"io\"\n\t\"log/slog\"\n\t\"runtime\"\n\t\"slices\"\n\t\"sync\"\n\t\"time\"\n)\n\n// !+IndentHandler\ntype IndentHandler struct {\n\topts           Options\n\tpreformatted   []byte   // data from WithGroup and WithAttrs\n\tunopenedGroups []string // groups from WithGroup that haven't been opened\n\tindentLevel    int      // same as number of opened groups so far\n\tmu             *sync.Mutex\n\tout            io.Writer\n}\n\n//!-IndentHandler\n\ntype Options struct {\n\t// Level reports the minimum level to log.\n\t// Levels with lower levels are discarded.\n\t// If nil, the Handler uses [slog.LevelInfo].\n\tLevel slog.Leveler\n}\n\nfunc New(out io.Writer, opts *Options) *IndentHandler {\n\th := &IndentHandler{out: out, mu: &sync.Mutex{}}\n\tif opts != nil {\n\t\th.opts = *opts\n\t}\n\tif h.opts.Level == nil {\n\t\th.opts.Level = slog.LevelInfo\n\t}\n\treturn h\n}\n\nfunc (h *IndentHandler) Enabled(ctx context.Context, level slog.Level) bool {\n\treturn level >= h.opts.Level.Level()\n}\n\n// !+WithGroup\nfunc (h *IndentHandler) WithGroup(name string) slog.Handler {\n\tif name == \"\" {\n\t\treturn h\n\t}\n\th2 := *h\n\t// Add an unopened group to h2 without modifying h.\n\th2.unopenedGroups = make([]string, len(h.unopenedGroups)+1)\n\tcopy(h2.unopenedGroups, h.unopenedGroups)\n\th2.unopenedGroups[len(h2.unopenedGroups)-1] = name\n\treturn &h2\n}\n\n//!-WithGroup\n\n// !+WithAttrs\nfunc (h *IndentHandler) WithAttrs(attrs []slog.Attr) slog.Handler {\n\tif len(attrs) == 0 {\n\t\treturn h\n\t}\n\th2 := *h\n\t// Force an append to copy the underlying array.\n\tpre := slices.Clip(h.preformatted)\n\t// Add all groups from WithGroup that haven't already been added.\n\th2.preformatted = h2.appendUnopenedGroups(pre, h2.indentLevel)\n\t// Each of those groups increased the indent level by 1.\n\th2.indentLevel += len(h2.unopenedGroups)\n\t// Now all groups have been opened.\n\th2.unopenedGroups = nil\n\t// Pre-format the attributes.\n\tfor _, a := range attrs {\n\t\th2.preformatted = h2.appendAttr(h2.preformatted, a, h2.indentLevel)\n\t}\n\treturn &h2\n}\n\nfunc (h *IndentHandler) appendUnopenedGroups(buf []byte, indentLevel int) []byte {\n\tfor _, g := range h.unopenedGroups {\n\t\tbuf = fmt.Appendf(buf, \"%*s%s:\\n\", indentLevel*4, \"\", g)\n\t\tindentLevel++\n\t}\n\treturn buf\n}\n\n//!-WithAttrs\n\n// !+Handle\nfunc (h *IndentHandler) Handle(ctx context.Context, r slog.Record) error {\n\tbuf := make([]byte, 0, 1024)\n\tif !r.Time.IsZero() {\n\t\tbuf = h.appendAttr(buf, slog.Time(slog.TimeKey, r.Time), 0)\n\t}\n\tbuf = h.appendAttr(buf, slog.Any(slog.LevelKey, r.Level), 0)\n\tif r.PC != 0 {\n\t\tfs := runtime.CallersFrames([]uintptr{r.PC})\n\t\tf, _ := fs.Next()\n\t\tbuf = h.appendAttr(buf, slog.String(slog.SourceKey, fmt.Sprintf(\"%s:%d\", f.File, f.Line)), 0)\n\t}\n\tbuf = h.appendAttr(buf, slog.String(slog.MessageKey, r.Message), 0)\n\t// Insert preformatted attributes just after built-in ones.\n\tbuf = append(buf, h.preformatted...)\n\tif r.NumAttrs() > 0 {\n\t\tbuf = h.appendUnopenedGroups(buf, h.indentLevel)\n\t\tr.Attrs(func(a slog.Attr) bool {\n\t\t\tbuf = h.appendAttr(buf, a, h.indentLevel+len(h.unopenedGroups))\n\t\t\treturn true\n\t\t})\n\t}\n\tbuf = append(buf, \"---\\n\"...)\n\th.mu.Lock()\n\tdefer h.mu.Unlock()\n\t_, err := h.out.Write(buf)\n\treturn err\n}\n\n//!-Handle\n\nfunc (h *IndentHandler) appendAttr(buf []byte, a slog.Attr, indentLevel int) []byte {\n\t// Resolve the Attr's value before doing anything else.\n\ta.Value = a.Value.Resolve()\n\t// Ignore empty Attrs.\n\tif a.Equal(slog.Attr{}) {\n\t\treturn buf\n\t}\n\t// Indent 4 spaces per level.\n\tbuf = fmt.Appendf(buf, \"%*s\", indentLevel*4, \"\")\n\tswitch a.Value.Kind() {\n\tcase slog.KindString:\n\t\t// Quote string values, to make them easy to parse.\n\t\tbuf = fmt.Appendf(buf, \"%s: %q\\n\", a.Key, a.Value.String())\n\tcase slog.KindTime:\n\t\t// Write times in a standard way, without the monotonic time.\n\t\tbuf = fmt.Appendf(buf, \"%s: %s\\n\", a.Key, a.Value.Time().Format(time.RFC3339Nano))\n\tcase slog.KindGroup:\n\t\tattrs := a.Value.Group()\n\t\t// Ignore empty groups.\n\t\tif len(attrs) == 0 {\n\t\t\treturn buf\n\t\t}\n\t\t// If the key is non-empty, write it out and indent the rest of the attrs.\n\t\t// Otherwise, inline the attrs.\n\t\tif a.Key != \"\" {\n\t\t\tbuf = fmt.Appendf(buf, \"%s:\\n\", a.Key)\n\t\t\tindentLevel++\n\t\t}\n\t\tfor _, ga := range attrs {\n\t\t\tbuf = h.appendAttr(buf, ga, indentLevel)\n\t\t}\n\tdefault:\n\t\tbuf = fmt.Appendf(buf, \"%s: %s\\n\", a.Key, a.Value)\n\t}\n\treturn buf\n}\n",
+  "route_labels": [
+    "code_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "code_compressor",
+    "allowed_outcomes": [
+      "code_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "code_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:golang/example",
+    "license": "BSD-3-Clause",
+    "generated_by": null,
+    "external": {
+      "publisher": "golang/example",
+      "source_url": "https://github.com/golang/example/blob/7f05d217867b2af52b0a28c6d1c91df97e1b5b39/slog-handler-guide/indenthandler3/indent_handler.go",
+      "retrieved_at": "2026-08-09T10:50:35.933109Z",
+      "licence_basis": "SPDX BSD-3-Clause, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/golang/example",
+      "licence_evidence_sha256": "cc24fa580dbb9c52b9793e3ca80d43d896195e34c953ecc30523e786c1c463dc",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": null
+    },
+    "generated_at": "2026-08-09T10:50:36.131386Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "code",
+    "go"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

@@ -1,0 +1,8 @@
+[
+  "normal_compression",
+  "relax_budget",
+  "block_only_compression",
+  "deterministic_only_compression",
+  "bypass_original",
+  "reject_or_human_review"
+]

@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "diff-rich-285d9e94",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "diff",
+  "risk_tier": "low",
+  "content": "drop 3.8\n\n\ndiff --git a/CHANGELOG.md b/CHANGELOG.md\nindex 20ec85b..ab758b1 100644\n--- a/CHANGELOG.md\n+++ b/CHANGELOG.md\n@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.\n The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),\n and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).\n \n+\n+# Unreleased\n+\n+### Changed\n+\n+- Dropped support for Python3.9\n+\n+### Fixed\n+\n+- Fixed empty print ignoring the `end` parameter\n+\n ## [14.3.4] - 2026-04-11\n \n ### Changed\ndiff --git a/pyproject.toml b/pyproject.toml\nindex 85f0f35..7e0d3dd 100644\n--- a/pyproject.toml\n+++ b/pyproject.toml\n@@ -15,7 +15,6 @@ classifiers = [\n     \"Operating System :: Microsoft :: Windows\",\n     \"Operating System :: MacOS\",\n     \"Operating System :: POSIX :: Linux\",\n-    \"Programming Language :: Python :: 3.8\",\n     \"Programming Language :: Python :: 3.9\",\n     \"Programming Language :: Python :: 3.10\",\n     \"Programming Language :: Python :: 3.11\",\n@@ -28,7 +27,7 @@ include = [\"rich/py.typed\"]\n \n \n [tool.poetry.dependencies]\n-python = \">=3.8.0\"\n+python = \">=3.9.0\"\n pygments = \"^2.13.0\"\n ipywidgets = { version = \">=7.5.1,<9\", optional = true }\n markdown-it-py = \">=2.2.0\"\ndiff --git a/rich/console.py b/rich/console.py\nindex 3a4a543..0bdce76 100644\n--- a/rich/console.py\n+++ b/rich/console.py\n@@ -2223,7 +2223,7 @@ class Console:\n \n     def save_text(\n         self,\n-        path: Union[str, PathLike],\n+        path: Union[str, PathLike[str]],\n         *,\n         clear: bool = True,\n         styles: bool = False,\n@@ -2320,7 +2320,7 @@ class Console:\n \n     def save_html(\n         self,\n-        path: Union[str, PathLike],\n+        path: Union[str, PathLike[str]],\n         *,\n         theme: Optional[TerminalTheme] = None,\n         clear: bool = True,\n@@ -2605,7 +2605,7 @@ class Console:\n \n     def save_svg(\n         self,\n-        path: Union[str, PathLike],\n+        path: Union[str, PathLike[str]],\n         *,\n         title: str = \"Rich\",\n         theme: Optional[TerminalTheme] = None,\n",
+  "route_labels": [
+    "diff_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "diff_compressor",
+    "allowed_outcomes": [
+      "diff_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "diff_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:Textualize/rich",
+    "license": "MIT",
+    "generated_by": null,
+    "external": {
+      "publisher": "Textualize/rich",
+      "source_url": "https://github.com/Textualize/rich/commit/285d9e94e268daf3ef159ca41e113a2e11b625e1",
+      "retrieved_at": "2026-08-09T12:18:29.629243Z",
+      "licence_basis": "SPDX MIT, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/Textualize/rich",
+      "licence_evidence_sha256": "efb8a1927b31694aa8e96dd174976d0053272c46642f29ea823cfec64793f5ec",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": "git show, against a local clone \u2014 no foreign code executed"
+    },
+    "generated_at": "2026-08-09T12:18:30.194179Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "diff",
+    "rich"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

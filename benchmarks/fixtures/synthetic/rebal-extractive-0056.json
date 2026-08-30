@@ -1,0 +1,148 @@
+{
+  "fixture_id": "rebal-extractive-0056",
+  "content_type": "bullet_notes",
+  "risk_tier": "medium",
+  "content": "Project Billing \u2014 extractive keypoint draft\n- Decision: introduce a feature flag for the redesigned widget.\n- Action item: draft a communication plan (owner: Casey Kim).\n- Blocker: inconsistent staging data.\n- Due date: 2026-12-01.\n- Ticket reference: TICKET-4802.",
+  "route_labels": [
+    "extractive_keypoint_compressor",
+    "prose_token_compressor"
+  ],
+  "protected_spans": [
+    {
+      "span_type": "must-preserve",
+      "start": 220,
+      "end": 230,
+      "text": "2026-12-01",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 252,
+      "end": 263,
+      "text": "TICKET-4802",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    },
+    {
+      "span_type": "must-preserve",
+      "start": 158,
+      "end": 167,
+      "text": "Casey Kim",
+      "policy": "preserve",
+      "detector": "gold",
+      "confidence": 1.0
+    }
+  ],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "extractive_keypoint_compressor",
+    "expected_risk": "medium",
+    "expected_fallback": null,
+    "must_preserve_spans": [
+      {
+        "span_type": "date",
+        "start": 220,
+        "end": 230,
+        "text": "2026-12-01",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "ticket_id",
+        "start": 252,
+        "end": 263,
+        "text": "TICKET-4802",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "owner",
+        "start": 158,
+        "end": 167,
+        "text": "Casey Kim",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 220,
+        "end": 230,
+        "text": "2026-12-01",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 252,
+        "end": 263,
+        "text": "TICKET-4802",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      },
+      {
+        "span_type": "must-preserve",
+        "start": 158,
+        "end": 167,
+        "text": "Casey Kim",
+        "policy": "preserve",
+        "detector": "gold",
+        "confidence": 1.0
+      }
+    ],
+    "route_intent": "extractive_keypoint_compressor",
+    "allowed_outcomes": [
+      "extractive_keypoint_compressor"
+    ],
+    "compressible": true
+  },
+  "provenance": {
+    "source": "public_sample",
+    "license": "MIT",
+    "generated_by": "benchmarks/fixtures/generate_rebalance_fixtures.py",
+    "generated_at": "2026-07-18T01:23:06.797653Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "rebalance",
+    "extractive_keypoint_compressor"
+  ],
+  "blocks": [
+    {
+      "type": "prose",
+      "content": "Project Billing \u2014 extractive keypoint draft\n- Decision: introduce a feature flag for the redesigned widget.\n- Action item: draft a communication plan (owner: Casey Kim).\n- Blocker: inconsistent staging data.\n- Due date: 2026-12-01.\n- Ticket reference: TICKET-4802.",
+      "start": 0,
+      "end": 264,
+      "route_label": "prose_token_compressor",
+      "risk_tier": "low",
+      "protected_spans": [
+        {
+          "start": 220,
+          "end": 230,
+          "label": "timestamp",
+          "span_type": "must-preserve",
+          "detector": "regex",
+          "confidence": 0.9
+        },
+        {
+          "start": 252,
+          "end": 264,
+          "label": "retrieval_key",
+          "span_type": "anchor",
+          "detector": "regex",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:23:06.799650+00:00",
+  "schema_version": "2.0.0"
+}

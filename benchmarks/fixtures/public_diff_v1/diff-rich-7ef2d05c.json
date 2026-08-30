@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "diff-rich-7ef2d05c",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "diff",
+  "risk_tier": "low",
+  "content": "fix inline code in table cells\n\n\ndiff --git a/rich/markdown.py b/rich/markdown.py\nindex 1e28343..15e16a2 100644\n--- a/rich/markdown.py\n+++ b/rich/markdown.py\n@@ -331,9 +331,13 @@ class TableDataElement(MarkdownElement):\n         self.justify = justify\n \n     def on_text(self, context: MarkdownContext, text: TextType) -> None:\n-        text = Text(text) if isinstance(text, str) else text\n-        text.stylize(context.current_style)\n-        self.content.append_text(text)\n+        if isinstance(text, str):\n+            self.content.append(text, context.current_style)\n+        else:\n+            self.content.append_text(text)\n+        # text = Text(text) if isinstance(text, str) else text\n+        # text.stylize(context.current_style)\n+        # self.content.append_text(text)\n \n \n class ListElement(MarkdownElement):\ndiff --git a/tests/test_markdown.py b/tests/test_markdown.py\nindex a76eac9..c461c76 100644\n--- a/tests/test_markdown.py\n+++ b/tests/test_markdown.py\n@@ -199,6 +199,22 @@ def test_table_with_empty_cells() -> None:\n     assert result == expected\n \n \n+def test_inline_code_in_table_cells() -> None:\n+    \"\"\"Test inline code in table cells.\n+\n+    Regression test for https://github.com/Textualize/rich/issues/4038\n+\n+    \"\"\"\n+    markdown = Markdown(\n+        \"| Col |\\n|---|\\n| `print('hello');` |\\n\",\n+        inline_code_theme=\"monokai\",\n+        inline_code_lexer=\"python\",\n+    )\n+    result = render(markdown)\n+    expected = \"\\n\\x1b[36m                 \\x1b[0m\\n\\x1b[36m \\x1b[0m\\x1b[36mCol\\x1b[0m\\x1b[1m            \\x1b[0m\\x1b[36m \\x1b[0m\\n\\x1b[36m \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 \\x1b[0m\\n\\x1b[36m \\x1b[0m\\x1b[38;2;248;248;242;48;2;39;40;34mprint\\x1b[0m\\x1b[38;2;248;248;242;48;2;39;40;34m(\\x1b[0m\\x1b[38;2;230;219;116;48;2;39;40;34m'\\x1b[0m\\x1b[38;2;230;219;116;48;2;39;40;34mhello\\x1b[0m\\x1b[38;2;230;219;116;48;2;39;40;34m'\\x1b[0m\\x1b[38;2;248;248;242;48;2;39;40;34m)\\x1b[0m\\x1b[38;2;248;248;242;48;2;39;40;34m;\\x1b[0m\\x1b[36m \\x1b[0m\\n\\x1b[36m                 \\x1b[0m\\n\"\n+    assert result == expected\n+\n+\n if __name__ == \"__main__\":\n     markdown = Markdown(MARKDOWN)\n     rendered = render(markdown)\n",
+  "route_labels": [
+    "diff_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "diff_compressor",
+    "allowed_outcomes": [
+      "diff_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "diff_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:Textualize/rich",
+    "license": "MIT",
+    "generated_by": null,
+    "external": {
+      "publisher": "Textualize/rich",
+      "source_url": "https://github.com/Textualize/rich/commit/7ef2d05ca8aa3cb405dab2fdf3282e69cf8089e3",
+      "retrieved_at": "2026-08-09T12:18:29.629243Z",
+      "licence_basis": "SPDX MIT, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/Textualize/rich",
+      "licence_evidence_sha256": "efb8a1927b31694aa8e96dd174976d0053272c46642f29ea823cfec64793f5ec",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": "git show, against a local clone \u2014 no foreign code executed"
+    },
+    "generated_at": "2026-08-09T12:18:30.076936Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "diff",
+    "rich"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

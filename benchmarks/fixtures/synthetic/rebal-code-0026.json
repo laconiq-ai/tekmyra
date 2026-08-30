@@ -1,0 +1,47 @@
+{
+  "fixture_id": "rebal-code-0026",
+  "content_type": "code",
+  "risk_tier": "low",
+  "content": "class InvoiceProcessor:\n    def __init__(self, config: dict):\n        self.config = config\n        self.logger = get_logger('billing')\n\n    def run(self, batch: list[dict]) -> dict:\n        \"\"\"Process one batch and return a summary.\"\"\"\n        results = [self.handle(item) for item in batch]\n        return {'processed': len(results), 'failed': sum(r['failed'] for r in results)}\n",
+  "route_labels": [
+    "code_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "expected_content": null,
+    "expected_route": "code_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "route_intent": "code_compressor",
+    "allowed_outcomes": [
+      "code_compressor"
+    ],
+    "compressible": true
+  },
+  "provenance": {
+    "source": "synthetic",
+    "license": "CC0-1.0",
+    "generated_by": "benchmarks/fixtures/generate_rebalance_fixtures.py",
+    "generated_at": "2026-07-18T01:23:06.780278Z",
+    "adjudicated_by": "nextgen_router.adjudicator"
+  },
+  "tags": [
+    "rebalance",
+    "code_compressor"
+  ],
+  "blocks": [
+    {
+      "type": "code",
+      "content": "class InvoiceProcessor:\n    def __init__(self, config: dict):\n        self.config = config\n        self.logger = get_logger('billing')\n\n    def run(self, batch: list[dict]) -> dict:\n        \"\"\"Process one batch and return a summary.\"\"\"\n        results = [self.handle(item) for item in batch]\n        return {'processed': len(results), 'failed': sum(r['failed'] for r in results)}\n",
+      "start": 0,
+      "end": 380,
+      "route_label": "code_compressor",
+      "risk_tier": "low",
+      "protected_spans": []
+    }
+  ],
+  "adjudicated": true,
+  "adjudicated_at": "2026-07-18T01:23:06.784342+00:00",
+  "schema_version": "2.0.0"
+}

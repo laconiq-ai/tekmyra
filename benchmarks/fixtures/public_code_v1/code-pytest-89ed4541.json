@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "code-pytest-89ed4541",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "code",
+  "risk_tier": "low",
+  "content": "# mypy: disallow-untyped-defs\n\"\"\"Invoke development tasks.\"\"\"\n\nfrom __future__ import annotations\n\nimport argparse\nimport os\nfrom pathlib import Path\nimport re\nfrom subprocess import call\nfrom subprocess import check_call\nfrom subprocess import check_output\n\nfrom colorama import Fore\nfrom colorama import init\n\n\ndef announce(version: str, template_name: str, doc_version: str) -> None:\n    \"\"\"Generates a new release announcement entry in the docs.\"\"\"\n    # Get our list of authors and co-authors.\n    stdout = check_output([\"git\", \"describe\", \"--abbrev=0\", \"--tags\"], encoding=\"UTF-8\")\n    last_version = stdout.strip()\n    rev_range = f\"{last_version}..HEAD\"\n\n    authors = check_output(\n        [\"git\", \"log\", rev_range, \"--format=%aN\"], encoding=\"UTF-8\"\n    ).splitlines()\n\n    co_authors_output = check_output(\n        [\"git\", \"log\", rev_range, \"--format=%(trailers:key=Co-authored-by) \"],\n        encoding=\"UTF-8\",\n    )\n    co_authors: list[str] = []\n    for co_author_line in co_authors_output.splitlines():\n        if m := re.search(r\"Co-authored-by: (.+?)<\", co_author_line):\n            co_authors.append(m.group(1).strip())\n\n    contributors = {\n        name\n        for name in authors + co_authors\n        if not name.endswith(\"[bot]\") and name != \"pytest bot\"\n    }\n\n    template_text = (\n        Path(__file__).parent.joinpath(template_name).read_text(encoding=\"UTF-8\")\n    )\n\n    contributors_text = \"\\n\".join(f\"* {name}\" for name in sorted(contributors)) + \"\\n\"\n    text = template_text.format(\n        version=version, contributors=contributors_text, doc_version=doc_version\n    )\n\n    target = Path(__file__).parent.joinpath(f\"../doc/en/announce/release-{version}.rst\")\n    target.write_text(text, encoding=\"UTF-8\")\n    print(f\"{Fore.CYAN}[generate.announce] {Fore.RESET}Generated {target.name}\")\n\n    # Update index with the new release entry\n    index_path = Path(__file__).parent.joinpath(\"../doc/en/announce/index.rst\")\n    lines = index_path.read_text(encoding=\"UTF-8\").splitlines()\n    indent = \"   \"\n    for index, line in enumerate(lines):\n        if line.startswith(f\"{indent}release-\"):\n            new_line = indent + target.stem\n            if line != new_line:\n                lines.insert(index, new_line)\n                index_path.write_text(\"\\n\".join(lines) + \"\\n\", encoding=\"UTF-8\")\n                print(\n                    f\"{Fore.CYAN}[generate.announce] {Fore.RESET}Updated {index_path.name}\"\n                )\n            else:\n                print(\n                    f\"{Fore.CYAN}[generate.announce] {Fore.RESET}Skip {index_path.name} (already contains release)\"\n                )\n            break\n\n    check_call([\"git\", \"add\", str(target)])\n\n\ndef regen(version: str) -> None:\n    \"\"\"Call regendoc tool to update examples and pytest output in the docs.\"\"\"\n    print(f\"{Fore.CYAN}[generate.regen] {Fore.RESET}Updating docs\")\n    check_call(\n        [\"tox\", \"-e\", \"regen\"],\n        env={**os.environ, \"SETUPTOOLS_SCM_PRETEND_VERSION_FOR_PYTEST\": version},\n    )\n\n\ndef fix_formatting() -> None:\n    \"\"\"Runs pre-commit in all files to ensure they are formatted correctly\"\"\"\n    print(\n        f\"{Fore.CYAN}[generate.fix linting] {Fore.RESET}Fixing formatting using pre-commit\"\n    )\n    call([\"pre-commit\", \"run\", \"--all-files\"])\n\n\ndef check_links() -> None:\n    \"\"\"Runs sphinx-build to check links\"\"\"\n    print(f\"{Fore.CYAN}[generate.check_links] {Fore.RESET}Checking links\")\n    check_call([\"tox\", \"-e\", \"docs-checklinks\"])\n\n\ndef pre_release(\n    version: str, template_name: str, doc_version: str, *, skip_check_links: bool\n) -> None:\n    \"\"\"Generates new docs, release announcements and creates a local tag.\"\"\"\n    announce(version, template_name, doc_version)\n    regen(version)\n    changelog(version, write_out=True)\n    fix_formatting()\n    if not skip_check_links:\n        check_links()\n\n    msg = f\"Prepare release version {version}\"\n    check_call([\"git\", \"commit\", \"-a\", \"-m\", msg])\n\n    print()\n    print(f\"{Fore.CYAN}[generate.pre_release] {Fore.GREEN}All done!\")\n    print()\n    print(\"Please push your branch and open a PR.\")\n\n\ndef changelog(version: str, write_out: bool = False) -> None:\n    addopts = [] if write_out else [\"--draft\"]\n    check_call([\"towncrier\", \"build\", \"--yes\", \"--version\", version, *addopts])\n\n\ndef main() -> None:\n    init(autoreset=True)\n    parser = argparse.ArgumentParser()\n    parser.add_argument(\"version\", help=\"Release version\")\n    parser.add_argument(\n        \"template_name\", help=\"Name of template file to use for release announcement\"\n    )\n    parser.add_argument(\n        \"doc_version\", help=\"For prereleases, the version to link to in the docs\"\n    )\n    parser.add_argument(\"--skip-check-links\", action=\"store_true\", default=False)\n    options = parser.parse_args()\n    pre_release(\n        options.version,\n        options.template_name,\n        options.doc_version,\n        skip_check_links=options.skip_check_links,\n    )\n\n\nif __name__ == \"__main__\":\n    main()\n",
+  "route_labels": [
+    "code_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "code_compressor",
+    "allowed_outcomes": [
+      "code_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "code_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:pytest-dev/pytest",
+    "license": "MIT",
+    "generated_by": null,
+    "external": {
+      "publisher": "pytest-dev/pytest",
+      "source_url": "https://github.com/pytest-dev/pytest/blob/006884bac1cff49d2e2908c20fbbb0f0bc8e671b/scripts/release.py",
+      "retrieved_at": "2026-08-09T10:50:35.933109Z",
+      "licence_basis": "SPDX MIT, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/pytest-dev/pytest",
+      "licence_evidence_sha256": "32c6e3a713cc1781341fff4b2c872ad5287be84640dacfc99bf9ddc29a41e87a",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": null
+    },
+    "generated_at": "2026-08-09T10:50:35.983223Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "code",
+    "python"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

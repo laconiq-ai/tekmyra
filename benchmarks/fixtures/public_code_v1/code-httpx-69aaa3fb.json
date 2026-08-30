@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "code-httpx-69aaa3fb",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "code",
+  "risk_tier": "low",
+  "content": "\"\"\"\nHandlers for Content-Encoding.\n\nSee: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding\n\"\"\"\n\nfrom __future__ import annotations\n\nimport codecs\nimport io\nimport typing\nimport zlib\n\nfrom ._exceptions import DecodingError\n\n# Brotli support is optional\ntry:\n    # The C bindings in `brotli` are recommended for CPython.\n    import brotli\nexcept ImportError:  # pragma: no cover\n    try:\n        # The CFFI bindings in `brotlicffi` are recommended for PyPy\n        # and other environments.\n        import brotlicffi as brotli\n    except ImportError:\n        brotli = None\n\n\n# Zstandard support is optional\ntry:\n    import zstandard\nexcept ImportError:  # pragma: no cover\n    zstandard = None  # type: ignore\n\n\nclass ContentDecoder:\n    def decode(self, data: bytes) -> bytes:\n        raise NotImplementedError()  # pragma: no cover\n\n    def flush(self) -> bytes:\n        raise NotImplementedError()  # pragma: no cover\n\n\nclass IdentityDecoder(ContentDecoder):\n    \"\"\"\n    Handle unencoded data.\n    \"\"\"\n\n    def decode(self, data: bytes) -> bytes:\n        return data\n\n    def flush(self) -> bytes:\n        return b\"\"\n\n\nclass DeflateDecoder(ContentDecoder):\n    \"\"\"\n    Handle 'deflate' decoding.\n\n    See: https://stackoverflow.com/questions/1838699\n    \"\"\"\n\n    def __init__(self) -> None:\n        self.first_attempt = True\n        self.decompressor = zlib.decompressobj()\n\n    def decode(self, data: bytes) -> bytes:\n        was_first_attempt = self.first_attempt\n        self.first_attempt = False\n        try:\n            return self.decompressor.decompress(data)\n        except zlib.error as exc:\n            if was_first_attempt:\n                self.decompressor = zlib.decompressobj(-zlib.MAX_WBITS)\n                return self.decode(data)\n            raise DecodingError(str(exc)) from exc\n\n    def flush(self) -> bytes:\n        try:\n            return self.decompressor.flush()\n        except zlib.error as exc:  # pragma: no cover\n            raise DecodingError(str(exc)) from exc\n\n\nclass GZipDecoder(ContentDecoder):\n    \"\"\"\n    Handle 'gzip' decoding.\n\n    See: https://stackoverflow.com/questions/1838699\n    \"\"\"\n\n    def __init__(self) -> None:\n        self.decompressor = zlib.decompressobj(zlib.MAX_WBITS | 16)\n\n    def decode(self, data: bytes) -> bytes:\n        try:\n            return self.decompressor.decompress(data)\n        except zlib.error as exc:\n            raise DecodingError(str(exc)) from exc\n\n    def flush(self) -> bytes:\n        try:\n            return self.decompressor.flush()\n        except zlib.error as exc:  # pragma: no cover\n            raise DecodingError(str(exc)) from exc\n\n\nclass BrotliDecoder(ContentDecoder):\n    \"\"\"\n    Handle 'brotli' decoding.\n\n    Requires `pip install brotlipy`. See: https://brotlipy.readthedocs.io/\n        or   `pip install brotli`. See https://github.com/google/brotli\n    Supports both 'brotlipy' and 'Brotli' packages since they share an import\n    name. The top branches are for 'brotlipy' and bottom branches for 'Brotli'\n    \"\"\"\n\n    def __init__(self) -> None:\n        if brotli is None:  # pragma: no cover\n            raise ImportError(\n                \"Using 'BrotliDecoder', but neither of the 'brotlicffi' or 'brotli' \"\n                \"packages have been installed. \"\n                \"Make sure to install httpx using `pip install httpx[brotli]`.\"\n            ) from None\n\n        self.decompressor = brotli.Decompressor()\n        self.seen_data = False\n        self._decompress: typing.Callable[[bytes], bytes]\n        if hasattr(self.decompressor, \"decompress\"):\n            # The 'brotlicffi' package.\n            self._decompress = self.decompressor.decompress  # pragma: no cover\n        else:\n            # The 'brotli' package.\n            self._decompress = self.decompressor.process  # pragma: no cover\n\n    def decode(self, data: bytes) -> bytes:\n        if not data:\n            return b\"\"\n        self.seen_data = True\n        try:\n            return self._decompress(data)\n        except brotli.error as exc:\n            raise DecodingError(str(exc)) from exc\n\n    def flush(self) -> bytes:\n        if not self.seen_data:\n            return b\"\"\n        try:\n            if hasattr(self.decompressor, \"finish\"):\n                # Only available in the 'brotlicffi' package.\n\n                # As the decompressor decompresses eagerly, this\n                # will never actually emit any data. However, it will potentially throw\n                # errors if a truncated or damaged data stream has been used.\n                self.decompressor.finish()  # pragma: no cover\n            return b\"\"\n        except brotli.error as exc:  # pragma: no cover\n            raise DecodingError(str(exc)) from exc\n\n\nclass ZStandardDecoder(ContentDecoder):\n    \"\"\"\n    Handle 'zstd' RFC 8878 decoding.\n\n    Requires `pip install zstandard`.\n    Can be installed as a dependency of httpx using `pip install httpx[zstd]`.\n    \"\"\"\n\n    # inspired by the ZstdDecoder implementation in urllib3\n    def __init__(self) -> None:\n        if zstandard is None:  # pragma: no cover\n            raise ImportError(\n                \"Using 'ZStandardDecoder', ...\"\n                \"Make sure to install httpx using `pip install httpx[zstd]`.\"\n            ) from None\n\n        self.decompressor = zstandard.ZstdDecompressor().decompressobj()\n        self.seen_data = False\n\n    def decode(self, data: bytes) -> bytes:\n        assert zstandard is not None\n        self.seen_data = True\n        output = io.BytesIO()\n        try:\n            output.write(self.decompressor.decompress(data))\n            while self.decompressor.eof and self.decompressor.unused_data:\n                unused_data = self.decompressor.unused_data\n                self.decompressor = zstandard.ZstdDecompressor().decompressobj()\n                output.write(self.decompressor.decompress(unused_data))\n        except zstandard.ZstdError as exc:\n            raise DecodingError(str(exc)) from exc\n        return output.getvalue()\n\n    def flush(self) -> bytes:\n        if not self.seen_data:\n            return b\"\"\n        ret = self.decompressor.flush()  # note: this is a no-op\n        if not self.decompressor.eof:\n            raise DecodingError(\"Zstandard data is incomplete\")  # pragma: no cover\n        return bytes(ret)\n\n\nclass MultiDecoder(ContentDecoder):\n    \"\"\"\n    Handle the case where multiple encodings have been applied.\n    \"\"\"\n\n    def __init__(self, children: typing.Sequence[ContentDecoder]) -> None:\n        \"\"\"\n        'children' should be a sequence of decoders in the order in which\n        each was applied.\n        \"\"\"\n        # Note that we reverse the order for decoding.\n        self.children = list(reversed(children))\n\n    def decode(self, data: bytes) -> bytes:\n        for child in self.children:\n            data = child.decode(data)\n        return data\n\n    def flush(self) -> bytes:\n        data = b\"\"\n        for child in self.children:\n            data = child.decode(data) + child.flush()\n        return data\n\n\nclass ByteChunker:\n    \"\"\"\n    Handles returning byte content in fixed-size chunks.\n    \"\"\"\n\n    def __init__(self, chunk_size: int | None = None) -> None:\n        self._buffer = io.BytesIO()\n        self._chunk_size = chunk_size\n\n    def decode(self, content: bytes) -> list[bytes]:\n        if self._chunk_size is None:\n            return [content] if content else []\n\n        self._buffer.write(content)\n        if self._buffer.tell() >= self._chunk_size:\n            value = self._buffer.getvalue()\n            chunks = [\n                value[i : i + self._chunk_size]\n                for i in range(0, len(value), self._chunk_size)\n            ]\n            if len(chunks[-1]) == self._chunk_size:\n                self._buffer.seek(0)\n                self._buffer.truncate()\n                return chunks\n            else:\n                self._buffer.seek(0)\n                self._buffer.write(chunks[-1])\n                self._buffer.truncate()\n                return chunks[:-1]\n        else:\n            return []\n\n    def flush(self) -> list[bytes]:\n        value = self._buffer.getvalue()\n        self._buffer.seek(0)\n        self._buffer.truncate()\n        return [value] if value else []\n\n\nclass TextChunker:\n    \"\"\"\n    Handles returning text content in fixed-size chunks.\n    \"\"\"\n\n    def __init__(self, chunk_size: int | None = None) -> None:\n        self._buffer = io.StringIO()\n        self._chunk_size = chunk_size\n\n    def decode(self, content: str) -> list[str]:\n        if self._chunk_size is None:\n            return [content] if content else []\n\n        self._buffer.write(content)\n        if self._buffer.tell() >= self._chunk_size:\n            value = self._buffer.getvalue()\n            chunks = [\n                value[i : i + self._chunk_size]\n                for i in range(0, len(value), self._chunk_size)\n            ]\n            if len(chunks[-1]) == self._chunk_size:\n                self._buffer.seek(0)\n                self._buffer.truncate()\n                return chunks\n            else:\n                self._buffer.seek(0)\n                self._buffer.write(chunks[-1])\n                self._buffer.truncate()\n                return chunks[:-1]\n        else:\n            return []\n\n    def flush(self) -> list[str]:\n        value = self._buffer.getvalue()\n        self._buffer.seek(0)\n        self._buffer.truncate()\n        return [value] if value else []\n\n\nclass TextDecoder:\n    \"\"\"\n    Handles incrementally decoding bytes into text\n    \"\"\"\n\n    def __init__(self, encoding: str = \"utf-8\") -> None:\n        self.decoder = codecs.getincrementaldecoder(encoding)(errors=\"replace\")\n\n    def decode(self, data: bytes) -> str:\n        return self.decoder.decode(data)\n\n    def flush(self) -> str:\n        return self.decoder.decode(b\"\", True)\n\n\nclass LineDecoder:\n    \"\"\"\n    Handles incrementally reading lines from text.\n\n    Has the same behaviour as the stdllib splitlines,\n    but handling the input iteratively.\n    \"\"\"\n\n    def __init__(self) -> None:\n        self.buffer: list[str] = []\n        self.trailing_cr: bool = False\n\n    def decode(self, text: str) -> list[str]:\n        # See https://docs.python.org/3/library/stdtypes.html#str.splitlines\n        NEWLINE_CHARS = \"\\n\\r\\x0b\\x0c\\x1c\\x1d\\x1e\\x85\\u2028\\u2029\"\n\n        # We always push a trailing `\\r` into the next decode iteration.\n        if self.trailing_cr:\n            text = \"\\r\" + text\n            self.trailing_cr = False\n        if text.endswith(\"\\r\"):\n            self.trailing_cr = True\n            text = text[:-1]\n\n        if not text:\n            # NOTE: the edge case input of empty text doesn't occur in practice,\n            # because other httpx internals filter out this value\n            return []  # pragma: no cover\n\n        trailing_newline = text[-1] in NEWLINE_CHARS\n        lines = text.splitlines()\n\n        if len(lines) == 1 and not trailing_newline:\n            # No new lines, buffer the input and continue.\n            self.buffer.append(lines[0])\n            return []\n\n        if self.buffer:\n            # Include any existing buffer in the first portion of the\n            # splitlines result.\n            lines = [\"\".join(self.buffer) + lines[0]] + lines[1:]\n            self.buffer = []\n\n        if not trailing_newline:\n            # If the last segment of splitlines is not newline terminated,\n            # then drop it from our output and start a new buffer.\n            self.buffer = [lines.pop()]\n\n        return lines\n\n    def flush(self) -> list[str]:\n        if not self.buffer and not self.trailing_cr:\n            return []\n\n        lines = [\"\".join(self.buffer)]\n        self.buffer = []\n        self.trailing_cr = False\n        return lines\n\n\nSUPPORTED_DECODERS = {\n    \"identity\": IdentityDecoder,\n    \"gzip\": GZipDecoder,\n    \"deflate\": DeflateDecoder,\n    \"br\": BrotliDecoder,\n    \"zstd\": ZStandardDecoder,\n}\n\n\nif brotli is None:\n    SUPPORTED_DECODERS.pop(\"br\")  # pragma: no cover\nif zstandard is None:\n    SUPPORTED_DECODERS.pop(\"zstd\")  # pragma: no cover\n",
+  "route_labels": [
+    "code_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "code_compressor",
+    "allowed_outcomes": [
+      "code_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "code_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:encode/httpx",
+    "license": "BSD-3-Clause",
+    "generated_by": null,
+    "external": {
+      "publisher": "encode/httpx",
+      "source_url": "https://github.com/encode/httpx/blob/b5addb64f0161ff6bfe94c124ef76f6a1fba5254/httpx/_decoders.py",
+      "retrieved_at": "2026-08-09T10:50:35.933109Z",
+      "licence_basis": "SPDX BSD-3-Clause, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/encode/httpx",
+      "licence_evidence_sha256": "5ed6d55a881846e6924c391624875889bae6782ad1a93227bb4c846b2d527d0b",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": null
+    },
+    "generated_at": "2026-08-09T10:50:36.005079Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "code",
+    "python"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}

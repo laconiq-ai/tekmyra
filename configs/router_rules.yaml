@@ -1,0 +1,29 @@
+# High-precision deterministic rules for the TekMyra Technique Router.
+# Rules are evaluated in order; the first matching rule wins unless safety overrides it.
+
+version: "0.1.0"
+
+# Ordered list of routing rules. Each rule maps a recognized input condition to a
+# compression/safety handler. Safety-critical rules should remain at the bottom.
+rules:
+  - id: R_JSON_VALID
+    condition: json_parse_success
+    route: deterministic_json_compressor
+  - id: R_CODE_AST_VALID
+    condition: ast_parse_success
+    route: code_compressor
+  - id: R_LOG_DENSE
+    condition: log_timestamp_density_high
+    route: log_compressor
+  - id: R_DIFF_SIGNATURE
+    condition: diff_markers_present
+    route: diff_compressor
+  - id: R_STACKTRACE
+    condition: stacktrace_hits_present
+    route: log_compressor
+  - id: R_SHORT_SAFE
+    condition: short_and_safe
+    route: passthrough
+  - id: R_UNSUPPORTED_HIGH_RISK
+    condition: unsupported_or_critical
+    route: reject_or_human_review

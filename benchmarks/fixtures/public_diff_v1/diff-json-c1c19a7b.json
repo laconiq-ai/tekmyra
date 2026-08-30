@@ -1,0 +1,80 @@
+{
+  "schema_version": "2.1.0",
+  "fixture_id": "diff-json-c1c19a7b",
+  "tenant_id": "tenant-benchmark",
+  "content_type": "diff",
+  "risk_tier": "low",
+  "content": ":arrow_up: Bump lukka/get-cmake from 4.4.0 to 4.4.1 (#5364)\n\n\ndiff --git a/.github/workflows/ubuntu.yml b/.github/workflows/ubuntu.yml\nindex 1d7396b..7cfbfff 100644\n--- a/.github/workflows/ubuntu.yml\n+++ b/.github/workflows/ubuntu.yml\n@@ -25,7 +25,7 @@ jobs:\n         with:\n           persist-credentials: false\n       - name: Get latest CMake and ninja\n-        uses: lukka/get-cmake@e6906078ebd1ccb8ce51ab4626ac46a1b5a517e3 # v4.4.0\n+        uses: lukka/get-cmake@4a7d025fc60f00db0c7b44ebf783d19b52444830 # v4.4.1\n       - name: Run CMake\n         run: cmake -S . -B build -DJSON_CI=On\n       - name: Build\n@@ -47,7 +47,7 @@ jobs:\n         with:\n           persist-credentials: false\n       - name: Get latest CMake and ninja\n-        uses: lukka/get-cmake@e6906078ebd1ccb8ce51ab4626ac46a1b5a517e3 # v4.4.0\n+        uses: lukka/get-cmake@4a7d025fc60f00db0c7b44ebf783d19b52444830 # v4.4.1\n       - name: Run CMake\n         run: cmake -S . -B build -DJSON_CI=On\n       - name: Build\n@@ -70,7 +70,7 @@ jobs:\n         with:\n           persist-credentials: false\n       - name: Get latest CMake and ninja\n-        uses: lukka/get-cmake@e6906078ebd1ccb8ce51ab4626ac46a1b5a517e3 # v4.4.0\n+        uses: lukka/get-cmake@4a7d025fc60f00db0c7b44ebf783d19b52444830 # v4.4.1\n       - name: Run CMake\n         run: cmake -S . -B build -DJSON_CI=On\n       - name: Build\n@@ -89,7 +89,7 @@ jobs:\n         with:\n           persist-credentials: false\n       - name: Get latest CMake and ninja\n-        uses: lukka/get-cmake@e6906078ebd1ccb8ce51ab4626ac46a1b5a517e3 # v4.4.0\n+        uses: lukka/get-cmake@4a7d025fc60f00db0c7b44ebf783d19b52444830 # v4.4.1\n       - name: Run CMake\n         run: cmake -S . -B build -DJSON_CI=On\n       - name: Build\n@@ -108,7 +108,7 @@ jobs:\n         with:\n           persist-credentials: false\n       - name: Get latest CMake and ninja\n-        uses: lukka/get-cmake@e6906078ebd1ccb8ce51ab4626ac46a1b5a517e3 # v4.4.0\n+        uses: lukka/get-cmake@4a7d025fc60f00db0c7b44ebf783d19b52444830 # v4.4.1\n       - name: Run CMake\n         run: cmake -S . -B build -DJSON_CI=On\n       - name: Build\n@@ -184,7 +184,7 @@ jobs:\n         with:\n           persist-credentials: false\n       - name: Get latest CMake and ninja\n-        uses: lukka/get-cmake@e6906078ebd1ccb8ce51ab4626ac46a1b5a517e3 # v4.4.0\n+        uses: lukka/get-cmake@4a7d025fc60f00db0c7b44ebf783d19b52444830 # v4.4.1\n       - name: Run CMake\n         run: CXX=g++-${{ matrix.compiler }} cmake -S . -B build -DJSON_CI=On\n       - name: Build\n@@ -202,7 +202,7 @@ jobs:\n         with:\n           persist-credentials: false\n       - name: Get latest CMake and ninja\n-        uses: lukka/get-cmake@e6906078ebd1ccb8ce51ab4626ac46a1b5a517e3 # v4.4.0\n+        uses: lukka/get-cmake@4a7d025fc60f00db0c7b44ebf783d19b52444830 # v4.4.1\n       - name: Run CMake\n         run: cmake -S . -B build -DJSON_CI=On\n       - name: Build\n@@ -219,7 +219,7 @@ jobs:\n         with:\n           persist-credentials: false\n       - name: Get latest CMake and ninja\n-        uses: lukka/get-cmake@e6906078ebd1ccb8ce51ab4626ac46a1b5a517e3 # v4.4.0\n+        uses: lukka/get-cmake@4a7d025fc60f00db0c7b44ebf783d19b52444830 # v4.4.1\n       - name: Set env FORCE_STDCPPFS_FLAG for clang 7 / 8 / 9 / 10\n         run: echo \"JSON_FORCED_GLOBAL_COMPILE_OPTIONS=-DJSON_HAS_FILESYSTEM=0;-DJSON_HAS_EXPERIMENTAL_FILESYSTEM=0\" >> \"$GITHUB_ENV\"\n         if: ${{ matrix.compiler == '7' || matrix.compiler == '8' || matrix.compiler == '9' || matrix.compiler == '10' }}\n@@ -239,7 +239,7 @@ jobs:\n         with:\n           persist-credentials: false\n       - name: Get latest CMake and ninja\n-        uses: lukka/get-cmake@e6906078ebd1ccb8ce51ab4626ac46a1b5a517e3 # v4.4.0\n+        uses: lukka/get-cmake@4a7d025fc60f00db0c7b44ebf783d19b52444830 # v4.4.1\n       - name: Run CMake\n         run: cmake -S . -B build -DJSON_CI=On\n       - name: Build\n@@ -259,7 +259,7 @@ jobs:\n         with:\n           persist-credentials: false\n       - name: Get latest CMake and ninja\n-        uses: lukka/get-cmake@e6906078ebd1ccb8ce51ab4626ac46a1b5a517e3 # v4.4.0\n+        uses: lukka/get-cmake@4a7d025fc60f00db0c7b44ebf783d19b52444830 # v4.4.1\n       - name: Run CMake\n         run: cmake -S . -B build -DJSON_CI=On\n       - name: Build with libc++\n@@ -286,7 +286,7 @@ jobs:\n         with:\n           persist-credentials: false\n       - name: Get latest CMake and ninja\n-        uses: lukka/get-cmake@e6906078ebd1ccb8ce51ab4626ac46a1b5a517e3 # v4.4.0\n+        uses: lukka/get-cmake@4a7d025fc60f00db0c7b44ebf783d19b52444830 # v4.4.1\n       - name: Run CMake\n         run: cmake -S . -B build -DJSON_CI=On\n       - name: Build\n@@ -306,7 +306,7 @@ jobs:\n       # import-std support. Its opt-in token is CMake-version-specific, so pin\n       # CMake to the version whose token is set in tests/module_cpp20/CMakeLists.txt.\n       - name: Get pinned CMake and ninja\n-        uses: lukka/get-cmake@e6906078ebd1ccb8ce51ab4626ac46a1b5a517e3 # v4.4.0\n+        uses: lukka/get-cmake@4a7d025fc60f00db0c7b44ebf783d19b52444830 # v4.4.1\n         with:\n           cmakeVersion: 4.3.4\n       # Clang: the std library module is provided by libc++ (the image's libstdc++\n@@ -332,7 +332,7 @@ jobs:\n         with:\n           persist-credentials: false\n       - name: Get latest CMake and ninja\n-        uses: lukka/get-cmake@e6906078ebd1ccb8ce51ab4626ac46a1b5a517e3 # v4.4.0\n+        uses: lukka/get-cmake@4a7d025fc60f00db0c7b44ebf783d19b52444830 # v4.4.1\n       - name: Run CMake\n         run: cmake -S . -B build -DJSON_CI=On\n       - name: Build\n@@ -347,7 +347,7 @@ jobs:\n     steps:\n       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1\n       - name: Get latest CMake and ninja\n-        uses: lukka/get-cmake@e6906078ebd1ccb8ce51ab4626ac46a1b5a517e3 # v4.4.0\n+        uses: lukka/get-cmake@4a7d025fc60f00db0c7b44ebf783d19b52444830 # v4.4.1\n       - name: Run CMake\n         run: cmake -S . -B build -DJSON_CI=On\n       - name: Build\n@@ -359,7 +359,7 @@ jobs:\n     steps:\n       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1\n       - name: Get latest CMake and ninja\n-        uses: lukka/get-cmake@e6906078ebd1ccb8ce51ab4626ac46a1b5a517e3 # v4.4.0\n+        uses: lukka/get-cmake@4a7d025fc60f00db0c7b44ebf783d19b52444830 # v4.4.1\n       - name: Run CMake\n         run: cmake -S . -B build -DJSON_CI=On\n       - name: Build\n@@ -379,7 +379,7 @@ jobs:\n         with:\n           persist-credentials: false\n       - name: Get latest CMake and ninja\n-        uses: lukka/get-cmake@e6906078ebd1ccb8ce51ab4626ac46a1b5a517e3 # v4.4.0\n+        uses: lukka/get-cmake@4a7d025fc60f00db0c7b44ebf783d19b52444830 # v4.4.1\n       - name: Run CMake\n         run: cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=$EMSDK/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -GNinja\n       - name: Build\ndiff --git a/.github/workflows/windows.yml b/.github/workflows/windows.yml\nindex ff3089b..01092bd 100644\n--- a/.github/workflows/windows.yml\n+++ b/.github/workflows/windows.yml\n@@ -88,7 +88,7 @@ jobs:\n     steps:\n       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1\n       - name: Get latest CMake and ninja\n-        uses: lukka/get-cmake@e6906078ebd1ccb8ce51ab4626ac46a1b5a517e3 # v4.4.0\n+        uses: lukka/get-cmake@4a7d025fc60f00db0c7b44ebf783d19b52444830 # v4.4.1\n       - name: Set extra CXX_FLAGS for latest std_version\n         # /wd5285 silences C5285 emitted by the bundled third-party doctest.h, which\n         # specializes std::tuple (newly diagnosed by the VS2026 v145 toolset)\n@@ -199,7 +199,7 @@ jobs:\n       # import-std support. Its opt-in token is CMake-version-specific, so pin\n       # CMake to the version whose token is set in tests/module_cpp20/CMakeLists.txt.\n       - name: Get pinned CMake and ninja\n-        uses: lukka/get-cmake@e6906078ebd1ccb8ce51ab4626ac46a1b5a517e3 # v4.4.0\n+        uses: lukka/get-cmake@4a7d025fc60f00db0c7b44ebf783d19b52444830 # v4.4.1\n         with:\n           cmakeVersion: 4.3.4\n       - name: Run CMake (Debug)\n",
+  "route_labels": [
+    "diff_compressor"
+  ],
+  "protected_spans": [],
+  "gold_output": {
+    "route_intent": "diff_compressor",
+    "allowed_outcomes": [
+      "diff_compressor",
+      "passthrough",
+      "reversible_retrieval_mode"
+    ],
+    "compressible": true,
+    "passthrough": false,
+    "redaction_only": false,
+    "human_review": false,
+    "expected_content": null,
+    "expected_route": "diff_compressor",
+    "expected_risk": "low",
+    "expected_fallback": null,
+    "must_preserve_spans": [],
+    "expected_compression_eligibility": null,
+    "expected_allowed_bypass_reasons": [],
+    "query_task": null,
+    "answer_required_fact_ids": [],
+    "allowed_safety_overrides": []
+  },
+  "provenance": {
+    "source": "github:nlohmann/json",
+    "license": "MIT",
+    "generated_by": null,
+    "external": {
+      "publisher": "nlohmann/json",
+      "source_url": "https://github.com/nlohmann/json/commit/c1c19a7bcd4cd04c59696a352f4e8a6cfe4105fd",
+      "retrieved_at": "2026-08-09T12:18:29.629243Z",
+      "licence_basis": "SPDX MIT, from the GitHub licence API",
+      "licence_evidence_url": "https://api.github.com/repos/nlohmann/json",
+      "licence_evidence_sha256": "25cfc0a8d012917eb6eb57b4cbae2916dc744e04a13bd56db51f9af401ef8f42",
+      "permitted_scopes": [
+        "use_in_laconiq_product",
+        "train_models",
+        "commercial_product_use",
+        "publish_derived_measurements"
+      ],
+      "generated_locally_by": "git show, against a local clone \u2014 no foreign code executed"
+    },
+    "generated_at": "2026-08-09T12:18:30.387702Z",
+    "adjudicated_by": null,
+    "generator_id": null,
+    "generator_sha256": null,
+    "template_id": null,
+    "scenario_id": null,
+    "augmentation_id": null,
+    "source_lineage_id": null,
+    "group_id": null,
+    "joint_stratum": null,
+    "family_index": null,
+    "variant_index": null,
+    "content_sha256": null,
+    "normalized_content_sha256": null,
+    "rng_seed_sha256": null,
+    "source_date_epoch": null,
+    "counterexample_pair_id": null
+  },
+  "tags": [
+    "external-source",
+    "diff",
+    "json"
+  ],
+  "blocks": [],
+  "adjudicated": false,
+  "adjudicated_at": null,
+  "protected_fact_index": {}
+}
