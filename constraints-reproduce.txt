@@ -9,7 +9,7 @@
 # So: install normally to USE TekMyra, and install against this file to
 # REPRODUCE the numbers in the README.
 #
-#     pip install -c constraints-reproduce.txt -e .
+#     pip install -c constraints-reproduce.txt -e '.[dev]'
 #
 # HOW MUCH THIS ACTUALLY MATTERS, measured rather than asserted: against the
 # published reference bundle, on 2026-08-30. On scikit-learn 1.8.0 and 1.9.0

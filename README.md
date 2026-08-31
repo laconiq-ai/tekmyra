@@ -32,7 +32,18 @@ absence is a design decision and is documented as one.
 
 ## Install
 
+From PyPI (Python 3.11+; the distribution is `tekmyra-core`, the import name is
+`tekmyra`):
+
 ```bash
+pip install tekmyra-core
+```
+
+Or from source, which is what the rest of this page assumes:
+
+```bash
+git clone https://github.com/laconiq-ai/tekmyra.git
+cd tekmyra
 pip install -e '.[dev]'   # the library plus pytest, to run the suite below
 ```
 
@@ -213,7 +224,7 @@ Which of those digests you can check here is worth stating precisely, because
 the baseline is the record of a measurement taken in the private tree. The
 digests for the four `public_*` corpora and `synthetic` match this
 repository's bytes and you can recompute them (the algorithm is
-`tests/measurement_provenance.py::_corpus_digest`). Two entries describe the
+`tests/measurement_provenance.py::_corpus_digest`). Three entries describe the
 private measuring tree and will NOT match what you have:
 `benchmarks/fixtures/long_context_v1` was digested with its two generator
 scripts, which are deliberately unpublished (the 42 fixture files you have
@@ -224,9 +235,15 @@ appended a canary byte to a fixture and caught an earlier draft of this
 sentence claiming a proof nothing performed); and `.cache/router` was
 digested over the full private
 artifact directory, of which the reference bundle carries the versioned
-`1.0.0` subset the code actually loads. Editing the record to match the
-payload would fabricate provenance, so it ships as measured, with this
-paragraph instead.
+`1.0.0` subset the code actually loads. The third,
+`.cache/compressor/1.0.0`, has the file count you have
+(8) but a different rolled digest. Because that record is a single digest over
+the whole directory rather than a hash per file, the difference cannot be
+attributed to a particular file, by us or by you; what can be checked is that
+these artifacts still produce the recorded measurement exactly, which
+`tests/test_public_corpus_ratchet.py` re-runs and pins cell by cell. Editing
+any record to match the payload would fabricate provenance, so all three ship
+as measured, with this paragraph instead.
 
 ## Reproducing what is here
 
@@ -236,7 +253,7 @@ your application; ranges float, so the figures above were measured against the
 exact versions recorded in `constraints-reproduce.txt`:
 
 ```bash
-pip install -c constraints-reproduce.txt -e .
+pip install -c constraints-reproduce.txt -e '.[dev]'
 ```
 
 How much that matters is measured rather than asserted, against the published
@@ -281,7 +298,8 @@ number if any of that fails. Its output includes the by-route table, so the
 abstention behaviour above is something you can watch rather than take on trust.
 
 The suite passes without a model: the tests that need a trained artifact skip,
-and each skip names every location that was searched.
+each skip says what it was waiting for, and the ones that exercise artifact
+resolution list the directories they searched.
 
 ### Troubleshooting
 
