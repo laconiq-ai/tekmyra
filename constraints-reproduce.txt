@@ -31,7 +31,7 @@
 # Measured on Linux (arm64 and x86_64) and macOS. The reference bundle digest
 # reproduces byte-identically across all three.
 
-numpy==2.5.2
+numpy==2.5.1
 scikit-learn==1.9.0
 joblib==1.5.3
 scipy==1.18.0

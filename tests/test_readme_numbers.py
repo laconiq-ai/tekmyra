@@ -57,7 +57,7 @@ def test_benchmark_table_strings_are_pinned() -> None:
     """
     text = _readme_text()
     pinned = ["0.7409", "+25.86%", "68/68", "0.2929", "+48.44%", "+70.40%",
-              "704/704", "14 refused", "26 reached of 40 eligible"]
+              "704/704", "14 refused", "40 eligible of 40 shipped (26 reached"]
     missing = [s for s in pinned if s not in text]
     assert not missing, (
         f"README benchmark table lost {missing}. Change it only alongside a "

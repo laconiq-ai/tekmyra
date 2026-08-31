@@ -132,15 +132,19 @@ put in one table.
 **With the reference artifact bundle, on the corpora in this repository**, via the
 joblib/scikit-learn path (no `onnxruntime` installed):
 
-| corpus | fixtures | mean size | headline ratio | tokens | locked spans |
+| corpus | fixtures | mean size | ratio on reached fixtures | tokens | locked spans |
 |---|---|---|---|---|---|
-| `synthetic` | 301 (28 reached of 28 eligible, 0 refused) | 250 chars | **0.7409** | **+25.86%** | **68/68** |
-| `long_context_v1` | 40 (26 reached of 40 eligible, **14 refused**) | 23,644 chars | **0.2929** | **+48.44%** corpus / +70.40% on the prose route | **704/704** |
+| `synthetic` | 28 eligible of 301 shipped (28 reached, 0 refused) | 250 chars (over 301 shipped) | **0.7409** | **+25.86%** | **68/68** |
+| `long_context_v1` | 40 eligible of 40 shipped (26 reached, **14 refused**) | 23,644 chars | **0.2929** | **+48.44%** corpus / +70.40% on the prose route | **704/704** |
 
-*Headline ratio* is the share of content kept, averaged over fixtures the
-compressor reached. *Tokens* is corpus-wide token reduction **with refusals in
-the denominator**: a refusal saves nothing and is counted as saving nothing,
-because a build that refuses more would otherwise score better for refusing.
+*Ratio on reached fixtures* is the share of content kept, averaged over the
+fixtures the compressor reached; it is a reached-set diagnostic, not a
+headline. *Tokens* is token reduction over the eligible set **with refusals in
+the denominator at zero saving**: a refusal saves nothing and is counted as
+saving nothing, because a build that refuses more would otherwise score better
+for refusing. A fixture is eligible when its content type has a codec on its
+route in this build; eligibility is fixed before any run (`synthetic` ships
+301 fixtures, 28 prose-eligible; `long_context_v1` ships 40, all eligible).
 
 One more thing both rows share, which the benchmark prints beside every number
 and this table must therefore say too: **routing is blind, and some labels name
