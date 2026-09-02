@@ -397,7 +397,9 @@ module of spend caps, none of which anyone had decided to publish.
 
 The website is [tekmyra.ai](https://tekmyra.ai). The technical paper is at
 [tekmyra.ai/tekmyra-paper.html](https://tekmyra.ai/tekmyra-paper.html)
-([PDF](https://tekmyra.ai/tekmyra-paper.pdf)). The package is
+([PDF](https://tekmyra.ai/tekmyra-paper.pdf)). The paper is archived with a
+permanent DOI at 10.5281/zenodo.22243913
+(https://doi.org/10.5281/zenodo.22243913). The package is
 [tekmyra-core on PyPI](https://pypi.org/project/tekmyra-core/).
 
 ## On AI assistance

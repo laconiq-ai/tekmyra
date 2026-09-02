@@ -7,7 +7,7 @@ authors:
     email: "hello@tekmyra.ai"
 license: Apache-2.0
 version: 0.1.0
-date-released: 2026-08-30
+date-released: 2026-08-31
 url: "https://tekmyra.ai"
 repository-code: "https://github.com/laconiq-ai/tekmyra"
 abstract: >-
@@ -15,3 +15,16 @@ abstract: >-
   locked-span preservation, refusal as a first-class outcome, and
   verification before emission. The accompanying technical paper is at
   https://tekmyra.ai/tekmyra-paper.html
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.22243913
+    description: "Technical paper: Governed Context Compression: Measured Abstention as a First-Class Property"
+preferred-citation:
+  type: generic
+  title: "Governed Context Compression: Measured Abstention as a First-Class Property"
+  authors:
+    - name: "TekMyra Team"
+      affiliation: "LaconIQ"
+  year: 2026
+  doi: 10.5281/zenodo.22243913
+  url: "https://zenodo.org/records/22243913"
