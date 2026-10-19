@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, qa, dev]
   pull_request:
   schedule:
     # Weekly, so a dependency that floats out from under the declared ranges
