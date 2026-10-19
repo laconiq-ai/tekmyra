@@ -21,14 +21,22 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.11", "3.12"]
+        include:
+          # 3.11 is the declared floor. constraints-reproduce.txt cannot install
+          # there (numpy 2.5.1 and scipy 1.18.0 require Python >= 3.12), so the
+          # floor is tested the way a user installs the library: declared ranges.
+          - python-version: "3.11"
+            install: pip install -e '.[dev]'
+          # 3.12 runs the exact versions the published figures were measured on.
+          - python-version: "3.12"
+            install: pip install -c constraints-reproduce.txt -e '.[dev]'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install against the constraints file
-        run: pip install -c constraints-reproduce.txt -e '.[dev]'
+      - name: Install
+        run: ${{ matrix.install }}
       - name: Test suite
         run: python -m pytest tests -q
       - name: Seam check (exit 6 = seam proven, numbers not measured, expected without a model)
