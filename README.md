@@ -269,6 +269,13 @@ exact versions recorded in `constraints-reproduce.txt`:
 pip install -c constraints-reproduce.txt -e '.[dev]'
 ```
 
+That command needs **Python 3.12 or newer**. The library itself supports 3.11,
+but two of the measured versions do not: `numpy==2.5.1` and `scipy==1.18.0`
+both declare `requires_python >= 3.12`, so on 3.11 pip stops with
+`ResolutionImpossible`. On 3.11, `pip install -e '.[dev]'` installs the
+declared ranges instead, which is fine for using TekMyra but is not the set
+the figures were measured against.
+
 How much that matters is measured rather than asserted, against the published
 bundle: on scikit-learn 1.8.0 and 1.9.0 the `long_context_v1` headline is
 **0.2929 both times**, identical to four decimals. The constraints file is a
