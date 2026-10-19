@@ -10,6 +10,15 @@ as an approved typed redaction marker, or as a token that resolves to the
 original. If that check fails, the compressor retries on a safer route. If the
 retry fails too, it raises and emits nothing.
 
+"Exactly once" is counted per occurrence, and the verifier
+(`tekmyra/verifier.py`, `_check_protected_disposition`) applies it like this:
+every locked span must be accounted for, and a protected value may not appear
+more often than it did in the input. A value that occurs three times in the
+input can therefore occur three times in the output. Diff routes skip the
+duplicate half of the check, because a diff legitimately prints the same path
+on both sides (`a/src/config.yaml`, `b/src/config.yaml`); a missing span
+still fails there.
+
 That is the whole idea. A compressor that silently drops a dollar figure is
 worse than no compressor, because the output still looks fine.
 
@@ -299,7 +308,10 @@ are offering you. Nothing in this README rests on it.
 from the allowlist, proves every closed module is **unimportable** before
 measuring anything, runs this suite inside the built tree, and refuses to print a
 number if any of that fails. Its output includes the by-route table, so the
-abstention behaviour above is something you can watch rather than take on trust.
+refusals and abstentions above are something you can watch rather than take on
+trust: the 14 refusals appear as the `refused` column of the
+`reversible_retrieval_mode (ABSTENTION)` row, and that row's `done` column, the
+abstentions, is 0.
 
 The suite passes without a model: the tests that need a trained artifact skip,
 each skip says what it was waiting for, and the ones that exercise artifact
