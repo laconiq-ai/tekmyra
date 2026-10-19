@@ -85,9 +85,11 @@ jobs:
           while IFS= read -r want; do
             grep -qF -- "$want" verify.log || { echo "README figure not reproduced: $want"; fail=1; }
           done <<'FIGURES'
+          corpus synthetic — 301 fixtures, mean 250 chars
           headline 0.7409 over 28 reached of 28 eligible, 0 refused
           locked spans 68/68
           tokens +25.86%
+          corpus long_context_v1 — 40 fixtures, mean 23,644 chars
           headline 0.2929 over 26 reached of 40 eligible, 14 refused
           locked spans 704/704
           tokens +48.44%
