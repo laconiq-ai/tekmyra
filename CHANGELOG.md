@@ -13,7 +13,8 @@ or a claim is involved, how it was checked.
   allowed. A second job downloads the v0.1.0 reference bundle, checks it
   against the sha256 in the v0.1.0 release notes, runs the suite with the
   artifact-gated tests included, runs both README benchmark commands, and
-  requires `verify_open_core.py` to measure and exit 0. A weekly scheduled run
+  requires `verify_open_core.py` to measure, exit 0, and print every figure in
+  the README table. A weekly scheduled run
   catches dependency drift inside the declared ranges.
 - A CI badge in the README.
 - This changelog, issue and pull-request templates, and `CODE_OF_CONDUCT.md`.
@@ -38,7 +39,8 @@ or a claim is involved, how it was checked.
 - Every figure in the README table reproduces exactly from the v0.1.0 bundle:
   `synthetic` 0.7409, +25.86%, 68/68; `long_context_v1` 0.2929, +48.44%
   (+70.40% on the prose route), 704/704, 14 refused. Measured locally at
-  `b9b7806` on Python 3.12.14 and again by the CI `reference-bundle` job.
+  `b9b7806` on Python 3.12.14, and checked on every CI run by the
+  `reference-bundle` job.
 
 ## 0.1.0 — 2026-08-31
 
