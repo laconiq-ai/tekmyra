@@ -1,5 +1,7 @@
 # TekMyra, by LaconIQ
 
+[![CI](https://github.com/laconiq-ai/tekmyra/actions/workflows/ci.yml/badge.svg)](https://github.com/laconiq-ai/tekmyra/actions/workflows/ci.yml)
+
 TekMyra is a compressor that refuses rather than guesses.
 
 TekMyra compresses context for language models and then *checks its own work*.
