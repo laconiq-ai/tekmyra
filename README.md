@@ -12,6 +12,15 @@ as an approved typed redaction marker, or as a token that resolves to the
 original. If that check fails, the compressor retries on a safer route. If the
 retry fails too, it raises and emits nothing.
 
+"Exactly once" is counted per occurrence, and the verifier
+(`tekmyra/verifier.py`, `_check_protected_disposition`) applies it like this:
+every locked span must be accounted for, and a protected value may not appear
+more often than it did in the input. A value that occurs three times in the
+input can therefore occur three times in the output. Diff routes skip the
+duplicate half of the check, because a diff legitimately prints the same path
+on both sides (`a/src/config.yaml`, `b/src/config.yaml`); a missing span
+still fails there.
+
 That is the whole idea. A compressor that silently drops a dollar figure is
 worse than no compressor, because the output still looks fine.
 
@@ -262,6 +271,13 @@ exact versions recorded in `constraints-reproduce.txt`:
 pip install -c constraints-reproduce.txt -e '.[dev]'
 ```
 
+That command needs **Python 3.12 or newer**. The library itself supports 3.11,
+but two of the measured versions do not: `numpy==2.5.1` and `scipy==1.18.0`
+both declare `requires_python >= 3.12`, so on 3.11 pip stops with
+`ResolutionImpossible`. On 3.11, `pip install -e '.[dev]'` installs the
+declared ranges instead, which is fine for using TekMyra but is not the set
+the figures were measured against.
+
 How much that matters is measured rather than asserted, against the published
 bundle: on scikit-learn 1.8.0 and 1.9.0 the `long_context_v1` headline is
 **0.2929 both times**, identical to four decimals. The constraints file is a
@@ -301,7 +317,10 @@ are offering you. Nothing in this README rests on it.
 from the allowlist, proves every closed module is **unimportable** before
 measuring anything, runs this suite inside the built tree, and refuses to print a
 number if any of that fails. Its output includes the by-route table, so the
-abstention behaviour above is something you can watch rather than take on trust.
+refusals and abstentions above are something you can watch rather than take on
+trust: the 14 refusals appear as the `refused` column of the
+`reversible_retrieval_mode (ABSTENTION)` row, and that row's `done` column, the
+abstentions, is 0.
 
 The suite passes without a model: the tests that need a trained artifact skip,
 each skip says what it was waiting for, and the ones that exercise artifact
