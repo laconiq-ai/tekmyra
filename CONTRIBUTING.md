@@ -53,6 +53,14 @@ point rather than ceremony.
   reason per rule. Adding a module that imports an excluded one is a seam defect
   to cut, not a reason to publish the excluded module.
 
+## Which branch
+
+**Open pull requests against `dev`.** Changes land on `dev`, are promoted to
+`qa`, and reach `main` only after `qa` passes CI, so `main` is always the
+released state. GitHub offers `main` by default because it is the default
+branch; if your pull request targets `main`, a maintainer will retarget it to
+`dev`, and you do not need to do anything.
+
 ## Before you open a pull request
 
 Run the suite and the seam check. Both ship, and both pass without a trained
@@ -104,3 +112,5 @@ and the basis; those are usually where the disagreement actually is.
 
 Be straightforward and assume competence. Disagreement about a measurement is
 resolved by measuring, not by seniority.
+
+The full text, and how to report a problem, is in CODE_OF_CONDUCT.md.
