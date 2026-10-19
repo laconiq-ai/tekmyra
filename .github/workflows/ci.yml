@@ -1,0 +1,98 @@
+name: CI
+
+on:
+  push:
+    branches: [main, qa, dev]
+  pull_request:
+  schedule:
+    # Weekly, so a dependency that floats out from under the declared ranges
+    # shows up here before it shows up in someone's install.
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  # What a fresh clone can check without a model: the suite (artifact-dependent
+  # tests skip and say where they looked) and the open/closed seam.
+  fresh-clone:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # 3.11 is the declared floor. constraints-reproduce.txt cannot install
+          # there (numpy 2.5.1 and scipy 1.18.0 require Python >= 3.12), so the
+          # floor is tested the way a user installs the library: declared ranges.
+          - python-version: "3.11"
+            install: pip install -e '.[dev]'
+          # 3.12 runs the exact versions the published figures were measured on.
+          - python-version: "3.12"
+            install: pip install -c constraints-reproduce.txt -e '.[dev]'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install
+        run: ${{ matrix.install }}
+      - name: Test suite
+        run: python -m pytest tests -q
+      - name: Seam check (exit 6 = seam proven, numbers not measured, expected without a model)
+        run: python scripts/verify_open_core.py || [ $? -eq 6 ]
+
+  # What the README's numbers rest on: the v0.1.0 reference bundle, checked
+  # against the digest in that release's notes, then the suite with the
+  # artifact-gated tests running (about 33 still skip by design: they need
+  # unpublished result files or the commercial build, and -rs prints why), and
+  # the seam check required to measure (exit 0, not 6) and to print the
+  # README's figures.
+  #
+  # The digest is pinned to v0.1.0 by name rather than to "latest", so a later
+  # release cannot silently change what this job verifies; a new release
+  # updates both lines together.
+  reference-bundle:
+    runs-on: ubuntu-latest
+    env:
+      BUNDLE_URL: https://github.com/laconiq-ai/tekmyra/releases/download/v0.1.0/tekmyra-reference-artifacts.tar.gz
+      BUNDLE_SHA256: 9c185a524b24693213cd2a226021e466da9905fb29ab5582c8cc7480abb69883
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install against the constraints file
+        run: pip install -c constraints-reproduce.txt -e '.[dev]'
+      - name: Fetch and verify the reference bundle
+        run: |
+          curl -fsSL -o tekmyra-reference-artifacts.tar.gz "$BUNDLE_URL"
+          echo "$BUNDLE_SHA256  tekmyra-reference-artifacts.tar.gz" | sha256sum -c -
+          tar xzf tekmyra-reference-artifacts.tar.gz
+      - name: Test suite, artifact tests included
+        run: python -m pytest tests -q -rs
+      - name: Benchmarks behind the README table
+        run: |
+          python -m tekmyra.benchmark compressor --fixture-dir benchmarks/fixtures/synthetic
+          python -m tekmyra.benchmark compressor --fixture-dir benchmarks/fixtures/long_context_v1
+      - name: Seam check, measured (must exit 0 and print the README figures)
+        run: |
+          set -o pipefail
+          python scripts/verify_open_core.py | tee verify.log
+          # The README table, as verify_open_core.py prints it. A changed
+          # figure fails here until the README and this list change together.
+          fail=0
+          while IFS= read -r want; do
+            grep -qF -- "$want" verify.log || { echo "README figure not reproduced: $want"; fail=1; }
+          done <<'FIGURES'
+          corpus synthetic — 301 fixtures, mean 250 chars
+          headline 0.7409 over 28 reached of 28 eligible, 0 refused
+          locked spans 68/68
+          tokens +25.86%
+          corpus long_context_v1 — 40 fixtures, mean 23,644 chars
+          headline 0.2929 over 26 reached of 40 eligible, 14 refused
+          locked spans 704/704
+          tokens +48.44%
+          +70.40%
+          FIGURES
+          exit $fail
