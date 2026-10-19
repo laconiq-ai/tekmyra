@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # Weekly, so a dependency that floats out from under the declared ranges
+    # shows up here before it shows up in someone's install.
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  # What a fresh clone can check without a model: the suite (artifact-dependent
+  # tests skip and say where they looked) and the open/closed seam.
+  fresh-clone:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install against the constraints file
+        run: pip install -c constraints-reproduce.txt -e '.[dev]'
+      - name: Test suite
+        run: python -m pytest tests -q
+      - name: Seam check (exit 6 = seam proven, numbers not measured, expected without a model)
+        run: python scripts/verify_open_core.py || [ $? -eq 6 ]
+
+  # What the README's numbers rest on: the v0.1.0 reference bundle, checked
+  # against the digest in that release's notes, then the suite with nothing
+  # skipped and the seam check required to measure (exit 0, not 6).
+  #
+  # The digest is pinned to v0.1.0 by name rather than to "latest", so a later
+  # release cannot silently change what this job verifies; a new release
+  # updates both lines together.
+  reference-bundle:
+    runs-on: ubuntu-latest
+    env:
+      BUNDLE_URL: https://github.com/laconiq-ai/tekmyra/releases/download/v0.1.0/tekmyra-reference-artifacts.tar.gz
+      BUNDLE_SHA256: 9c185a524b24693213cd2a226021e466da9905fb29ab5582c8cc7480abb69883
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install against the constraints file
+        run: pip install -c constraints-reproduce.txt -e '.[dev]'
+      - name: Fetch and verify the reference bundle
+        run: |
+          curl -fsSL -o tekmyra-reference-artifacts.tar.gz "$BUNDLE_URL"
+          echo "$BUNDLE_SHA256  tekmyra-reference-artifacts.tar.gz" | sha256sum -c -
+          tar xzf tekmyra-reference-artifacts.tar.gz
+      - name: Test suite, artifact tests included
+        run: python -m pytest tests -q -rs
+      - name: Benchmarks behind the README table
+        run: |
+          python -m tekmyra.benchmark compressor --fixture-dir benchmarks/fixtures/synthetic
+          python -m tekmyra.benchmark compressor --fixture-dir benchmarks/fixtures/long_context_v1
+      - name: Seam check, measured (must exit 0)
+        run: python scripts/verify_open_core.py
