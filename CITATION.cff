@@ -17,8 +17,8 @@ abstract: >-
   https://tekmyra.ai/tekmyra-paper.html
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.22243913
-    description: "Technical paper: Governed Context Compression: Measured Abstention as a First-Class Property"
+    value: 10.5281/zenodo.22243912
+    description: "Technical paper, all versions (resolves to the latest): Governed Context Compression: Measured Abstention as a First-Class Property"
 preferred-citation:
   type: generic
   title: "Governed Context Compression: Measured Abstention as a First-Class Property"
@@ -26,5 +26,5 @@ preferred-citation:
     - name: "TekMyra Team"
       affiliation: "LaconIQ"
   year: 2026
-  doi: 10.5281/zenodo.22243913
-  url: "https://zenodo.org/records/22243913"
+  doi: 10.5281/zenodo.22243912
+  url: "https://doi.org/10.5281/zenodo.22243912"
