@@ -30,9 +30,13 @@ jobs:
           # 3.12 runs the exact versions the published figures were measured on.
           - python-version: "3.12"
             install: pip install -c constraints-reproduce.txt -e '.[dev]'
+          # 3.13 is declared in pyproject.toml's classifiers, so it is tested
+          # the same way as the floor: declared ranges.
+          - python-version: "3.13"
+            install: pip install -e '.[dev]'
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install
@@ -58,8 +62,8 @@ jobs:
       BUNDLE_URL: https://github.com/laconiq-ai/tekmyra/releases/download/v0.1.0/tekmyra-reference-artifacts.tar.gz
       BUNDLE_SHA256: 9c185a524b24693213cd2a226021e466da9905fb29ab5582c8cc7480abb69883
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - name: Install against the constraints file
