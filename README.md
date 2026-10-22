@@ -418,9 +418,11 @@ module of spend caps, none of which anyone had decided to publish.
 
 The website is [tekmyra.ai](https://tekmyra.ai). The technical paper is at
 [tekmyra.ai/tekmyra-paper.html](https://tekmyra.ai/tekmyra-paper.html)
-([PDF](https://tekmyra.ai/tekmyra-paper.pdf)). The paper is archived with a
-permanent DOI at 10.5281/zenodo.22243913
-(https://doi.org/10.5281/zenodo.22243913). The package is
+([PDF](https://tekmyra.ai/tekmyra-paper.pdf)). The paper is archived on Zenodo
+under the DOI 10.5281/zenodo.22243912 (https://doi.org/10.5281/zenodo.22243912),
+which always resolves to the latest version: version 2 (10.5281/zenodo.23549351,
+2026-10-22) adds related work and corrects the description of LLMLingua-2;
+version 1 is 10.5281/zenodo.22243913. The package is
 [tekmyra-core on PyPI](https://pypi.org/project/tekmyra-core/).
 
 ## On AI assistance
@@ -444,6 +446,10 @@ they were in fact argued.
 ## Licence
 
 Apache-2.0. See `LICENSE` and `NOTICE`.
+
+The licence of the reference artifact bundle (the release asset
+`tekmyra-reference-artifacts.tar.gz`) is to be confirmed and will be stated
+here.
 
 Contributions are under the DCO; see `CONTRIBUTING.md`. Security reports do not
 go in the issue tracker; see `SECURITY.md`.

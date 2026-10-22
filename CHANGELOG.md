@@ -8,7 +8,7 @@ or a claim is involved, how it was checked.
 
 ### Added
 - **CI** (`.github/workflows/ci.yml`). On every pull request and on pushes to
-  `dev`, `qa` and `main`: the test suite on Python 3.11 and 3.12, and
+  `dev`, `qa` and `main`: the test suite on Python 3.11, 3.12 and 3.13, and
   `scripts/verify_open_core.py` with exit 6 (seam proven, numbers not measured)
   allowed. A second job downloads the v0.1.0 reference bundle, checks it
   against the sha256 in the v0.1.0 release notes, runs the suite with the
@@ -25,6 +25,11 @@ or a claim is involved, how it was checked.
   see first is the released state. See CONTRIBUTING.md.
 
 ### Fixed (documentation)
+- The README and `CITATION.cff` now cite the paper's concept DOI,
+  10.5281/zenodo.22243912, which resolves to the latest version. Version 2
+  (10.5281/zenodo.23549351, 2026-10-22) adds a related-work section and
+  corrects the paper's description of LLMLingua-2; no measured figure changed.
+- The README says the reference bundle's licence is still to be confirmed.
 - The README now says what "exactly once" means in the verifier: counted per
   occurrence, a protected value may not appear more often than it did in the
   input, and diff routes skip the duplicate half of the check.
