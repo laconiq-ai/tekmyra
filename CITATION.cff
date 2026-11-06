@@ -23,7 +23,8 @@ preferred-citation:
   type: generic
   title: "Governed Context Compression: Measured Abstention as a First-Class Property"
   authors:
-    - name: "TekMyra Team"
+    - family-names: "Manne"
+      given-names: "Hari Babu"
       affiliation: "LaconIQ"
   year: 2026
   doi: 10.5281/zenodo.22243912
