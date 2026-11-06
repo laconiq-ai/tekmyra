@@ -25,6 +25,10 @@ or a claim is involved, how it was checked.
   see first is the released state. See CONTRIBUTING.md.
 
 ### Fixed (documentation)
+- The paper's author is now named: version 2.1 of the paper
+  (10.5281/zenodo.24023817, 2026-11-06) credits Hari Babu Manne (LaconIQ) in
+  place of the team byline, which arXiv requires; no other text or figure
+  changed. The README and the `CITATION.cff` preferred citation say so.
 - The README and `CITATION.cff` now cite the paper's concept DOI,
   10.5281/zenodo.22243912, which resolves to the latest version. Version 2
   (10.5281/zenodo.23549351, 2026-10-22) adds a related-work section and
