@@ -420,9 +420,11 @@ The website is [tekmyra.ai](https://tekmyra.ai). The technical paper is at
 [tekmyra.ai/tekmyra-paper.html](https://tekmyra.ai/tekmyra-paper.html)
 ([PDF](https://tekmyra.ai/tekmyra-paper.pdf)). The paper is archived on Zenodo
 under the DOI 10.5281/zenodo.22243912 (https://doi.org/10.5281/zenodo.22243912),
-which always resolves to the latest version: version 2 (10.5281/zenodo.23549351,
-2026-10-22) adds related work and corrects the description of LLMLingua-2;
-version 1 is 10.5281/zenodo.22243913. The package is
+which always resolves to the latest version: version 2.1 (10.5281/zenodo.24023817,
+2026-11-06) names the author, Hari Babu Manne, in place of the team byline and
+changes nothing else; version 2 (10.5281/zenodo.23549351, 2026-10-22) adds
+related work and corrects the description of LLMLingua-2; version 1 is
+10.5281/zenodo.22243913. The package is
 [tekmyra-core on PyPI](https://pypi.org/project/tekmyra-core/).
 
 ## On AI assistance
